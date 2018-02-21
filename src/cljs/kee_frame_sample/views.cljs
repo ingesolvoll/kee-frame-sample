@@ -3,5 +3,10 @@
             [kee-frame-sample.subs :as subs]))
 
 (defn main-panel []
-  (let [name (re-frame/subscribe [::subs/name])]
-    [:div "Hello from " @name]))
+  (let [leagues (re-frame/subscribe [:leagues])]
+    [:ul
+     (map (fn [league]
+            [:li {:key (get league "id")}
+             [:a {:href (str "/league/" (get league "id"))}
+              (get league "caption")]])
+          @leagues)]))
