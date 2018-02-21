@@ -10,12 +10,20 @@
        [:table
         [:thead
          [:tr
+          [:td ""]
           [:td "Team"]
+          [:td "W"]
+          [:td "D"]
+          [:td "L"]
           [:td "Points"]]]
         [:tbody
-         (map (fn [{:strs [teamName points]}]
+         (map (fn [{:strs [teamName points position wins draws losses]}]
                 [:tr {:key teamName}
+                 [:td position]
                  [:td teamName]
+                 [:td wins]
+                 [:td draws]
+                 [:td losses]
                  [:td points]])
               (get @league "standing"))]]])))
 
