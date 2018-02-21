@@ -2,7 +2,7 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.9.946"]
                  [reagent "0.8.0-alpha2"]
-                 [re-frame "0.10.3-alpha1" :exclusions [reagent]]
+                 [re-frame "0.10.5"]
                  [kee-frame "0.0.1-SNAPSHOT"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
@@ -17,17 +17,19 @@
 
   :profiles
   {:dev
-   {:dependencies [[binaryage/devtools "0.9.4"]]
+   {:dependencies [[binaryage/devtools "0.9.4"]
+                   [day8.re-frame/re-frame-10x "0.2.0-react16"]]
     :plugins      [[lein-figwheel "0.5.13"]]}}
 
   :cljsbuild {:builds
               [{:id           "dev"
                 :source-paths ["src/cljs"]
-                :figwheel     {:on-jsload "kee-frame-sample.core/mount-root"}
+                :figwheel     {:on-jsload "kee_frame_sample.core/mount-root"}
                 :compiler     {:main                 kee-frame-sample.core
                                :output-to            "resources/public/js/compiled/app.js"
                                :output-dir           "resources/public/js/compiled/out"
                                :asset-path           "js/compiled/out"
                                :source-map-timestamp true
-                               :preloads             [devtools.preload]
+                               :preloads             [devtools.preload day8.re-frame-10x.preload]
+                               :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true}
                                :external-config      {:devtools/config {:features-to-install :all}}}}]})
