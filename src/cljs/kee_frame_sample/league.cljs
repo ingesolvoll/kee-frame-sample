@@ -3,23 +3,25 @@
             [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
             [ajax.core :as ajax]))
 
-(reg-controller :root
-                {:params (constantly true)
-                 :start  [:leagues/load]})
+(reg-controller :league
+                {:params (fn [{:keys [handler route-params]}]
+                           (when (= handler :league)
+                             (:id route-params)))
+                 :start  (fn [_ id] [:league/load id])})
 
-(reg-event-fx :leagues/load
+(reg-event-fx :league/load
               [debug]
-              (fn [{:keys [db]} _]
+              (fn [_ [_ id]]
                 {:http-xhrio {:method          :get
-                              :uri             "https://api.football-data.org/v1/competitions/?season=2017"
+                              :uri             (str "http://api.football-data.org/v1/competitions/" id "/leagueTable")
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :on-failure      [:log-error]
                               :response-format (ajax/transit-response-format)
-                              :on-success      [:leagues/loaded]}}))
+                              :on-success      [:league/loaded]}}))
 
-(reg-event-db :leagues/loaded
+(reg-event-db :league/loaded
               [debug]
-              (fn [db [_ leagues]]
-                (assoc db :leagues leagues)))
+              (fn [db [_ league]]
+                (assoc db :league league)))
 
-(reg-sub :leagues (fn [db] (:leagues db)))
+(reg-sub :league :league)
