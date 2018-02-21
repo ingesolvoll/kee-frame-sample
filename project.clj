@@ -3,7 +3,11 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
-                 [kee-frame "0.0.1-SNAPSHOT"]]
+                 [kee-frame "0.0.1-SNAPSHOT"]
+                 [day8.re-frame/http-fx "0.1.5"]
+                 [ring "1.5.1"]
+                 [ring/ring-defaults "0.2.1"]
+                 [compojure "1.5.0"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
@@ -13,7 +17,8 @@
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
-  :figwheel {:css-dirs ["resources/public/css"]}
+  :figwheel {:css-dirs ["resources/public/css"]
+             :ring-handler kee-frame-sample.handler/app}
 
   :profiles
   {:dev

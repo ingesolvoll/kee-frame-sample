@@ -1,7 +1,9 @@
 (ns kee-frame-sample.core
   (:require [reagent.core :as reagent]
-            [re-frame.core :as re-frame]
+            [day8.re-frame.http-fx]
+            [kee-frame.core :as kee-frame]
             [kee-frame-sample.events :as events]
+            [kee-frame-sample.league]
             [kee-frame-sample.views :as views]))
 
 (defn mount-root []
@@ -9,5 +11,7 @@
                   (.getElementById js/document "app")))
 
 (defn ^:export init []
+  (kee-frame/start! ["" {"/"              :index
+                         ["/league/" :id] :league}])
   (enable-console-print!)
   (mount-root))
