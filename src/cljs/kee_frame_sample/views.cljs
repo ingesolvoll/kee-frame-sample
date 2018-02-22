@@ -1,11 +1,25 @@
 (ns kee-frame-sample.views
   (:require [re-frame.core :as re-frame]))
 
+(defn league-selector []
+  [:select.form-control
+   {:on-change #(re-frame/dispatch [:leagues/select (.. % -target -value)])}
+   [:option "(Select league)"]
+   (map (fn [{:strs [id caption]}]
+          [:option {:key   id
+                    :value id}
+           caption])
+        @(re-frame/subscribe [:leagues]))])
+
 (defn table []
   (let [league (re-frame/subscribe [:league])]
     (when @league
       [:div
-       [:h1 (get @league "leagueCaption")]
+       [:div.row
+        [:div.col-md-8
+         [:h1 (get @league "leagueCaption")]]
+        [:div.col-md-4
+         [league-selector]]]
        [:table.table
         [:thead
          [:tr
@@ -16,7 +30,7 @@
           [:td "L"]
           [:td "Points"]]]
         [:tbody
-         (map (fn [{:strs [teamName points position wins draws losses _links crestURI]}]
+         (map (fn [{:strs [teamName points position wins draws losses _links]}]
                 [:tr {:key teamName}
                  [:td position]
                  [:td [:a {:href (str "?team=" (get-in _links ["team" "href"]))} teamName]]
@@ -27,13 +41,5 @@
               (get @league "standing"))]]])))
 
 (defn main-panel []
-  (let [leagues (re-frame/subscribe [:leagues])]
-    [:div
-     [:select.form-control
-      {:on-change println}
-      (map (fn [league]
-             [:option {:key (get league "id")
-                       :value (get league "id")}
-              (get league "caption")])
-           @leagues)]
-     [table]]))
+  [:div
+   [table]])

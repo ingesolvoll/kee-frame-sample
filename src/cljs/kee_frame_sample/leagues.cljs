@@ -1,11 +1,15 @@
 (ns kee-frame-sample.leagues
   (:require [kee-frame.core :refer [reg-controller]]
-            [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
+            [re-frame.core :refer [reg-event-fx reg-fx reg-event-db reg-sub debug]]
             [ajax.core :as ajax]))
 
 (reg-controller :leagues
                 {:params (constantly true)
                  :start  [:leagues/load]})
+
+(reg-event-fx :leagues/select
+              (fn [_ [_ league-id]]
+                {:navigate-to [:league :id league-id]}))
 
 (reg-event-fx :leagues/load
               [debug]
