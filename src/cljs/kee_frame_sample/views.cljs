@@ -16,14 +16,29 @@
            caption])
         @(re-frame/subscribe [:leagues]))])
 
-(defn table [id]
-  (if-let [{:strs [leagueCaption standing]} @(re-frame/subscribe [:league])]
+(defn fixtures []
+  (if-let [{:strs [fixtures]} @(re-frame/subscribe [:fixtures])]
     [:div
-     [:div.row
-      [:div.col-md-8
-       [:h1 leagueCaption]]
-      [:div.col-md-4
-       [league-selector]]]
+     [:table.table
+      [:thead
+       [:tr
+        [:td "Date"]
+        [:td "Home"]
+        [:td "Away"]]]
+      [:tbody
+       (map (fn [{:strs [homeTeamName awayTeamName date result]}]
+              [:tr {:key (str homeTeamName "-" awayTeamName)}
+               [:td date]
+               [:td homeTeamName]
+               [:td awayTeamName]
+               (let [{:strs [goalsHomeTeam goalsAwayTeam]} result]
+                 [:td goalsHomeTeam " - " goalsAwayTeam])])
+            fixtures)]]]))
+
+(defn table []
+  (if-let [{:strs [leagueCaption standing]} @(re-frame/subscribe [:table])]
+    [:div
+     [:h1 leagueCaption]
      [:table.table
       [:thead
        [:tr
@@ -47,16 +62,17 @@
 (reg-view :league
           (fn [{:keys [route-params]}]
             (let [{:keys [id tab]} route-params]
-              [:div
-               [:ul.nav
-                [:li.nav-item
-                 [:a.nav-link.active {:href "table"} "Table"]]
-                [:li.nav-item
-                 [:a.nav-link {:href (bidi/path-for @state/routes :league :id id :tab :fixtures)} "Fixtures"]]]
-               (case tab
-                 "table" [table id]
-                 "fixtures" [:div "Fixtures da vel"]
-                 [:div "Loading..."])])))
+              (when (and id tab)
+                [:div
+                 [:ul.nav
+                  [:li.nav-item
+                   [:a.nav-link.active {:href "table"} "Table"]]
+                  [:li.nav-item
+                   [:a.nav-link {:href (bidi/path-for @state/routes :league :id id :tab :fixtures)} "Latest results"]]]
+                 (case tab
+                   "table" [table id]
+                   "fixtures" [fixtures]
+                   [:div "Loading..."])]))))
 
 (defn main-panel []
   [:div
