@@ -16,7 +16,7 @@
                               :uri             (str "http://api.football-data.org/v1/competitions/" id "/leagueTable")
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :on-failure      [:log-error]
-                              :response-format (ajax/transit-response-format)
+                              :response-format (ajax/json-response-format)
                               :on-success      [:league/loaded]}}))
 
 (reg-event-db :league/loaded
