@@ -24,15 +24,18 @@
        [:tr
         [:td "Date"]
         [:td "Home"]
-        [:td "Away"]]]
+        [:td "Away"]
+        [:td "Result"]]]
       [:tbody
        (map (fn [{:strs [homeTeamName awayTeamName date result]}]
               [:tr {:key (str homeTeamName "-" awayTeamName)}
                [:td date]
                [:td homeTeamName]
                [:td awayTeamName]
-               (let [{:strs [goalsHomeTeam goalsAwayTeam]} result]
-                 [:td goalsHomeTeam " - " goalsAwayTeam])])
+               (let [{:strs [goalsHomeTeam goalsAwayTeam halfTime]} result]
+                 [:td goalsHomeTeam " - " goalsAwayTeam
+                  (let [{:strs [goalsHomeTeam goalsAwayTeam]} halfTime]
+                    (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
             fixtures)]]]))
 
 (defn table []
