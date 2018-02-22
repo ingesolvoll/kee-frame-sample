@@ -9,7 +9,7 @@
 
 (reg-event-fx :leagues/select
               (fn [_ [_ league-id]]
-                {:navigate-to [:league :id league-id :tab :fixtures]}))
+                {:navigate-to [:league :id league-id :tab :table]}))
 
 (reg-event-fx :leagues/load
               [debug]
