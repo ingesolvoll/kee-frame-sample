@@ -11,7 +11,7 @@
                   (.getElementById js/document "app")))
 
 (defn ^:export init []
-  (kee-frame/start! ["" {"/"              :index
-                         ["/league/" :id] :league}])
+  (kee-frame/start! ["" {"/"                       :index
+                         ["/league/" :id "/" :tab] :league}])
   (enable-console-print!)
   (mount-root))

@@ -24,4 +24,4 @@
               (fn [db [_ league]]
                 (assoc db :league league)))
 
-(reg-sub :league :league)
+(reg-sub :league (fn [db] (some-> db :league)))

@@ -1,6 +1,8 @@
 (ns kee-frame-sample.views
   (:require [re-frame.core :as re-frame]
-            [kee-frame.core :refer [dispatch-view reg-view]]))
+            [kee-frame.core :refer [dispatch-view reg-view]]
+            [bidi.bidi :as bidi]
+            [kee-frame.state :as state]))
 
 (defn league-selector []
   [:select.form-control
@@ -14,19 +16,14 @@
            caption])
         @(re-frame/subscribe [:leagues]))])
 
-(defn table []
-  (when-let [{:strs [leagueCaption standing]} @(re-frame/subscribe [:league])]
+(defn table [id]
+  (if-let [{:strs [leagueCaption standing]} @(re-frame/subscribe [:league])]
     [:div
      [:div.row
       [:div.col-md-8
        [:h1 leagueCaption]]
       [:div.col-md-4
        [league-selector]]]
-     [:ul.nav
-      [:li.nav-item
-       [:a.nav-link.active {:href "table"} "Table"]]
-      [:li.nav-item
-       [:a.nav-link {:href "fixtures"} "Fixtures"]]]
      [:table.table
       [:thead
        [:tr
@@ -48,9 +45,20 @@
             standing)]]]))
 
 (reg-view :league
-          (fn [route]
-            [table]))
+          (fn [{:keys [route-params]}]
+            (let [{:keys [id tab]} route-params]
+              [:div
+               [:ul.nav
+                [:li.nav-item
+                 [:a.nav-link.active {:href "table"} "Table"]]
+                [:li.nav-item
+                 [:a.nav-link {:href (bidi/path-for @state/routes :league :id id :tab :fixtures)} "Fixtures"]]]
+               (case tab
+                 "table" [table id]
+                 "fixtures" [:div "Fixtures da vel"]
+                 [:div "Loading..."])])))
 
 (defn main-panel []
   [:div
+   [league-selector]
    [dispatch-view :league]])
