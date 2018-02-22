@@ -12,33 +12,32 @@
         @(re-frame/subscribe [:leagues]))])
 
 (defn table []
-  (let [league (re-frame/subscribe [:league])]
-    (when @league
-      [:div
-       [:div.row
-        [:div.col-md-8
-         [:h1 (get @league "leagueCaption")]]
-        [:div.col-md-4
-         [league-selector]]]
-       [:table.table
-        [:thead
-         [:tr
-          [:td ""]
-          [:td "Team"]
-          [:td "W"]
-          [:td "D"]
-          [:td "L"]
-          [:td "Points"]]]
-        [:tbody
-         (map (fn [{:strs [teamName points position wins draws losses _links]}]
-                [:tr {:key teamName}
-                 [:td position]
-                 [:td [:a {:href (str "?team=" (get-in _links ["team" "href"]))} teamName]]
-                 [:td wins]
-                 [:td draws]
-                 [:td losses]
-                 [:td points]])
-              (get @league "standing"))]]])))
+  (when-let [{:strs [leagueCaption standing]} @(re-frame/subscribe [:league])]
+    [:div
+     [:div.row
+      [:div.col-md-8
+       [:h1 leagueCaption]]
+      [:div.col-md-4
+       [league-selector]]]
+     [:table.table
+      [:thead
+       [:tr
+        [:td ""]
+        [:td "Team"]
+        [:td "W"]
+        [:td "D"]
+        [:td "L"]
+        [:td "Points"]]]
+      [:tbody
+       (map (fn [{:strs [teamName points position wins draws losses _links]}]
+              [:tr {:key teamName}
+               [:td position]
+               [:td [:a {:href (str "?team=" (get-in _links ["team" "href"]))} teamName]]
+               [:td wins]
+               [:td draws]
+               [:td losses]
+               [:td points]])
+            standing)]]]))
 
 (defn main-panel []
   [:div
