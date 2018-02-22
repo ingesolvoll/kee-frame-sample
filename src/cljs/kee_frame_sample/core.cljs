@@ -2,7 +2,6 @@
   (:require [reagent.core :as reagent]
             [day8.re-frame.http-fx]
             [kee-frame.core :as kee-frame]
-            [kee-frame-sample.events]
             [kee-frame-sample.league]
             [kee-frame-sample.leagues]
             [kee-frame-sample.views :as views]))

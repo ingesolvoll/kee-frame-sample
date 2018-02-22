@@ -1,6 +1,5 @@
 (ns kee-frame-sample.views
-  (:require [re-frame.core :as re-frame]
-            [kee-frame-sample.subs :as subs]))
+  (:require [re-frame.core :as re-frame]))
 
 (defn table []
   (let [league (re-frame/subscribe [:league])]
@@ -31,6 +30,7 @@
   (let [leagues (re-frame/subscribe [:leagues])]
     [:div
      [:select.form-control
+      {:on-change println}
       (map (fn [league]
              [:option {:key (get league "id")
                        :value (get league "id")}
