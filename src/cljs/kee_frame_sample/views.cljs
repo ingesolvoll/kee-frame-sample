@@ -3,8 +3,10 @@
 
 (defn league-selector []
   [:select.form-control
-   {:on-change #(re-frame/dispatch [:leagues/select (.. % -target -value)])}
-   [:option "(Select league)"]
+   {:on-change (fn [e]
+                 (re-frame/dispatch [:leagues/select (.. e -target -value)])
+                 (set! (.. e -target -value) ""))}
+   [:option {:value ""} "(Select league)"]
    (map (fn [{:strs [id caption]}]
           [:option {:key   id
                     :value id}
