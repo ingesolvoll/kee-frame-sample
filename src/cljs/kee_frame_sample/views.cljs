@@ -7,7 +7,7 @@
     (when @league
       [:div
        [:h1 (get @league "leagueCaption")]
-       [:table
+       [:table.table
         [:thead
          [:tr
           [:td ""]
@@ -17,10 +17,10 @@
           [:td "L"]
           [:td "Points"]]]
         [:tbody
-         (map (fn [{:strs [teamName points position wins draws losses]}]
+         (map (fn [{:strs [teamName points position wins draws losses _links crestURI]}]
                 [:tr {:key teamName}
                  [:td position]
-                 [:td teamName]
+                 [:td [:a {:href (str "?team=" (get-in _links ["team" "href"]))} teamName]]
                  [:td wins]
                  [:td draws]
                  [:td losses]
@@ -29,10 +29,11 @@
 
 (defn main-panel []
   (let [leagues (re-frame/subscribe [:leagues])]
-    [:div [:ul
-           (map (fn [league]
-                  [:li {:key (get league "id")}
-                   [:a {:href (str "/league/" (get league "id"))}
-                    (get league "caption")]])
-                @leagues)]
+    [:div
+     [:select.form-control
+      (map (fn [league]
+             [:option {:key (get league "id")
+                       :value (get league "id")}
+              (get league "caption")])
+           @leagues)]
      [table]]))
