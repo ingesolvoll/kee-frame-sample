@@ -52,15 +52,23 @@
         [:td "L"]
         [:td "Points"]]]
       [:tbody
-       (map (fn [{:strs [teamName points position wins draws losses _links]}]
+       (map (fn [{:strs [teamName points position wins draws losses]}]
               [:tr {:key teamName}
                [:td position]
-               [:td [:a {:href (str "?team=" (get-in _links ["team" "href"]))} teamName]]
+               [:td teamName]
                [:td wins]
                [:td draws]
                [:td losses]
                [:td points]])
             standing)]]]))
+
+
+(defn team []
+  (if-let [{:strs [teamName]} @(re-frame/subscribe [:team])]
+    [:div
+     [:h1 teamName]
+     ]))
+
 
 (reg-view :league
           (fn [{:keys [route-params]}]
@@ -77,7 +85,15 @@
                    "fixtures" [fixtures]
                    [:div "Loading..."])]))))
 
+(reg-view :main
+          (fn [{:keys [handler]}]
+            (case handler
+              :index [:div "Something something"]
+              :league [dispatch-view :league]
+              :team [team]
+              [:div "Loading..."])))
+
 (defn main-panel []
   [:div
    [league-selector]
-   [dispatch-view :league]])
+   [dispatch-view :main]])
