@@ -3,6 +3,7 @@
             [day8.re-frame.http-fx]
             [kee-frame.core :as kee-frame]
             [kee-frame-sample.league]
+            [kee-frame-sample.team]
             [kee-frame-sample.leagues]
             [kee-frame-sample.views :as views]))
 
@@ -12,6 +13,7 @@
 
 (defn ^:export init []
   (kee-frame/start! ["" {"/"                       :index
-                         ["/league/" :id "/" :tab] :league}])
+                         ["/league/" :id "/" :tab] :league
+                         ["/team/" :href]            :team}])
   (enable-console-print!)
   (mount-root))
