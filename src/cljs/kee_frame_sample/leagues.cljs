@@ -8,8 +8,9 @@
                  :start  [:leagues/load]})
 
 (reg-event-fx :leagues/select
-              (fn [_ [_ league-id]]
-                {:navigate-to [:league :id league-id :tab :table]}))
+              (fn [{:keys [db]} [_ league-id]]
+                {:db (dissoc db :fixtures :table)
+                 :navigate-to [:league :id league-id :tab :table]}))
 
 (reg-event-fx :leagues/load
               [debug]
