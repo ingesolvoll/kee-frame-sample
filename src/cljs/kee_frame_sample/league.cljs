@@ -16,7 +16,8 @@
               [debug]
               (fn [_ [_ id]]
                 {:http-xhrio {:method          :get
-                              :uri             (str "http://api.football-data.org/v1/competitions/" id "/fixtures?timeFrame=p7")
+                              :uri             (str "http://api.football-data.org/v1/competitions/" id "/fixtures")
+                              :params          {:timeFrame :p7}
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :on-failure      [:log-error]
                               :response-format (ajax/json-response-format)
@@ -27,6 +28,7 @@
               (fn [_ [_ id]]
                 {:http-xhrio {:method          :get
                               :uri             (str "http://api.football-data.org/v1/competitions/" id "/leagueTable")
+                              ;:params          {:matchday 3}
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :on-failure      [:log-error]
                               :response-format (ajax/json-response-format)
