@@ -17,8 +17,8 @@
 
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
-  :figwheel {:css-dirs ["resources/public/css"]
-             :ring-handler kee-frame-sample.handler/app}
+  :figwheel {:css-dirs     ["resources/public/css"]
+             :ring-handler kee-frame-sample.server/app}
 
   :profiles
   {:dev
@@ -33,7 +33,7 @@
                 :compiler     {:main                 kee-frame-sample.core
                                :output-to            "resources/public/js/compiled/app.js"
                                :output-dir           "resources/public/js/compiled/out"
-                               :asset-path           "js/compiled/out"
+                               :asset-path           "/js/compiled/out"
                                :source-map-timestamp true
                                :preloads             [devtools.preload day8.re-frame-10x.preload]
                                :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true}

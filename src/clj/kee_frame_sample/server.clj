@@ -1,4 +1,4 @@
-(ns kee-frame-sample.handler
+(ns kee-frame-sample.server
   (:require [compojure.core :refer [defroutes GET]]
             [compojure.route :as route]
             [ring.util.response :as response]))

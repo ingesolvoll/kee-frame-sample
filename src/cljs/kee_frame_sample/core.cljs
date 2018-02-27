@@ -14,6 +14,6 @@
 (defn ^:export init []
   (kee-frame/start! ["" {"/"                       :index
                          ["/league/" :id "/" :tab] :league
-                         ["/team/" :href]            :team}])
+                         ["/team/" :href]          :team}])
   (enable-console-print!)
   (mount-root))
