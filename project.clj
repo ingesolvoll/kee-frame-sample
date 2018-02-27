@@ -7,7 +7,10 @@
                  [day8.re-frame/http-fx "0.1.5"]
                  [ring "1.5.1"]
                  [ring/ring-defaults "0.2.1"]
-                 [compojure "1.5.0"]]
+                 [compojure "1.5.0"]
+                 [ring/ring-jetty-adapter "1.4.0"]
+                 [environ "1.0.0"]
+                 [re-interval "0.0.1"]]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
