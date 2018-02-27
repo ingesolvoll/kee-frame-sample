@@ -69,6 +69,8 @@
      [:h1 teamName]
      ]))
 
+(defn live []
+  [:div "Going live..."])
 
 (reg-view :league
           (fn [{:keys [route-params]}]
@@ -91,9 +93,11 @@
               :index [:div "Something something"]
               :league [dispatch-view :league]
               :team [team]
+              :live [live]
               [:div "Loading..."])))
 
 (defn main-panel []
   [:div
    [league-selector]
+   [:a {:href "/live"} "Go live"]
    [dispatch-view :main]])

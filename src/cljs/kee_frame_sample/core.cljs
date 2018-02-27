@@ -5,6 +5,7 @@
             [kee-frame-sample.league]
             [kee-frame-sample.team]
             [kee-frame-sample.leagues]
+            [kee-frame-sample.live]
             [kee-frame-sample.views :as views]))
 
 (defn mount-root []
@@ -13,6 +14,7 @@
 
 (defn ^:export init []
   (kee-frame/start! ["" {"/"                       :index
+                         "/live"                   :live
                          ["/league/" :id "/" :tab] :league
                          ["/team/" :href]          :team}])
   (enable-console-print!)
