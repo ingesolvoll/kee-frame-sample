@@ -18,16 +18,23 @@
 
   :source-paths ["src/clj"]
 
+  :uberjar-name "kee-frame-sample.jar"
+
+  :main kee-frame-sample.server
+
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"]
 
   :figwheel {:css-dirs     ["resources/public/css"]
              :ring-handler kee-frame-sample.server/app}
 
-  :profiles
-  {:dev
-   {:dependencies [[binaryage/devtools "0.9.4"]
-                   [day8.re-frame/re-frame-10x "0.2.0-react16"]]
-    :plugins      [[lein-figwheel "0.5.13"]]}}
+  :profiles {:dev     {:dependencies [[binaryage/devtools "0.9.4"]
+                                      [day8.re-frame/re-frame-10x "0.2.0-react16"]]
+                       :plugins      [[lein-figwheel "0.5.13"]]}
+
+             :uberjar {:prep-tasks  ["compile" ["cljsbuild" "once" "min"]]
+                       :hooks       []
+                       :omit-source true
+                       :aot         :all}}
 
   :cljsbuild {:builds
               [{:id           "dev"
@@ -40,4 +47,10 @@
                                :source-map-timestamp true
                                :preloads             [devtools.preload day8.re-frame-10x.preload]
                                :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true}
-                               :external-config      {:devtools/config {:features-to-install :all}}}}]})
+                               :external-config      {:devtools/config {:features-to-install :all}}}}
+
+               {:id           "min"
+                :source-paths ["src/cljs"]
+                :compiler     {:output-to      "resources/public/js/compiled/app.js"
+                               :optimizations  :advanced
+                               :parallel-build true}}]})
