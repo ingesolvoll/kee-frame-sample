@@ -4,6 +4,8 @@
             [ajax.core :as ajax]
             [kee-frame.core :refer [reg-controller]]))
 
+;; Registers events `:live/start` and `:live/stop` events.
+;; We need to implement `:live/tick` ourselves, it will be called every 1000 ms.
 (register-interval-handlers :live nil 1000)
 
 (reg-controller :live
