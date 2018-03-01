@@ -6,7 +6,7 @@
 
 ;; Registers events `:live/start` and `:live/stop` events.
 ;; We need to implement `:live/tick` ourselves, it will be called every 1000 ms.
-(register-interval-handlers :live nil 1000)
+(register-interval-handlers :live nil 5000)
 
 (reg-controller :live
                 {:params (fn [{:keys [handler]}]
@@ -23,3 +23,10 @@
                               :on-failure      [:log-error]
                               :response-format (ajax/json-response-format)
                               :on-success      [:live/fixtures-loaded]}}))
+
+(reg-event-db :live/fixtures-loaded
+              [debug]
+              (fn [db [_ league]]
+                (assoc db :live-matches league)))
+
+(reg-sub :live-matches (fn [db] (some-> db :live-matches)))
