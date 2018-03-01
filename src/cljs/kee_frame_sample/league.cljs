@@ -3,6 +3,18 @@
             [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
             [ajax.core :as ajax]))
 
+#_(reg-event-chain :league/load
+                   [:fx {:http-xhrio {:method          :get
+                                      :uri             (str "http://api.football-data.org/v1/competitions/" [:event/param 0] "/fixtures")
+                                      :params          {:timeFrame :p7}
+                                      :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
+                                      :on-failure      [:log-error]
+                                      :response-format (ajax/json-response-format)
+                                      :on-success      [:chain/next]}}]
+                   [:fx {:navigate-to "/mordi"
+                         :db          [[:table [:chain/params 0]]
+                                       #(assoc % :dings :boms)]}])
+
 (reg-controller :league
                 {:params (fn [{:keys [handler route-params]}]
                            (when (= handler :league)
