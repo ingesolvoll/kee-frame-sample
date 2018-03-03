@@ -10,8 +10,8 @@
                              route-params))
                  :start  (fn [_ {:keys [id tab]}]
                            (case tab
-                             "table" [:league/load-table-chain-0 id]
-                             "fixtures" [:league/load-fixtures-chain-0 id]))})
+                             "table" [:league/load-table-chain id]
+                             "fixtures" [:league/load-fixtures-chain id]))})
 
 (reg-event-chain :league/load-fixtures-chain
                  [:fx {:http-xhrio {:method          :get
