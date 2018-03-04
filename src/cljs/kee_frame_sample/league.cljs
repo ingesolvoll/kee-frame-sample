@@ -29,7 +29,7 @@
                               ;:params          {:matchday 3}
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :response-format (ajax/json-response-format)}}]
-           [:db [[:table [::k/params 0]]]])
+           [:assoc-in [:table]])
 
 (reg-sub :table (fn [db] (some-> db :table)))
 (reg-sub :fixtures (fn [db] (some-> db :fixtures)))
