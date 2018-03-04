@@ -1,6 +1,5 @@
 (ns kee-frame-sample.views
   (:require [re-frame.core :as re-frame]
-            [kee-frame.core :refer [dispatch-view reg-view]]
             [bidi.bidi :as bidi]
             [kee-frame.state :as state]))
 
@@ -91,32 +90,33 @@
                     (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
             fixtures)]]]))
 
-(reg-view :league
-          (fn [{:keys [route-params]}]
-            (let [{:keys [id tab]} route-params]
-              (when (and id tab)
-                [:div
-                 [:ul.nav
-                  [:li.nav-item
-                   [:a.nav-link.active {:href "table"} "Table"]]
-                  [:li.nav-item
-                   [:a.nav-link {:href (bidi/path-for @state/routes :league :id id :tab :fixtures)} "Latest results"]]]
-                 (case tab
-                   "table" [table id]
-                   "fixtures" [fixtures]
-                   [:div "Loading..."])]))))
+(defn league-dispatch []
+  (let [route (re-frame/subscribe [:route])
+        {:keys [id tab]} (:route-params @route)]
+    (when (and id tab)
+      [:div
+       [:ul.nav
+        [:li.nav-item
+         [:a.nav-link.active {:href "table"} "Table"]]
+        [:li.nav-item
+         [:a.nav-link {:href (bidi/path-for @state/routes :league :id id :tab :fixtures)} "Latest results"]]]
+       (case tab
+         "table" [table id]
+         "fixtures" [fixtures]
+         [:div "Loading..."])])))
 
-(reg-view :main
-          (fn [{:keys [handler]}]
-            (case handler
-              :index [:div "Something something"]
-              :league [dispatch-view :league]
-              :team [team]
-              :live [live]
-              [:div "Loading..."])))
+(defn dispatch-main []
+  (let [route (re-frame/subscribe [:route])]
+    (fn []
+      (case (:handler @route)
+        :index [:div "Something something"]
+        :league league-dispatch
+        :team [team]
+        :live [live]
+        [:div "Loading..."]))))
 
 (defn main-panel []
   [:div
    [league-selector]
    [:a {:href "/live"} "Go live"]
-   [dispatch-view :main]])
+   [dispatch-main]])
