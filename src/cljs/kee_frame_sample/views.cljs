@@ -91,7 +91,7 @@
             fixtures)]]]))
 
 (defn league-dispatch []
-  (let [route (re-frame/subscribe [:route])
+  (let [route (re-frame/subscribe [:kee-frame/route])
         {:keys [id tab]} (:route-params @route)]
     (when (and id tab)
       [:div
@@ -106,7 +106,7 @@
          [:div "Loading..."])])))
 
 (defn dispatch-main []
-  (let [route (re-frame/subscribe [:route])]
+  (let [route (re-frame/subscribe [:kee-frame/route])]
     (fn []
       (case (:handler @route)
         :index [:div "Something something"]
