@@ -1,7 +1,6 @@
 (ns kee-frame-sample.views
   (:require [re-frame.core :as re-frame]
-            [bidi.bidi :as bidi]
-            [kee-frame.state :as state]))
+            [kee-frame.core :as k]))
 
 (defn league-selector []
   [:select.form-control
@@ -97,9 +96,9 @@
       [:div
        [:ul.nav
         [:li.nav-item
-         [:a.nav-link.active {:href "table"} "Table"]]
+         [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "Table"]]
         [:li.nav-item
-         [:a.nav-link {:href (bidi/path-for @state/routes :league :id id :tab :fixtures)} "Latest results"]]]
+         [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "Latest results"]]]
        (case tab
          "table" [table id]
          "fixtures" [fixtures]
