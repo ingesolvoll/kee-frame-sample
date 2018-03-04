@@ -21,8 +21,7 @@
                               :params          {:timeFrame :n1}
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :on-failure      [:log-error]
-                              :response-format (ajax/json-response-format)
-                              :on-success      [::k/next]}}]
+                              :response-format (ajax/json-response-format)}}]
            [:db [[:live-matches [::k/params 0]]]])
 
 

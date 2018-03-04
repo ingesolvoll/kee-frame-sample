@@ -1,5 +1,6 @@
 (ns kee-frame-sample.team
-  (:require [kee-frame.core :refer [reg-controller]]
+  (:require-macros [kee-frame.chain :refer [reg-chain]])
+  (:require [kee-frame.core :refer [reg-controller] :as k]
             [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
             [ajax.core :as ajax]))
 
@@ -9,19 +10,12 @@
                              (:href route-params)))
                  :start  (fn [_ href] [:team/load href])})
 
-(reg-event-fx :team/load
-              [debug]
-              (fn [_ [_ href]]
-                {:http-xhrio {:method          :get
-                              :uri             href
+(reg-chain :team/load
+           [:fx {:http-xhrio {:method          :get
+                              :uri             [::k/params 0]
                               :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                               :on-failure      [:log-error]
-                              :response-format (ajax/json-response-format)
-                              :on-success      [:team/loaded]}}))
-
-(reg-event-db :team/loaded
-              [debug]
-              (fn [db [_ team]]
-                (assoc db :team team)))
+                              :response-format (ajax/json-response-format)}}]
+           [:db [[:team [::k/params 0]]]])
 
 (reg-sub :team :team)
