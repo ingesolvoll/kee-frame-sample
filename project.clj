@@ -3,14 +3,19 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
-                 [kee-frame "0.1.0"]
+                 [kee-frame "0.1.2"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [ring "1.5.1"]
                  [ring/ring-defaults "0.2.1"]
                  [compojure "1.5.0"]
                  [ring/ring-jetty-adapter "1.4.0"]
                  [environ "1.0.0"]
-                 [re-interval "0.0.1"]]
+                 [re-interval "0.0.1"]
+
+                 ;[bidi "2.0.16"]
+                 ;[venantius/accountant "0.1.9"]
+                 ;[org.clojure/core.match "0.3.0-alpha5"]
+                 ]
 
   :plugins [[lein-cljsbuild "1.1.5"]]
 
@@ -45,6 +50,7 @@
                                :output-dir           "resources/public/js/compiled/out"
                                :asset-path           "/js/compiled/out"
                                :source-map-timestamp true
+                               :parallel-build       true
                                :preloads             [devtools.preload day8.re-frame-10x.preload]
                                :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true}
                                :external-config      {:devtools/config {:features-to-install :all}}}}
