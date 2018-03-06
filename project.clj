@@ -11,6 +11,7 @@
                  [ring/ring-jetty-adapter "1.4.0"]
                  [environ "1.0.0"]
                  [re-interval "0.0.1"]
+                 [cljs-react-material-ui "0.2.48"]
 
                  ;[bidi "2.0.16"]
                  ;[venantius/accountant "0.1.9"]

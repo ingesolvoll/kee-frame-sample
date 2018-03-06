@@ -1,21 +1,13 @@
 (ns kee-frame-sample.views
-  (:require [re-frame.core :as re-frame]
-            [kee-frame.core :as k]))
-
-(defn league-selector []
-  [:select.form-control
-   {:on-change (fn [e]
-                 (re-frame/dispatch [:leagues/select (.. e -target -value)])
-                 (set! (.. e -target -value) ""))}
-   [:option {:value ""} "(Select league)"]
-   (map (fn [{:strs [id caption]}]
-          [:option {:key   id
-                    :value id}
-           caption])
-        @(re-frame/subscribe [:leagues]))])
+  (:require [re-frame.core :refer [subscribe dispatch]]
+            [kee-frame.core :as k]
+            [cljs-react-material-ui.icons :as ic]
+            [cljs-react-material-ui.reagent :as ui]
+            [cljs-react-material-ui.core :refer [get-mui-theme color]]
+            [reagent.core :as r]))
 
 (defn fixtures []
-  (if-let [{:strs [fixtures]} @(re-frame/subscribe [:fixtures])]
+  (if-let [{:strs [fixtures]} @(subscribe [:fixtures])]
     [:div
      [:table.table
       [:thead
@@ -37,7 +29,7 @@
             fixtures)]]]))
 
 (defn table []
-  (if-let [{:strs [leagueCaption standing]} @(re-frame/subscribe [:table])]
+  (if-let [{:strs [leagueCaption standing]} @(subscribe [:table])]
     [:div
      [:h1 leagueCaption]
      [:table.table
@@ -62,13 +54,13 @@
 
 
 (defn team []
-  (if-let [{:strs [teamName]} @(re-frame/subscribe [:team])]
+  (if-let [{:strs [teamName]} @(subscribe [:team])]
     [:div
      [:h1 teamName]
      ]))
 
 (defn live []
-  (if-let [{:strs [fixtures]} @(re-frame/subscribe [:live-matches])]
+  (if-let [{:strs [fixtures]} @(subscribe [:live-matches])]
     [:div
      [:table.table
       [:thead
@@ -90,32 +82,22 @@
             fixtures)]]]))
 
 (defn league-dispatch []
-  (let [route (re-frame/subscribe [:kee-frame/route])
+  (let [route (subscribe [:kee-frame/route])
         {:keys [id tab]} (:route-params @route)]
     (when (and id tab)
       [:div
-       [:ul.nav
-        [:li.nav-item
-         [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "Table"]]
-        [:li.nav-item
-         [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "Latest results"]]]
+       (case tab
+         "table" [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "View latest results"]
+         "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "View table"]
+         [:div "..."])
        (case tab
          "table" [table id]
          "fixtures" [fixtures]
          [:div "Loading..."])])))
 
 (defn dispatch-main []
-  (let [route (re-frame/subscribe [:kee-frame/route])]
-    (fn []
-      (case (:handler @route)
-        :index [:div "Something something"]
-        :league league-dispatch
-        :team [team]
-        :live [live]
-        [:div "Loading..."]))))
-
-(defn main-panel []
-  [:div
-   [league-selector]
-   [:a {:href "/live"} "Go live"]
-   [dispatch-main]])
+  (case (:handler @(subscribe [:kee-frame/route]))
+    :league league-dispatch
+    :team [team]
+    :live [live]
+    [:div "Loading..."]))
