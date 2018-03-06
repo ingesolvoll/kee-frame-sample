@@ -32,24 +32,23 @@
   (if-let [{:strs [leagueCaption standing]} @(subscribe [:table])]
     [:div
      [:h1 leagueCaption]
-     [:table.table
-      [:thead
-       [:tr
-        [:td ""]
-        [:td "Team"]
-        [:td "W"]
-        [:td "D"]
-        [:td "L"]
-        [:td "Points"]]]
-      [:tbody
+     [ui/table {}
+      [ui/table-header {:display-select-all false}
+       [ui/table-header-column {:width 10} ""]
+       [ui/table-header-column {:width 150} "Team"]
+       [ui/table-header-column "W"]
+       [ui/table-header-column "D"]
+       [ui/table-header-column "L"]
+       [ui/table-header-column "Points"]]
+      [ui/table-body {:display-row-checkbox false}
        (map (fn [{:strs [teamName points position wins draws losses]}]
-              [:tr {:key teamName}
-               [:td position]
-               [:td teamName]
-               [:td wins]
-               [:td draws]
-               [:td losses]
-               [:td points]])
+              [ui/table-row {:key teamName}
+               [ui/table-row-column {:width 10} position]
+               [ui/table-row-column {:width 150} teamName]
+               [ui/table-row-column wins]
+               [ui/table-row-column draws]
+               [ui/table-row-column losses]
+               [ui/table-row-column points]])
             standing)]]]))
 
 
