@@ -16,7 +16,7 @@
    [:div.logo]
    [ui/menu-item
     {:href (k/path-for :live)}
-    "Today's matches"]
+    "Today's matches (" @(subscribe [:live-match-count]) ")"]
    [ui/divider]
    (map (fn [{:strs [id caption]}]
           ^{:key caption}

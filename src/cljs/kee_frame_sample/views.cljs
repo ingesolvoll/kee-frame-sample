@@ -59,7 +59,7 @@
      ]))
 
 (defn live []
-  (if-let [fixtures @(subscribe [:live-matches])]
+  (if-let [fixtures (seq @(subscribe [:live-matches]))]
     [:div
      [:table.table
       [:thead
@@ -97,7 +97,7 @@
 
 (defn dispatch-main []
   (case (:handler @(subscribe [:kee-frame/route]))
-    :league league-dispatch
+    :league [league-dispatch]
     :team [team]
     :live [live]
     [:div "Loading..."]))

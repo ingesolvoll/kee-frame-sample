@@ -9,13 +9,20 @@
 ;; We need to implement `:live/tick` ourselves, it will be called every 1000 ms.
 (register-interval-handlers :live nil 5000)
 
-(reg-controller :live
+(reg-controller :live-polling
                 {:params (fn [{:keys [handler]}]
                            (when (= handler :live) true))
                  :start  [:live/start]
                  :stop   [:live/stop]})
 
-(reg-chain :live/tick
+(reg-controller :live-startup
+                {:params (constantly true)
+                 :start  [:live/load-matches]})
+
+(reg-event-fx :live/tick
+              (fn [_ _] {:dispatch [:live/load-matches]}))
+
+(reg-chain :live/load-matches
            [:fx {:http-xhrio {:method          :get
                               :uri             "http://api.football-data.org/v1/fixtures"
                               :params          {:timeFrame :n1}
