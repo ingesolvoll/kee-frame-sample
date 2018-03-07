@@ -59,7 +59,7 @@
      ]))
 
 (defn live []
-  (if-let [{:strs [fixtures]} @(subscribe [:live-matches])]
+  (if-let [fixtures @(subscribe [:live-matches])]
     [:div
      [:table.table
       [:thead
@@ -78,7 +78,8 @@
                  [:td goalsHomeTeam " - " goalsAwayTeam
                   (let [{:strs [goalsHomeTeam goalsAwayTeam]} halfTime]
                     (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
-            fixtures)]]]))
+            fixtures)]]]
+    [:div "Loading live matches..."]))
 
 (defn league-dispatch []
   (let [route (subscribe [:kee-frame/route])
