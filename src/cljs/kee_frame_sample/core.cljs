@@ -13,14 +13,18 @@
             [kee-frame-sample.layout :as layout]))
 
 (defn mount-root []
-                  (reagent/render [layout/main-panel]
+  (reagent/render [layout/main-panel]
                   (.getElementById js/document "app")))
 
 (def routes ["" {"/"                       :live
                  ["/league/" :id "/" :tab] :league
                  ["/team/" :href]          :team}])
 
-(def initial-db {:drawer-open? false})
+(def initial-db {:drawer-open? false
+                 :leagues      []
+                 :fixtures     []
+                 :table        []
+                 :live-matches []})
 
 (defn ^:export init []
   (kee-frame/start! routes initial-db)
