@@ -10,8 +10,8 @@
 (defn drawer []
   [ui/drawer
    {:width             250
-    :docked            true
-    :open              true
+    :docked            false
+    :open              @(subscribe [:drawer-open?])
     :on-request-change #(dispatch [:toggle-drawer false])}
    [:div.logo]
    [ui/menu-item
@@ -41,17 +41,19 @@
                    :picker-header-color  (color :cyan500)}}))
 
 (defn app-bar []
-  [ui/app-bar {:style              {:font-family "Broader View"
-                                    :color       :white}
-               :title              (r/as-element [:a.title-link {:href (k/path-for :live)} "Live football"])
-               :icon-element-right (r/as-element
-                                     [:a {:href "settings-todo"}
-                                      [ic/action-settings]])}])
+  [ui/app-bar {:style                         {:font-family "Broader View"
+                                               :color       :white}
+               :title                         (r/as-element [:a.title-link {:href (k/path-for :live)} "Live football"])
+               :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
+               :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])
+               :icon-element-right            (r/as-element
+                                                [:a {:href "settings-todo"}
+                                                 [ic/action-settings]])}])
 
 (defn main-panel []
   [ui/mui-theme-provider
    {:mui-theme (mui-theme)}
-   [:div {:style {:padding-left 250}}
+   [:div {:style {:padding-left 0}}                          ;; (if @(subscribe [:drawer-open?]) 250 0)
     [app-bar "Title" "url here"]
     [drawer]
     [:div.row.around-xs

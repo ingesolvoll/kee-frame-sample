@@ -8,6 +8,8 @@
             [kee-frame-sample.team]
             [kee-frame-sample.leagues]
             [kee-frame-sample.live]
+            [kee-frame-sample.events]
+            [kee-frame-sample.subscriptions]
             [kee-frame-sample.layout :as layout]))
 
 (defn mount-root []
@@ -18,7 +20,7 @@
                  ["/league/" :id "/" :tab] :league
                  ["/team/" :href]          :team}])
 
-(def initial-db {:drawer-open? true})
+(def initial-db {:drawer-open? false})
 
 (defn ^:export init []
   (kee-frame/start! routes initial-db)
