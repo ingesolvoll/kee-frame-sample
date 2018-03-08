@@ -12,21 +12,20 @@
                            [:league/load id])})
 
 (reg-chain :league/load
-           {:db         [[:loading true]]
+           {:db         [[:fixtures nil]
+                         [:table nil]]
             :http-xhrio {:method          :get
-                         :uri             (str "http://api.football-data.org/v1/competitions/" [::k/params 0] "/fixtures")
-                         :on-failure      [:http-error (str "http://api.football-data.org/v1/competitions/" [::k/params 0] "/fixtures")]
-                         :params          {:timeFrame :p7}
-                         :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
-                         :response-format (ajax/json-response-format)}}
-           {:db [[:fixtures [::k/params 1]]]}
-           {:http-xhrio {:method          :get
-                         :on-failure      [:http-error (str "http://api.football-data.org/v1/competitions/" [::k/params 0] "/fixtures")]
                          :uri             (str "http://api.football-data.org/v1/competitions/" [::k/params 0] "/leagueTable")
                          :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
-                         :response-format (ajax/json-response-format)}}
-           {:db [[:table [::k/params 2]]
-                 [:loading false]]})
+                         :response-format (ajax/json-response-format {:keywords? true})}}
 
-(reg-sub :table (fn [db] (some-> db :table)))
-(reg-sub :fixtures (fn [db] (some-> db :fixtures)))
+           {:db [[:table [::k/params 1 :standing]]
+                 [:league-caption [::k/params 1 :leagueCaption]]]}
+
+           {:http-xhrio {:method          :get
+                         :uri             (str "http://api.football-data.org/v1/competitions/" [::k/params 0] "/fixtures")
+                         :params          {:timeFrame :p7}
+                         :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
+                         :response-format (ajax/json-response-format {:keywords? true})}}
+
+           {:db [[:fixtures [::k/params 2 :fixtures]]]})

@@ -7,49 +7,53 @@
             [reagent.core :as r]))
 
 (defn fixtures []
-  (if-let [{:strs [fixtures]} @(subscribe [:fixtures])]
-    [:div
-     [:table.table
-      [:thead
-       [:tr
-        [:td "Date"]
-        [:td "Home"]
-        [:td "Away"]
-        [:td "Result"]]]
-      [:tbody
-       (map (fn [{:strs [homeTeamName awayTeamName date result]}]
-              [:tr {:key (str homeTeamName "-" awayTeamName)}
-               [:td date]
-               [:td homeTeamName]
-               [:td awayTeamName]
-               (let [{:strs [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                 [:td goalsHomeTeam " - " goalsAwayTeam
-                  (let [{:strs [goalsHomeTeam goalsAwayTeam]} halfTime]
-                    (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
-            fixtures)]]]))
+  (let [fixtures @(subscribe [:fixtures])]
+    (cond
+      (nil? fixtures) [:div "Loading..."]
+      (= [] fixtures) [:div "No matches"]
+      (seq fixtures) [:div
+                      [:table.table
+                       [:thead
+                        [:tr
+                         [:td "Date"]
+                         [:td "Home"]
+                         [:td "Away"]
+                         [:td "Result"]]]
+                       [:tbody
+                        (map (fn [{:keys [homeTeamName awayTeamName date result]}]
+                               [:tr {:key (str homeTeamName "-" awayTeamName)}
+                                [:td date]
+                                [:td homeTeamName]
+                                [:td awayTeamName]
+                                (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
+                                  [:td goalsHomeTeam " - " goalsAwayTeam
+                                   (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
+                                     (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
+                             fixtures)]]])))
 
 (defn table []
-  (if-let [{:strs [leagueCaption standing]} @(subscribe [:table])]
-    [:div
-     [:h1 leagueCaption]
-     [ui/table {}
-      [ui/table-header {:display-select-all false}
-       [ui/table-header-column {:width 10} ""]
-       [ui/table-header-column {:width 150} "Team"]
-       [ui/table-header-column "W"]
-       [ui/table-header-column "D"]
-       [ui/table-header-column "L"]
-       [ui/table-header-column "Points"]]
-      [ui/table-body {:display-row-checkbox false}
-       (map (fn [{:strs [teamName points position wins draws losses]}]
-              [ui/table-row {:key teamName}
-               [ui/table-row-column {:width 10} position]
-               [ui/table-row-column {:width 150} teamName]
-               [ui/table-row-column wins]
-               [ui/table-row-column draws]
-               [ui/table-row-column losses]
-               [ui/table-row-column points]])
-            standing)]]]))
+  (let [table @(subscribe [:table])]
+    (if (nil? table)
+      [:div "Loading..."]
+      [:div
+       [ui/table {}
+        [ui/table-header {:display-select-all false}
+         [ui/table-header-column {:width 10} ""]
+         [ui/table-header-column {:width 150} "Team"]
+         [ui/table-header-column "W"]
+         [ui/table-header-column "D"]
+         [ui/table-header-column "L"]
+         [ui/table-header-column "Points"]]
+        [ui/table-body {:display-row-checkbox false}
+         (map (fn [{:keys [teamName points position wins draws losses]}]
+                [ui/table-row {:key teamName}
+                 [ui/table-row-column {:width 10} position]
+                 [ui/table-row-column {:width 150} teamName]
+                 [ui/table-row-column wins]
+                 [ui/table-row-column draws]
+                 [ui/table-row-column losses]
+                 [ui/table-row-column points]])
+              table)]]])))
 
 
 (defn team []
@@ -72,22 +76,24 @@
                          [:td "Away"]
                          [:td "Result"]]]
                        [:tbody
-                        (map (fn [{:strs [homeTeamName awayTeamName date result]}]
+                        (map (fn [{:keys [homeTeamName awayTeamName date result]}]
                                [:tr {:key (str homeTeamName "-" awayTeamName)}
                                 [:td date]
                                 [:td homeTeamName]
                                 [:td awayTeamName]
-                                (let [{:strs [goalsHomeTeam goalsAwayTeam halfTime]} result]
+                                (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
                                   [:td goalsHomeTeam " - " goalsAwayTeam
-                                   (let [{:strs [goalsHomeTeam goalsAwayTeam]} halfTime]
+                                   (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
                                      (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
                              fixtures)]]])))
 
 (defn league-dispatch []
   (let [route (subscribe [:kee-frame/route])
+        league-caption (subscribe [:league-caption])
         {:keys [id tab]} (:route-params @route)]
     (when (and id tab)
       [:div
+       [:h1 @league-caption]
        (case tab
          "table" [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "View latest results"]
          "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "View table"])

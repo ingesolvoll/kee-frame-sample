@@ -20,7 +20,7 @@
                  :start  [:live/load-matches]})
 
 (reg-event-fx :live/tick
-              (fn [_ _] {:dispatch [:live/load-matches]}))
+              (fn [_ _] {:dispatch [:live/load-matches true]}))
 
 (reg-chain :live/load-matches
            {:http-xhrio {:method          :get
@@ -29,4 +29,4 @@
                          :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                          :on-failure      [:log-error]
                          :response-format (ajax/json-response-format)}}
-           {:db [[:live-matches [::k/params 0 #(get % "fixtures")]]]})
+           {:db [[:live-matches [::k/params 1 #(get % "fixtures")]]]})
