@@ -12,13 +12,14 @@
       (nil? fixtures) [:div "Loading..."]
       (= [] fixtures) [:div "No matches"]
       (seq fixtures) [:div
-                      [:table.table
+                      [:table.league-table
                        [:thead
                         [:tr
                          [:td "Date"]
                          [:td "Home"]
                          [:td "Away"]
-                         [:td "Result"]]]
+                         [:td "Result"]
+                         [:td "Half-time"]]]
                        [:tbody
                         (map (fn [{:keys [homeTeamName awayTeamName date result]}]
                                [:tr {:key (str homeTeamName "-" awayTeamName)}
@@ -26,9 +27,9 @@
                                 [:td homeTeamName]
                                 [:td awayTeamName]
                                 (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                                  [:td goalsHomeTeam " - " goalsAwayTeam
-                                   (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
-                                     (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
+                                  [:td goalsHomeTeam " - " goalsAwayTeam])
+                                [:td (let [{:keys [goalsHomeTeam goalsAwayTeam]} (:halfTime result)]
+                                       (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))]])
                              fixtures)]]])))
 
 (defn table []
