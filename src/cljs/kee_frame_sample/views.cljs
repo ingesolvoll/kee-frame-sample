@@ -59,27 +59,29 @@
      ]))
 
 (defn live []
-  (if-let [fixtures (seq @(subscribe [:live-matches]))]
-    [:div
-     [:table.table
-      [:thead
-       [:tr
-        [:td "Date"]
-        [:td "Home"]
-        [:td "Away"]
-        [:td "Result"]]]
-      [:tbody
-       (map (fn [{:strs [homeTeamName awayTeamName date result]}]
-              [:tr {:key (str homeTeamName "-" awayTeamName)}
-               [:td date]
-               [:td homeTeamName]
-               [:td awayTeamName]
-               (let [{:strs [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                 [:td goalsHomeTeam " - " goalsAwayTeam
-                  (let [{:strs [goalsHomeTeam goalsAwayTeam]} halfTime]
-                    (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
-            fixtures)]]]
-    [:div "Loading live matches..."]))
+  (let [fixtures @(subscribe [:live-matches])]
+    (cond
+      (nil? fixtures) [:div "Loading live matches..."]
+      (= [] fixtures) [:div "No matches today"]
+      (seq fixtures) [:div
+                      [:table.table
+                       [:thead
+                        [:tr
+                         [:td "Date"]
+                         [:td "Home"]
+                         [:td "Away"]
+                         [:td "Result"]]]
+                       [:tbody
+                        (map (fn [{:strs [homeTeamName awayTeamName date result]}]
+                               [:tr {:key (str homeTeamName "-" awayTeamName)}
+                                [:td date]
+                                [:td homeTeamName]
+                                [:td awayTeamName]
+                                (let [{:strs [goalsHomeTeam goalsAwayTeam halfTime]} result]
+                                  [:td goalsHomeTeam " - " goalsAwayTeam
+                                   (let [{:strs [goalsHomeTeam goalsAwayTeam]} halfTime]
+                                     (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
+                             fixtures)]]])))
 
 (defn league-dispatch []
   (let [route (subscribe [:kee-frame/route])

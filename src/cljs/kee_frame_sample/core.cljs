@@ -21,10 +21,10 @@
                  ["/team/" :href]          :team}])
 
 (def initial-db {:drawer-open? false
-                 :leagues      []
-                 :fixtures     []
-                 :table        []
-                 :live-matches []})
+                 :leagues      nil
+                 :fixtures     nil
+                 :table        nil
+                 :live-matches nil})
 
 (defn ^:export init []
   (kee-frame/start! routes initial-db)
