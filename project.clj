@@ -3,7 +3,7 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
-                 [kee-frame "0.1.2"]
+                 [kee-frame "0.1.3"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [ring "1.5.1"]
                  [ring/ring-defaults "0.2.1"]
@@ -12,6 +12,7 @@
                  [environ "1.0.0"]
                  [re-interval "0.0.1"]
                  [cljs-react-material-ui "0.2.48"]
+                 [com.andrewmcveigh/cljs-time "0.5.2"]
 
                  ;[bidi "2.0.16"]
                  ;[venantius/accountant "0.1.9"]
