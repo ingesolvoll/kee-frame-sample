@@ -19,8 +19,7 @@
 (defn process-fixtures [fixtures]
   (->> fixtures
        :fixtures
-       (map #(update % :date format-date))
-       ))
+       (map #(update % :date format-date))))
 
 (reg-chain :league/load
            {:db         [[:fixtures nil]
