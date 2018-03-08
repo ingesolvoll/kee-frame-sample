@@ -5,7 +5,8 @@
             [ajax.core :as ajax]
             [kee-frame.core :refer [reg-controller] :as k]
             [cljs-time.core :as time]
-            [cljs-time.format :as tf]))
+            [cljs-time.format :as tf]
+            [kee-frame-sample.format :as format]))
 
 (register-interval-handlers :live nil 5000)
 
@@ -22,14 +23,10 @@
 (reg-event-fx :live/tick
               (fn [_ _] {:dispatch [:live/load-matches true]}))
 
-(defn format-date [d]
-  (tf/unparse (tf/formatter "dd.MM HH.mm") (time/to-default-time-zone (js/Date. d))))
-
 (defn process-fixtures [fixtures]
   (->> fixtures
        :fixtures
-       (map #(update % :date format-date))))
-
+       (map #(update % :date format/format-date))))
 
 (reg-chain :live/load-matches
            {:http-xhrio {:method          :get

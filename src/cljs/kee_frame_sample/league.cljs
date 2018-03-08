@@ -3,8 +3,8 @@
   (:require [kee-frame.core :refer [reg-controller] :as k]
             [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
             [ajax.core :as ajax]
-            [cljs-time.format :as tf]
-            [cljs-time.core :as time]))
+
+            [kee-frame-sample.format :as format]))
 
 (reg-controller :league
                 {:params (fn [{:keys [handler route-params]}]
@@ -13,13 +13,10 @@
                  :start  (fn [_ id]
                            [:league/load id])})
 
-(defn format-date [d]
-  (tf/unparse (tf/formatter "dd.MM HH.mm") (time/to-default-time-zone (js/Date. d))))
-
 (defn process-fixtures [fixtures]
   (->> fixtures
        :fixtures
-       (map #(update % :date format-date))))
+       (map #(update % :date format/format-date))))
 
 (reg-chain :league/load
            {:db         [[:fixtures nil]
