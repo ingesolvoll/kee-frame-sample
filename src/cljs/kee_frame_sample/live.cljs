@@ -5,8 +5,6 @@
             [ajax.core :as ajax]
             [kee-frame.core :refer [reg-controller] :as k]))
 
-;; Registers events `:live/start` and `:live/stop` events.
-;; We need to implement `:live/tick` ourselves, it will be called every 1000 ms.
 (register-interval-handlers :live nil 5000)
 
 (reg-controller :live-polling
@@ -28,5 +26,5 @@
                          :params          {:timeFrame :n1}
                          :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                          :on-failure      [:log-error]
-                         :response-format (ajax/json-response-format)}}
-           {:db [[:live-matches [::k/params 1 #(get % "fixtures")]]]})
+                         :response-format (ajax/json-response-format {:keywords? true})}}
+           {:db [[:live-matches [::k/params 1 :fixtures]]]})
