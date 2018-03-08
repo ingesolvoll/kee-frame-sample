@@ -8,5 +8,6 @@
                 (assoc db :drawer-open? flag)))
 
 (reg-controller :hide-drawer-on-navigate
+                ;; Will make the controller restart on every route change
                 {:params identity
-                 :start [:toggle-drawer false]})
+                 :start  [:toggle-drawer false]})
