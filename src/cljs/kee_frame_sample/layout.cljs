@@ -57,5 +57,5 @@
     [app-bar "Title" "url here"]
     [drawer]
     [:div.row.around-xs
-     [ui/paper {:class "col-xs-11 col-md-7 col-lg-7 mar-top-20"}
+     [ui/paper {:class "col-xs-11 col-md-7 col-lg-7 mar-top-20 pad-top-10"}
       [views/dispatch-main]]]]])

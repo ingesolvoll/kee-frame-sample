@@ -36,28 +36,29 @@
     (if (nil? table)
       [:div "Loading..."]
       [:div
-       [ui/table {}
-        [ui/table-header {:display-select-all false}
-         [ui/table-header-column {:width 10} ""]
-         [ui/table-header-column {:width 150} "Team"]
-         [ui/table-header-column "W"]
-         [ui/table-header-column "D"]
-         [ui/table-header-column "L"]
-         [ui/table-header-column "Points"]]
-        [ui/table-body {:display-row-checkbox false}
+       [:table.league-table
+        [:thead
+         [:tr.league-table-row
+          [:td.textright "#"]
+          [:td "Team"]
+          [:td.textright "W"]
+          [:td.textright "D"]
+          [:td.textright "L"]
+          [:td.textright "Points"]]]
+        [:tbody
          (map (fn [{:keys [teamName points position wins draws losses]}]
-                [ui/table-row {:key teamName}
-                 [ui/table-row-column {:width 10} position]
-                 [ui/table-row-column {:width 150} teamName]
-                 [ui/table-row-column wins]
-                 [ui/table-row-column draws]
-                 [ui/table-row-column losses]
-                 [ui/table-row-column points]])
+                [:tr.league-table-row {:key teamName}
+                 [:td.textright [:strong position]]
+                 [:td teamName]
+                 [:td.textright wins]
+                 [:td.textright draws]
+                 [:td.textright losses]
+                 [:td.textright points]])
               table)]]])))
 
 
 (defn team []
-  (if-let [{:strs [teamName]} @(subscribe [:team])]
+  (if-let [{:keys [teamName]} @(subscribe [:team])]
     [:div
      [:h1 teamName]
      ]))
@@ -93,10 +94,11 @@
         {:keys [id tab]} (:route-params @route)]
     (when (and id tab)
       [:div
-       [:h1 @league-caption]
-       (case tab
-         "table" [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "View latest results"]
-         "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "View table"])
+       [:strong {:style {:font-size "25px"}} @league-caption]
+       [:div {:style {:float :right}}
+        (case tab
+          "table" [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "Latest results"]
+          "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "Table"])]
        (case tab
          "table" [table id]
          "fixtures" [fixtures])])))

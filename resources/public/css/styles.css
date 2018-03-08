@@ -388,3 +388,20 @@ input::-moz-focus-inner {
     color: white;
     text-decoration: none;
 }
+
+.textright {
+    text-align: right;
+}
+
+.league-table-row td {
+    padding: 4px 5px 4px 0;
+}
+
+.league-table {
+    margin-top: 10px;
+    width: 100%
+}
+
+.league-table thead tr {
+    font-weight: bold;
+}
