@@ -3,7 +3,9 @@
   (:require [re-interval.core :refer [register-interval-handlers]]
             [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
             [ajax.core :as ajax]
-            [kee-frame.core :refer [reg-controller] :as k]))
+            [kee-frame.core :refer [reg-controller] :as k]
+            [cljs-time.core :as time]
+            [cljs-time.format :as tf]))
 
 (register-interval-handlers :live nil 5000)
 
@@ -20,6 +22,15 @@
 (reg-event-fx :live/tick
               (fn [_ _] {:dispatch [:live/load-matches true]}))
 
+(defn format-date [d]
+  (tf/unparse (tf/formatter "dd.MM HH.mm") (time/to-default-time-zone (js/Date. d))))
+
+(defn process-fixtures [fixtures]
+  (->> fixtures
+       :fixtures
+       (map #(update % :date format-date))))
+
+
 (reg-chain :live/load-matches
            {:http-xhrio {:method          :get
                          :uri             "http://api.football-data.org/v1/fixtures"
@@ -27,4 +38,4 @@
                          :headers         {"X-Auth-Token" "974c0523d8964af590d3bb9d72b45d0a"}
                          :on-failure      [:log-error]
                          :response-format (ajax/json-response-format {:keywords? true})}}
-           {:db [[:live-matches [::k/params 1 :fixtures]]]})
+           {:db [[:live-matches [::k/params 1 process-fixtures]]]})
