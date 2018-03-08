@@ -90,12 +90,10 @@
       [:div
        (case tab
          "table" [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "View latest results"]
-         "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "View table"]
-         [:div "..."])
+         "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "View table"])
        (case tab
          "table" [table id]
-         "fixtures" [fixtures]
-         [:div "Loading..."])])))
+         "fixtures" [fixtures])])))
 
 (defn dispatch-main []
   (case (:handler @(subscribe [:kee-frame/route]))
