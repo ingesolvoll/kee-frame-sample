@@ -27,6 +27,7 @@
                  :live-matches nil})
 
 (defn ^:export init []
-  (kee-frame/start! routes initial-db)
+  (kee-frame/start! {:routes     routes
+                     :initial-db initial-db})
   (enable-console-print!)
   (mount-root))
