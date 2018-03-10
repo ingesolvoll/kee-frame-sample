@@ -42,15 +42,17 @@
          [:tr.league-table-row
           [:td.textright "#"]
           [:td "Team"]
+          [:td.textright "M"]
           [:td.textright "W"]
           [:td.textright "D"]
           [:td.textright "L"]
           [:td.textright "Points"]]]
         [:tbody
-         (map (fn [{:keys [teamName points position wins draws losses]}]
+         (map (fn [{:keys [teamName points position wins draws losses playedGames]}]
                 [:tr.league-table-row {:key teamName}
                  [:td.textright [:strong position]]
                  [:td teamName]
+                 [:td.textright playedGames]
                  [:td.textright wins]
                  [:td.textright draws]
                  [:td.textright losses]
