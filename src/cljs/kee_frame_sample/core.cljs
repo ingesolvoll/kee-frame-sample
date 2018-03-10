@@ -12,6 +12,8 @@
             [kee-frame-sample.subscriptions]
             [kee-frame-sample.layout :as layout]))
 
+(enable-console-print!)
+
 (defn mount-root []
   (reagent/render [layout/main-panel]
                   (.getElementById js/document "app")))
@@ -29,5 +31,4 @@
 (defn ^:export init []
   (kee-frame/start! {:routes     routes
                      :initial-db initial-db})
-  (enable-console-print!)
   (mount-root))
