@@ -7,3 +7,5 @@
 (reg-sub :league-caption :league-caption)
 (reg-sub :table :table)
 (reg-sub :fixtures :fixtures)
+(reg-sub :leagues :leagues)
+(reg-sub :team :team)
