@@ -11,6 +11,7 @@
               (fn [_ [_ league-id]]
                 {:navigate-to [:league :id league-id :tab :table]}))
 
+;; ONly show the most interesting ones, with compatible data
 (def whitelist #{445 446 449 450 452 455 456})
 
 (reg-chain :leagues/load
