@@ -72,6 +72,10 @@
       (nil? fixtures) [:div.progress-container [ui/linear-progress]]
       (= [] fixtures) [:div "No matches today"]
       (seq fixtures) [:div
+                      [:div {:style {:text-align :right}}
+                       [:input {:type     :checkbox
+                                :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]
+                       "Show only ongoing matches"]
                       (->> fixtures
                            (map (fn [[league-name league-fixtures]]
                                   (when league-name
@@ -80,7 +84,7 @@
                                      [:h1.live-league-header league-name]
                                      [:table.live-table
                                       [:tbody
-                                       (map (fn [{:keys [homeTeamName awayTeamName date result]}]
+                                       (map (fn [{:keys [homeTeamName awayTeamName date result status]}]
                                               [:tr {:key (str homeTeamName "-" awayTeamName)}
                                                [:td.live-date date]
                                                [:td.live-team-name homeTeamName]
@@ -88,7 +92,11 @@
                                                (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
                                                  [:td goalsHomeTeam " - " goalsAwayTeam
                                                   (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
-                                                    (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
+                                                    (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])
+                                               [:td (case status
+                                                      "FINISHED" [ic/action-done]
+                                                      "IN_PLAY" [ic/action-cached]
+                                                      "TIMED" [:div])]])
                                             league-fixtures)]]]))))])))
 
 (defn league-dispatch []

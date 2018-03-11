@@ -26,7 +26,8 @@
                  :leagues      nil
                  :fixtures     nil
                  :table        nil
-                 :live-matches nil})
+                 :live-matches nil
+                 :ongoing-only? false})
 
 (defn ^:export init []
   (kee-frame/start! {:routes     routes

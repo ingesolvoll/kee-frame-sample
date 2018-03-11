@@ -17,19 +17,24 @@
        first
        :caption))
 
+(defn ongoing-filterer [ongoing-only? {:keys [status]}]
+  (or (not ongoing-only?)
+      (= status "IN_PLAY")))
+
+(defn assoc-league-name [leagues match]
+  (assoc match :league-name (-> match
+                                :_links
+                                :competition
+                                :href
+                                (str/split #"/")
+                                last
+                                (find-league-name leagues))))
+
 (reg-sub :live-matches
          (fn [db _]
            (->> db
                 :live-matches
                 (map #(update % :date format/format-time))
-                (map (fn [match]
-                       (let [league-name (-> match
-                                             :_links
-                                             :competition
-                                             :href
-                                             (str/split #"/")
-                                             last
-                                             (find-league-name (:leagues db))
-                                             )]
-                         (assoc match :league-name league-name))))
+                (map (partial assoc-league-name (:leagues db)))
+                (filter (partial ongoing-filterer (:ongoing-only? db)))
                 (group-by :league-name))))

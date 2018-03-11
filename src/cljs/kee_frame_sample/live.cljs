@@ -27,3 +27,7 @@
                                                  {:params {:timeFrame :n1}})})
            (fn [{:keys [db]} [_ _ {:keys [fixtures]}]]
              {:db (assoc db :live-matches fixtures)}))
+
+(reg-event-db :live/toggle-ongoing
+              (fn [db [_ flag]]
+                (assoc db :ongoing-only? flag)))
