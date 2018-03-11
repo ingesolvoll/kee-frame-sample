@@ -76,20 +76,24 @@
                        [:thead
                         [:tr
                          [:td "Date"]
+                         [:td "League"]
                          [:td "Home"]
                          [:td "Away"]
                          [:td "Result"]]]
                        [:tbody
-                        (map (fn [{:keys [homeTeamName awayTeamName date result]}]
-                               [:tr {:key (str homeTeamName "-" awayTeamName)}
-                                [:td date]
-                                [:td homeTeamName]
-                                [:td awayTeamName]
-                                (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                                  [:td goalsHomeTeam " - " goalsAwayTeam
-                                   (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
-                                     (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
-                             fixtures)]]])))
+                        (->> fixtures
+                             (mapcat (fn [[league-id league-fixtures]]
+                                    (map (fn [{:keys [homeTeamName awayTeamName date result]}]
+                                           [:tr {:key (str homeTeamName "-" awayTeamName)}
+                                            [:td date]
+                                            [:td league-id]
+                                            [:td homeTeamName]
+                                            [:td awayTeamName]
+                                            (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
+                                              [:td goalsHomeTeam " - " goalsAwayTeam
+                                               (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
+                                                 (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])])
+                                         league-fixtures))))]]])))
 
 (defn league-dispatch []
   (let [route (subscribe [:kee-frame/route])
