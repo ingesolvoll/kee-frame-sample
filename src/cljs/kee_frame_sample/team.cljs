@@ -10,7 +10,7 @@
 
 (reg-chain :team/load
 
-           (fn [_ [_ uri]] {:http-xhrio (util/http-get uri)})
+           (fn [_ [uri]] {:http-xhrio (util/http-get uri)})
 
-           (fn [{:keys [db]} [_ _ team]]
+           (fn [{:keys [db]} [_ team]]
              {:db (assoc db :team team)}))

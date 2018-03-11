@@ -21,9 +21,9 @@
 (reg-chain :live/load-matches
            (fn [_ _] {:http-xhrio (util/http-get "http://api.football-data.org/v1/fixtures"
                                                  {:params {:timeFrame :n1}})})
-           (fn [{:keys [db]} [_ _ {:keys [fixtures]}]]
+           (fn [{:keys [db]} [_ {:keys [fixtures]}]]
              {:db (assoc db :live-matches fixtures)}))
 
 (reg-event-db :live/toggle-ongoing
-              (fn [db [_ flag]]
+              (fn [db [flag]]
                 (assoc db :ongoing-only? flag)))
