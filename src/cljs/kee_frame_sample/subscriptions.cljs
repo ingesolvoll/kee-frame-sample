@@ -32,9 +32,9 @@
 
 (reg-sub :live-matches
          (fn [db _]
-           (->> db
-                :live-matches
-                (map #(update % :date format/format-time))
-                (map (partial assoc-league-name (:leagues db)))
-                (filter (partial ongoing-filterer (:ongoing-only? db)))
-                (group-by :league-name))))
+           (some->> db
+                    :live-matches
+                    (map #(update % :date format/format-time))
+                    (map (partial assoc-league-name (:leagues db)))
+                    (filter (partial ongoing-filterer (:ongoing-only? db)))
+                    (group-by :league-name))))
