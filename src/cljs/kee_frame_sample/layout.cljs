@@ -45,10 +45,7 @@
                                                :color       :white}
                :title                         (r/as-element [:a.title-link {:href (k/path-for :live)} "Live football"])
                :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
-               :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])
-               :icon-element-right            (r/as-element
-                                                [:a {:href "settings-todo"}
-                                                 [ic/action-settings]])}])
+               :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}])
 
 (defn main-panel []
   [ui/mui-theme-provider
