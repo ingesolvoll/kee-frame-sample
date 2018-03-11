@@ -405,3 +405,7 @@ input::-moz-focus-inner {
 .league-table thead tr {
     font-weight: bold;
 }
+
+.progress-container {
+    padding: 30px;
+}

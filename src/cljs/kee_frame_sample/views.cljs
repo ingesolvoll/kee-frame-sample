@@ -9,7 +9,7 @@
 (defn fixtures []
   (let [fixtures @(subscribe [:fixtures])]
     (cond
-      (nil? fixtures) [:div "Loading..."]
+      (nil? fixtures) [:div.progress-container [ui/linear-progress]]
       (= [] fixtures) [:div "No matches"]
       (seq fixtures) [:div
                       [:table.league-table
@@ -35,7 +35,7 @@
 (defn table []
   (let [table @(subscribe [:table])]
     (if (nil? table)
-      [:div "Loading..."]
+      [:div.progress-container [ui/linear-progress]]
       [:div
        [:table.league-table
         [:thead
@@ -69,7 +69,7 @@
 (defn live []
   (let [fixtures @(subscribe [:live-matches])]
     (cond
-      (nil? fixtures) [:div "Loading live matches..."]
+      (nil? fixtures) [:div.progress-container [ui/linear-progress]]
       (= [] fixtures) [:div "No matches today"]
       (seq fixtures) [:div
                       [:table.table
