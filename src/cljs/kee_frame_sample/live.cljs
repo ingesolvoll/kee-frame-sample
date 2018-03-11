@@ -6,7 +6,7 @@
             [kee-frame-sample.format :as format]
             [kee-frame-sample.util :as util]))
 
-(register-interval-handlers :live nil 5000)
+(register-interval-handlers :live nil 10000)
 
 (reg-controller :live-polling
                 {:params (fn [{:keys [handler]}]
