@@ -409,3 +409,20 @@ input::-moz-focus-inner {
 .progress-container {
     padding: 30px;
 }
+
+.live-league-header {
+    margin-top: 10px;
+    margin-bottom: 3px;
+}
+
+.live-date {
+    width: 60px
+}
+
+.live-team-name {
+    width: 100px;
+}
+
+.live-table {
+    font-size: .800em;
+}

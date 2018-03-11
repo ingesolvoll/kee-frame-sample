@@ -22,12 +22,8 @@
 (reg-event-fx :live/tick
               (fn [_ _] {:dispatch [:live/load-matches true]}))
 
-(def league-id (comp last #(str/split % #"/") :href :competition :_links))
-
 (reg-chain :live/load-matches
            (fn [_ _] {:http-xhrio (util/http-get "http://api.football-data.org/v1/fixtures"
                                                  {:params {:timeFrame :n1}})})
            (fn [{:keys [db]} [_ _ {:keys [fixtures]}]]
-             {:db (assoc db :live-matches (->> fixtures
-                                               (map #(update % :date format/format-time))
-                                               (group-by league-id)))}))
+             {:db (assoc db :live-matches fixtures)}))
