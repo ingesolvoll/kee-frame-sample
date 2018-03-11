@@ -423,6 +423,7 @@ input::-moz-focus-inner {
     width: 100px;
 }
 
-.live-table {
+
+body {
     font-size: .800em;
 }
