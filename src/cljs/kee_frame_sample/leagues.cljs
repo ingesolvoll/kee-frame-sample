@@ -1,6 +1,5 @@
 (ns kee-frame-sample.leagues
-  (:require [kee-frame.core :refer [reg-controller reg-chain]]
-            [re-frame.core :refer [reg-event-fx reg-fx reg-event-db reg-sub debug]]
+  (:require [kee-frame.core :refer [reg-controller reg-chain reg-event-fx reg-event-db]]
             [kee-frame-sample.util :as util]))
 
 (reg-controller :leagues

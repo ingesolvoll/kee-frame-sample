@@ -1,11 +1,7 @@
 (ns kee-frame-sample.live
   (:require [re-interval.core :refer [register-interval-handlers]]
-            [re-frame.core :refer [reg-event-fx reg-event-db reg-sub debug]]
-            [ajax.core :as ajax]
-            [kee-frame.core :refer [reg-controller reg-chain]]
-            [kee-frame-sample.format :as format]
-            [kee-frame-sample.util :as util]
-            [clojure.string :as str]))
+            [kee-frame.core :refer [reg-controller reg-chain reg-event-fx reg-event-db]]
+            [kee-frame-sample.util :as util]))
 
 (register-interval-handlers :live nil 10000)
 

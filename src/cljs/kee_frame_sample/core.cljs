@@ -1,7 +1,6 @@
 (ns kee-frame-sample.core
   (:require [cljsjs.material-ui]
             [reagent.core :as reagent]
-            [re-frame.core :refer [reg-sub]]
             [day8.re-frame.http-fx]
             [kee-frame.core :as kee-frame]
             [kee-frame-sample.league]

@@ -3,8 +3,7 @@
             [kee-frame.core :as k]
             [cljs-react-material-ui.icons :as ic]
             [cljs-react-material-ui.reagent :as ui]
-            [cljs-react-material-ui.core :refer [get-mui-theme color]]
-            [reagent.core :as r]))
+            [cljs-react-material-ui.core :refer [get-mui-theme color]]))
 
 (defn fixtures []
   (let [fixtures @(subscribe [:fixtures])]
