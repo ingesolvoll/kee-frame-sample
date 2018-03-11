@@ -10,7 +10,8 @@
             [kee-frame-sample.live]
             [kee-frame-sample.events]
             [kee-frame-sample.subscriptions]
-            [kee-frame-sample.layout :as layout]))
+            [kee-frame-sample.layout :as layout]
+            [cljs.spec.alpha :as s]))
 
 (enable-console-print!)
 
@@ -22,14 +23,19 @@
                  ["/league/" :id "/" :tab] :league
                  ["/team/" :href]          :team}])
 
-(def initial-db {:drawer-open? false
-                 :leagues      nil
-                 :fixtures     nil
-                 :table        nil
-                 :live-matches nil
+(def initial-db {:drawer-open?  false
+                 :leagues       nil
+                 :fixtures      nil
+                 :table         nil
+                 :live-matches  nil
                  :ongoing-only? false})
 
+(s/def ::league (s/keys :req-un [::caption ::id]))
+(s/def ::leagues (s/coll-of ::league))
+(s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
+
 (defn ^:export init []
-  (kee-frame/start! {:routes     routes
-                     :initial-db initial-db})
+  (kee-frame/start! {:routes      routes
+                     :initial-db  initial-db
+                     :app-db-spec ::db-spec})
   (mount-root))
