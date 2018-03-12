@@ -6,6 +6,8 @@
 
 (def base-url "http://localhost:3333")
 
+(def pause 5)
+
 (def ^:dynamic *driver*)
 
 (use-fixtures :each
@@ -25,11 +27,30 @@
 (defn navigate-to-league [driver league-id]
   (doto driver
     (click {:css "div#app-bar > button"})
-    (wait 2)
+    (wait pause)
     (click-href (str "/league/" league-id "/table"))
-    (wait 2)))
+    (wait pause)))
 
-(deftest hohei
+(defn verify-visible [driver visible? q]
+  (is (= visible? (et/visible? driver q))))
+
+(deftest integration-test
+
+  (testing "Hides sidebar on navigation"
+    (doto *driver*
+      (goto "/")
+      (click {:css "div#app-bar > button"})
+      (click-href "/league/445/table")
+      (verify-visible false "//a[@href='/league/445/table']")))
+
+  (testing "Showing only major leagues"
+    (doto *driver*
+      (goto "/")
+      (click {:css "div#app-bar > button"})
+      (wait pause)
+      (verify-element-text {:tag :a :href "/league/445/table"} "Premier League 2017/18")
+      (verify-element-text {:tag :a :href "/league/455/table"} "Primera Division 2017")))
+
   (testing "Can load live page"
     (doto *driver*
       (goto "/")
@@ -59,8 +80,8 @@
       (navigate-to-league 456)
       (verify-text "Juventus")
       (et/back)
-      (wait 2)
+      (wait pause)
       (verify-text "Barcelona")
       (et/back)
-      (wait 2)
+      (wait pause)
       (verify-text "Manchester United"))))
