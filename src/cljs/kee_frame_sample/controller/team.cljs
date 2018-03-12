@@ -1,4 +1,4 @@
-(ns kee-frame-sample.team
+(ns kee-frame-sample.controller.team
   (:require [kee-frame.core :refer [reg-controller reg-chain]]
             [kee-frame-sample.util :as util]))
 

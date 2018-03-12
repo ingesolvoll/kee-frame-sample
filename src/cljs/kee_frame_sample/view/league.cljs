@@ -1,9 +1,7 @@
-(ns kee-frame-sample.views
+(ns kee-frame-sample.view.league
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
-            [cljs-react-material-ui.icons :as ic]
-            [cljs-react-material-ui.reagent :as ui]
-            [cljs-react-material-ui.core :refer [get-mui-theme color]]))
+            [cljs-react-material-ui.reagent :as ui]))
 
 (defn fixtures []
   (let [fixtures @(subscribe [:fixtures])]
@@ -59,49 +57,6 @@
               table)]]])))
 
 
-(defn team []
-  (if-let [{:keys [teamName]} @(subscribe [:team])]
-    [:div
-     [:h1 teamName]
-     ]))
-
-(defn live-fixtures [fixtures]
-  [:div
-   (->> fixtures
-        (map (fn [[league-name league-fixtures]]
-               (when league-name
-                 ^{:key (str "live-league-" league-name)}
-                 [:div
-                  [:h1.live-league-header league-name]
-                  [:table.live-table
-                   [:tbody
-                    (map (fn [{:keys [homeTeamName awayTeamName date result status]}]
-                           [:tr {:key (str homeTeamName "-" awayTeamName)}
-                            [:td.live-date date]
-                            [:td.live-team-name homeTeamName]
-                            [:td.live-team-name awayTeamName]
-                            (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                              [:td goalsHomeTeam " - " goalsAwayTeam
-                               (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
-                                 (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])
-                            [:td (case status
-                                   "FINISHED" [ic/action-done]
-                                   "IN_PLAY" [ic/action-cached]
-                                   "TIMED" [:div])]])
-                         league-fixtures)]]]))))])
-
-(defn live []
-  (let [fixtures @(subscribe [:live-matches])]
-    [:div
-     [:div {:style {:text-align :right}}
-      [:input {:type      :checkbox
-               :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]
-      "Show only ongoing matches"]
-     (cond
-       (nil? fixtures) [:div.progress-container [ui/linear-progress]]
-       (= [] fixtures) [:div "No matches today"]
-       (seq fixtures) [live-fixtures fixtures])]))
-
 (defn league-dispatch []
   (let [route (subscribe [:kee-frame/route])
         league-caption (subscribe [:league-caption])
@@ -116,10 +71,3 @@
        (case tab
          "table" [table id]
          "fixtures" [fixtures])])))
-
-(defn dispatch-main []
-  (case (:handler @(subscribe [:kee-frame/route]))
-    :league [league-dispatch]
-    :team [team]
-    :live [live]
-    [:div "Loading..."]))

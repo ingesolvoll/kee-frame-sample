@@ -1,4 +1,4 @@
-(ns kee-frame-sample.live
+(ns kee-frame-sample.controller.live
   (:require [re-interval.core :refer [register-interval-handlers]]
             [kee-frame.core :refer [reg-controller reg-chain reg-event-fx reg-event-db]]
             [kee-frame-sample.util :as util]))

@@ -3,8 +3,7 @@
             [kee-frame.core :as k]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
-            [reagent.core :as r]
-            [kee-frame-sample.views :as views]))
+            [reagent.core :as r]))
 
 (defn drawer []
   [ui/drawer
@@ -47,12 +46,12 @@
                :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
                :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}])
 
-(defn main-panel []
+(defn main-panel [main]
   [ui/mui-theme-provider
    {:mui-theme (mui-theme)}
    [:div {:style {:padding-left 0}}                         ;; (if @(subscribe [:drawer-open?]) 250 0)
-    [app-bar "Title" "url here"]
+    [app-bar]
     [drawer]
     [:div.row.around-xs
      [ui/paper {:class "col-xs-11 col-md-7 col-lg-7 mar-top-20 pad-top-10"}
-      [views/dispatch-main]]]]])
+      main]]]])

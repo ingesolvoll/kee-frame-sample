@@ -2,20 +2,31 @@
   (:require [cljsjs.material-ui]
             [reagent.core :as reagent]
             [day8.re-frame.http-fx]
+            [re-frame.core :refer [subscribe]]
             [kee-frame.core :as kee-frame]
-            [kee-frame-sample.league]
-            [kee-frame-sample.team]
-            [kee-frame-sample.leagues]
-            [kee-frame-sample.live]
-            [kee-frame-sample.events]
+            [kee-frame-sample.controller.league]
+            [kee-frame-sample.controller.team]
+            [kee-frame-sample.controller.leagues]
+            [kee-frame-sample.controller.live]
+            [kee-frame-sample.controller.common]
             [kee-frame-sample.subscriptions]
             [kee-frame-sample.layout :as layout]
-            [cljs.spec.alpha :as s]))
+            [cljs.spec.alpha :as s]
+            [kee-frame-sample.view.live :as live]
+            [kee-frame-sample.view.team :as team]
+            [kee-frame-sample.view.league :as league]))
 
 (enable-console-print!)
 
+(defn dispatch-main []
+  (case (:handler @(subscribe [:kee-frame/route]))
+    :league [league/league-dispatch]
+    :team [team/team]
+    :live [live/live]
+    [:div "Loading..."]))
+
 (defn mount-root []
-  (reagent/render [layout/main-panel]
+  (reagent/render [layout/main-panel [dispatch-main]]
                   (.getElementById js/document "app")))
 
 (def routes ["" {"/"                       :live

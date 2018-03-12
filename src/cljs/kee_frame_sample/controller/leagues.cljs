@@ -1,4 +1,4 @@
-(ns kee-frame-sample.leagues
+(ns kee-frame-sample.controller.leagues
   (:require [kee-frame.core :refer [reg-controller reg-chain reg-event-fx reg-event-db]]
             [kee-frame-sample.util :as util]))
 

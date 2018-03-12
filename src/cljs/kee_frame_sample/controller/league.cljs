@@ -1,4 +1,4 @@
-(ns kee-frame-sample.league
+(ns kee-frame-sample.controller.league
   (:require [kee-frame.core :refer [reg-controller reg-chain]]
             [kee-frame-sample.util :as util]
             [kee-frame-sample.format :as format]))

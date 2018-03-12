@@ -1,4 +1,4 @@
-(ns kee-frame-sample.events
+(ns kee-frame-sample.controller.common
   (:require [kee-frame.core :refer [reg-controller reg-event-fx reg-event-db]]))
 
 (reg-event-db :toggle-drawer
