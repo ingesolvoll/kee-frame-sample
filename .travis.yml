@@ -1,6 +1,6 @@
 language: clojure
 
-script: lein with-profile test test
+script: lein integration-test
 
 cache:
   directories:
