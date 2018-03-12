@@ -40,7 +40,8 @@
                    :picker-header-color  (color :cyan500)}}))
 
 (defn app-bar []
-  [ui/app-bar {:style                         {:font-family "Broader View"
+  [ui/app-bar {:id                            :app-bar
+               :style                         {:font-family "Broader View"
                                                :color       :white}
                :title                         (r/as-element [:a.title-link {:href (k/path-for :live)} "Live football"])
                :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
@@ -49,7 +50,7 @@
 (defn main-panel []
   [ui/mui-theme-provider
    {:mui-theme (mui-theme)}
-   [:div {:style {:padding-left 0}}                          ;; (if @(subscribe [:drawer-open?]) 250 0)
+   [:div {:style {:padding-left 0}}                         ;; (if @(subscribe [:drawer-open?]) 250 0)
     [app-bar "Title" "url here"]
     [drawer]
     [:div.row.around-xs
