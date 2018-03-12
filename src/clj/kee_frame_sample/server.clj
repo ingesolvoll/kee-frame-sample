@@ -11,7 +11,7 @@
                            (response/content-type "text/html"))))
 
 (defn run-server [port]
-  (let [port (Integer. (or port 5000))]
+  (let [port (Integer. (or port (env :port) 5000))]
     (jetty/run-jetty #'app {:port port :join? false})))
 
 (defn -main [& [port]]
