@@ -23,7 +23,17 @@
   (et/go driver (str base-url "/#" url)))
 
 (deftest hohei
-  (testing "Can load index page"
+  (testing "Can load live page"
     (doto *driver*
       (goto "/")
-      (verify-text "Show only ongoing matches"))))
+      (verify-text "Show only ongoing matches")))
+  (testing "Can go to specific league"
+    (doto *driver*
+      (goto "/")
+      (click {:css "div#app-bar > button"})
+      (wait 2)
+      (click-href "/league/445/table")
+      (wait 2)
+      (verify-text "Manchester United")
+      (verify-text "Manchester City")
+      (verify-text "Arsenal"))))
