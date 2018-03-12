@@ -10,6 +10,9 @@
            (GET "*" [] (-> (response/resource-response "index.html" {:root "public"})
                            (response/content-type "text/html"))))
 
-(defn -main [& [port]]
-  (let [port (Integer. (or port (env :port) 5000))]
+(defn run-server [port]
+  (let [port (Integer. (or port 5000))]
     (jetty/run-jetty #'app {:port port :join? false})))
+
+(defn -main [& [port]]
+  (run-server port))

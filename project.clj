@@ -3,7 +3,7 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
-                 [kee-frame "0.1.3"]
+                 [kee-frame "0.1.4-SNAPSHOT"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [ring "1.5.1"]
                  [ring/ring-defaults "0.2.1"]
@@ -25,6 +25,8 @@
 
   :source-paths ["src/clj"]
 
+  :test-paths ["test"]
+
   :uberjar-name "kee-frame-sample.jar"
 
   :main kee-frame-sample.server
@@ -34,7 +36,12 @@
   :figwheel {:css-dirs     ["resources/public/css"]
              :ring-handler kee-frame-sample.server/app}
 
-  :profiles {:dev     {:dependencies [[binaryage/devtools "0.9.4"]
+  :profiles {:test    {:dependencies [[etaoin "0.2.2"]]
+                       :plugins      [[com.jakemccrary/lein-test-refresh "0.22.0"]]
+                       :test-refresh {:refresh-dirs ["src/clj" "test"]}}
+
+             :dev     {:dependencies [[binaryage/devtools "0.9.4"]
+                                      [etaoin "0.2.2"]
                                       [day8.re-frame/re-frame-10x "0.2.0-react16"]]
                        :plugins      [[lein-figwheel "0.5.13"]]}
 
