@@ -22,18 +22,45 @@
 (defn goto [driver url]
   (et/go driver (str base-url "/#" url)))
 
+(defn navigate-to-league [driver league-id]
+  (doto driver
+    (click {:css "div#app-bar > button"})
+    (wait 2)
+    (click-href (str "/league/" league-id "/table"))
+    (wait 2)))
+
 (deftest hohei
   (testing "Can load live page"
     (doto *driver*
       (goto "/")
       (verify-text "Show only ongoing matches")))
-  (testing "Can go to specific league"
+  (testing "Can go to specific league table"
     (doto *driver*
       (goto "/")
-      (click {:css "div#app-bar > button"})
-      (wait 2)
-      (click-href "/league/445/table")
-      (wait 2)
+      (navigate-to-league 445)
+      (verify-text "Premier League")
       (verify-text "Manchester United")
       (verify-text "Manchester City")
-      (verify-text "Arsenal"))))
+      (verify-text "Arsenal")))
+  (testing "Can view most recent fixtures for a league"
+    (doto *driver*
+      (goto "/")
+      (navigate-to-league 445)
+      (click-href "/league/445/fixtures")
+      (verify-text "Date")
+      (verify-text "Home")
+      (verify-text "Away")))
+
+  (testing "Will load data correctly when using back button"
+    (doto *driver*
+      (goto "/")
+      (navigate-to-league 445)
+      (navigate-to-league 455)
+      (navigate-to-league 456)
+      (verify-text "Juventus")
+      (et/back)
+      (wait 2)
+      (verify-text "Barcelona")
+      (et/back)
+      (wait 2)
+      (verify-text "Manchester United"))))
