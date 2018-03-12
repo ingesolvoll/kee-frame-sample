@@ -55,6 +55,7 @@
     (doto *driver*
       (goto "/")
       (verify-text "Show only ongoing matches")))
+
   (testing "Can go to specific league table"
     (doto *driver*
       (goto "/")
@@ -63,6 +64,7 @@
       (verify-text "Manchester United")
       (verify-text "Manchester City")
       (verify-text "Arsenal")))
+
   (testing "Can view most recent fixtures for a league"
     (doto *driver*
       (goto "/")
