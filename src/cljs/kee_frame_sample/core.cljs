@@ -14,7 +14,10 @@
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
             [kee-frame-sample.view.team :as team]
-            [kee-frame-sample.view.league :as league]))
+            [kee-frame-sample.view.league :as league]
+            [cljs.spec.test.alpha :as stest]))
+
+(stest/instrument)
 
 (enable-console-print!)
 
