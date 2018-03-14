@@ -25,7 +25,7 @@
                             [:td (case status
                                    "FINISHED" [ic/action-done]
                                    "IN_PLAY" [ic/action-cached]
-                                   "TIMED" [:div])]])
+                                   [:div])]])
                          league-fixtures)]]]))))])
 
 (defn live []
