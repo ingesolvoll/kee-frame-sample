@@ -1,6 +1,5 @@
 (ns kee-frame-sample.core
   (:require [cljsjs.material-ui]
-            [reagent.core :as reagent]
             [day8.re-frame.http-fx]
             [re-frame.core :refer [subscribe]]
             [kee-frame.core :as kee-frame]
@@ -14,10 +13,7 @@
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
             [kee-frame-sample.view.team :as team]
-            [kee-frame-sample.view.league :as league]
-            [cljs.spec.test.alpha :as stest]))
-
-(stest/instrument)
+            [kee-frame-sample.view.league :as league]))
 
 (enable-console-print!)
 
@@ -27,10 +23,6 @@
     :team [team/team]
     :live [live/live]
     [:div "Loading..."]))
-
-(defn mount-root []
-  (reagent/render [layout/main-panel [dispatch-main]]
-                  (.getElementById js/document "app")))
 
 (def routes ["" {"/"                       :live
                  ["/league/" :id "/" :tab] :league
@@ -48,8 +40,8 @@
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
 (defn ^:export init []
-  (kee-frame/start! {:debug?      true
-                     :routes      routes
-                     :initial-db  initial-db
-                     :app-db-spec ::db-spec})
-  (mount-root))
+  (kee-frame/start! {:debug?         true
+                     :routes         routes
+                     :initial-db     initial-db
+                     :root-component [layout/main-panel [dispatch-main]]
+                     :app-db-spec    ::db-spec}))
