@@ -17,6 +17,8 @@
 
 (enable-console-print!)
 
+(goog-define debug false)
+
 (defn dispatch-main []
   (case (:handler @(subscribe [:kee-frame/route]))
     :league [league/league-dispatch]
@@ -40,7 +42,7 @@
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
 (defn ^:export init []
-  (kee-frame/start! {:debug?         true
+  (kee-frame/start! {:debug?         debug
                      :routes         routes
                      :initial-db     initial-db
                      :root-component [layout/main-panel [dispatch-main]]

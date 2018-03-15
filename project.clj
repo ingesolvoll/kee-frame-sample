@@ -62,7 +62,8 @@
                                :source-map-timestamp true
                                :parallel-build       true
                                :preloads             [devtools.preload day8.re-frame-10x.preload]
-                               :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true}
+                               :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true
+                                                      kee-frame-sample.core/debug           false}
                                :external-config      {:devtools/config {:features-to-install :all}}}}
 
                {:id           "min"
