@@ -37,5 +37,5 @@
       "Show only ongoing matches"]
      (cond
        (nil? fixtures) [:div.progress-container [ui/linear-progress]]
-       (= [] fixtures) [:div "No matches today"]
+       (= {} fixtures) [:h1 "No matches today"]
        (seq fixtures) [live-fixtures fixtures])]))
