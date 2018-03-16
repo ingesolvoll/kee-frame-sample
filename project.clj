@@ -54,7 +54,7 @@
   :cljsbuild {:builds
               [{:id           "dev"
                 :source-paths ["src/cljs"]
-                :figwheel     {:on-jsload "kee_frame_sample.core/mount-root"}
+                :figwheel     {:on-jsload "kee_frame_sample.core/init"}
                 :compiler     {:main                 kee-frame-sample.core
                                :output-to            "resources/public/js/compiled/app.js"
                                :output-dir           "resources/public/js/compiled/out"
