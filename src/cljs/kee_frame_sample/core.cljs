@@ -22,7 +22,7 @@
 (enable-console-print!)
 
 (goog-define debug false)
-(goog-define use-framework false)
+(goog-define use-framework true)
 
 (defn dispatch-main []
   (case (:handler @(subscribe [:kee-frame/route]))
