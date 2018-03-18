@@ -40,7 +40,9 @@
     (doto *driver*
       (goto "/")
       (click {:css "div#app-bar > button"})
+      (wait pause)
       (click-href "/league/445/table")
+      (wait 1)
       (verify-visible false "//a[@href='/league/445/table']")))
 
   (testing "Showing only major leagues"
