@@ -54,7 +54,7 @@
   :cljsbuild {:builds
               [{:id           "dev"
                 :source-paths ["src/cljs"]
-                :figwheel     {:on-jsload "kee_frame_sample.core/init"}
+                :figwheel     true
                 :compiler     {:main                 kee-frame-sample.core
                                :output-to            "resources/public/js/compiled/app.js"
                                :output-dir           "resources/public/js/compiled/out"
@@ -70,5 +70,13 @@
                 :source-paths ["src/cljs"]
                 :compiler     {:output-to      "resources/public/js/compiled/app.js"
                                :optimizations  :advanced
-                               :parallel-build true}}]}
+                               :parallel-build true}}
+
+               {:id           "min-manual"
+                :source-paths ["src/cljs"]
+                :compiler     {:output-to       "resources/public/js/compiled/app.js"
+                               :output-dir      "resources/public/js/compiled/out-manual"
+                               :optimizations   :advanced
+                               :parallel-build  true
+                               :closure-defines {kee-frame-sample.core/use-framework false}}}]}
   :aliases {"integration-test" ["with-profile" "test" "do" ["cljsbuild" "once" "min"] ["test"]]})
