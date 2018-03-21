@@ -3,7 +3,7 @@
                  [org.clojure/clojurescript "1.9.946"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
-                 [kee-frame "0.1.7-SNAPSHOT"]
+                 [kee-frame "0.1.8-SNAPSHOT"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [ring "1.5.1"]
                  [ring/ring-defaults "0.2.1"]
