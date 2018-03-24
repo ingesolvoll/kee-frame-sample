@@ -70,13 +70,5 @@
                 :source-paths ["src/cljs"]
                 :compiler     {:output-to      "resources/public/js/compiled/app.js"
                                :optimizations  :advanced
-                               :parallel-build true}}
-
-               {:id           "min-manual"
-                :source-paths ["src/cljs"]
-                :compiler     {:output-to       "resources/public/js/compiled/app.js"
-                               :output-dir      "resources/public/js/compiled/out-manual"
-                               :optimizations   :advanced
-                               :parallel-build  true
-                               :closure-defines {kee-frame-sample.core/use-framework false}}}]}
+                               :parallel-build true}}]}
   :aliases {"integration-test" ["with-profile" "test" "do" ["cljsbuild" "once" "min"] ["test"]]})
