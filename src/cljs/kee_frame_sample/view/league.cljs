@@ -58,16 +58,15 @@
 
 
 (defn league-dispatch []
-  (let [route (subscribe [:kee-frame/route])
-        league-caption (subscribe [:league-caption])
-        {:keys [id tab]} (:route-params @route)]
-    (when (and id tab)
-      [:div
-       [:strong {:style {:font-size "25px"}} @league-caption]
-       [:div {:style {:float :right}}
-        (case tab
-          "table" [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "Latest results"]
-          "fixtures" [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "Table"])]
-       (case tab
-         "table" [table id]
-         "fixtures" [fixtures])])))
+  (let [league-caption (subscribe [:league-caption])]
+    [:div
+     [:strong {:style {:font-size "25px"}} @league-caption]
+     [:div {:style {:float :right}}
+      [k/switch-route #(-> % :route-params :tab)
+       "table" (fn [{{id :id} :route-params}]
+                 [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "Latest results"])
+       "fixtures" (fn [{{id :id} :route-params}]
+                    [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "Table"])]]
+     [k/switch-route #(-> % :route-params :tab)
+      "table" [table]
+      "fixtures" [fixtures]]]))

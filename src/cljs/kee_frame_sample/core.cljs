@@ -2,7 +2,7 @@
   (:require [cljsjs.material-ui]
             [day8.re-frame.http-fx]
             [re-frame.core :refer [subscribe]]
-            [kee-frame.core :as kee-frame]
+            [kee-frame.core :as k]
             [kee-frame-sample.controller.league]
             [kee-frame-sample.controller.team]
             [kee-frame-sample.controller.leagues]
@@ -20,11 +20,11 @@
 (goog-define debug false)
 
 (defn dispatch-main []
-  (case (:handler @(subscribe [:kee-frame/route]))
-    :league [league/league-dispatch]
-    :team [team/team]
-    :live [live/live]
-    [:div "Loading..."]))
+  [k/switch-route :handler
+   :league [league/league-dispatch]
+   :team [team/team]
+   :live [live/live]
+   nil [:div "Loading..."]])
 
 (def routes ["" {"/"                       :live
                  ["/league/" :id "/" :tab] :league
@@ -41,8 +41,8 @@
 (s/def ::leagues (s/nilable (s/coll-of ::league)))
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
-(kee-frame/start! {:debug?         debug
-                   :routes         routes
-                   :initial-db     initial-db
-                   :root-component [layout/main-panel [dispatch-main]]
-                   :app-db-spec    ::db-spec})
+(k/start! {:debug?         debug
+           :routes         routes
+           :initial-db     initial-db
+           :root-component [layout/main-panel [dispatch-main]]
+           :app-db-spec    ::db-spec})
