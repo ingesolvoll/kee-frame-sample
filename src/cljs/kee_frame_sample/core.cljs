@@ -24,8 +24,7 @@
    nil [:div "Loading..."]])
 
 (def routes ["" {"/"                       :live
-                 ["/league/" :id "/" :tab] :league
-                 ["/team/" :href]          :team}])
+                 ["/league/" :id "/" :tab] :league}])
 
 (def initial-db {:drawer-open?  false
                  :leagues       nil
