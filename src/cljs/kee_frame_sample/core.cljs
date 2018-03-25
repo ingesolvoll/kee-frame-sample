@@ -4,7 +4,6 @@
             [re-frame.core :refer [subscribe]]
             [kee-frame.core :as k]
             [kee-frame-sample.controller.league]
-            [kee-frame-sample.controller.team]
             [kee-frame-sample.controller.leagues]
             [kee-frame-sample.controller.live]
             [kee-frame-sample.controller.common]
@@ -12,7 +11,6 @@
             [kee-frame-sample.layout :as layout]
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
-            [kee-frame-sample.view.team :as team]
             [kee-frame-sample.view.league :as league]))
 
 (enable-console-print!)
@@ -22,7 +20,6 @@
 (defn dispatch-main []
   [k/switch-route :handler
    :league [league/league-dispatch]
-   :team [team/team]
    :live [live/live]
    nil [:div "Loading..."]])
 

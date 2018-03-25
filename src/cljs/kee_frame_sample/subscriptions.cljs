@@ -9,7 +9,6 @@
 (reg-sub :table :table)
 (reg-sub :fixtures :fixtures)
 (reg-sub :leagues :leagues)
-(reg-sub :team :team)
 
 (defn find-league-name [id-str leagues]
   (->> leagues
