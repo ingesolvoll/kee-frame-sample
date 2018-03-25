@@ -37,4 +37,6 @@
                     (map #(update % :date format/format-time))
                     (map (partial assoc-league-name (:leagues db)))
                     (filter (partial ongoing-filterer (:ongoing-only? db)))
-                    (group-by :league-name))))
+                    (group-by :league-name)
+                    (filter (comp identity first))
+                    (into {}))))
