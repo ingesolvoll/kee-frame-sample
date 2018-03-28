@@ -1,6 +1,6 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0"]
-                 [org.clojure/clojurescript "1.10.217"]
+                 [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
                  [kee-frame "0.1.8-SNAPSHOT"]
@@ -43,7 +43,9 @@
 
              :dev     {:dependencies [[binaryage/devtools "0.9.4"]
                                       [etaoin "0.2.2"]
-                                      [day8.re-frame/re-frame-10x "0.2.0-react16"]]
+                                      [day8.re-frame/re-frame-10x "0.3.0-1-react16"]
+                                      ;[day8.re-frame/tracing "0.5.0"]
+                                      ]
                        :plugins      [[lein-figwheel "0.5.13"]]}
 
              :uberjar {:prep-tasks  ["compile" ["cljsbuild" "once" "min"]]
@@ -61,14 +63,17 @@
                                :asset-path           "/js/compiled/out"
                                :source-map-timestamp true
                                :parallel-build       true
+                               :aot-cache            true
                                :preloads             [devtools.preload day8.re-frame-10x.preload]
                                :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true
+                                                      ;"day8.re_frame.tracing.trace_enabled_QMARK_" true
                                                       kee-frame-sample.core/debug           true}
                                :external-config      {:devtools/config {:features-to-install :all}}}}
 
                {:id           "min"
                 :source-paths ["src/cljs"]
                 :compiler     {:output-to      "resources/public/js/compiled/app.js"
+                               :aot-cache      true
                                :optimizations  :advanced
                                :parallel-build true}}]}
   :aliases {"integration-test" ["with-profile" "test" "do" ["cljsbuild" "once" "min"] ["test"]]})
