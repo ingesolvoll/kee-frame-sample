@@ -67,7 +67,7 @@
       (verify-text "Manchester City")
       (verify-text "Arsenal")))
 
-  (testing "Can view most recent fixtures for a league"
+  #_(testing "Can view most recent fixtures for a league"
     (doto *driver*
       (goto "/")
       (navigate-to-league 445)
