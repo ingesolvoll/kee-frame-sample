@@ -1,7 +1,6 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.238"]
-                 [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
                  [kee-frame "0.1.8-SNAPSHOT"]
                  [day8.re-frame/http-fx "0.1.5"]
@@ -13,14 +12,9 @@
                  [re-interval "0.0.1"]
                  [cljs-react-material-ui "0.2.48"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
-                 [org.clojure/test.check "0.10.0-alpha2"]
+                 [org.clojure/test.check "0.10.0-alpha2"]]
 
-                 ;[bidi "2.0.16"]
-                 ;[venantius/accountant "0.1.9"]
-                 ;[org.clojure/core.match "0.3.0-alpha5"]
-                 ]
-
-  :plugins [[lein-cljsbuild "1.1.5"]]
+  :plugins [[lein-cljsbuild "1.1.7"]]
 
   :min-lein-version "2.5.3"
 
@@ -46,7 +40,7 @@
                                       [day8.re-frame/re-frame-10x "0.3.0-1-react16"]
                                       ;[day8.re-frame/tracing "0.5.0"]
                                       ]
-                       :plugins      [[lein-figwheel "0.5.13"]]}
+                       :plugins      [[lein-figwheel "0.5.15"]]}
 
              :uberjar {:prep-tasks  ["compile" ["cljsbuild" "once" "min"]]
                        :hooks       []
@@ -63,7 +57,6 @@
                                :asset-path           "/js/compiled/out"
                                :source-map-timestamp true
                                :parallel-build       true
-                               :aot-cache            true
                                :preloads             [devtools.preload day8.re-frame-10x.preload]
                                :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true
                                                       ;"day8.re_frame.tracing.trace_enabled_QMARK_" true
