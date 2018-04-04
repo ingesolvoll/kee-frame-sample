@@ -8,6 +8,7 @@
             [kee-frame-sample.controller.live]
             [kee-frame-sample.controller.common]
             [kee-frame-sample.subscriptions]
+            [kee-frame-sample.routers :as routers]
             [kee-frame-sample.layout :as layout]
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
@@ -42,3 +43,12 @@
            :initial-db     initial-db
            :root-component [layout/main-panel [dispatch-main]]
            :app-db-spec    ::db-spec})
+
+;;;;;;;; OR WITH A CUSTOM ROUTER
+
+(comment
+  (k/start! {:debug?         debug
+             :router         (routers/->ReititRouter routers/reitit-routes)
+             :initial-db     initial-db
+             :root-component [layout/main-panel [dispatch-main]]
+             :app-db-spec    ::db-spec}))

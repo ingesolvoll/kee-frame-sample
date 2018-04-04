@@ -13,13 +13,13 @@
     :on-request-change #(dispatch [:toggle-drawer false])}
    [:div.logo]
    [ui/menu-item
-    {:href (k/path-for :live)}
+    {:href (k/path-for [:live])}
     "Today's matches (" @(subscribe [:live-match-count]) ")"]
    [ui/divider]
    (map (fn [{:keys [id caption]}]
           ^{:key caption}
           [ui/menu-item
-           {:href (k/path-for :league :id id :tab :table)}
+           {:href (k/path-for [:league :id id :tab :table])}
            caption])
         @(subscribe [:leagues]))])
 
@@ -42,7 +42,7 @@
   [ui/app-bar {:id                            :app-bar
                :style                         {:font-family "Broader View"
                                                :color       :white}
-               :title                         (r/as-element [:a.title-link {:href (k/path-for :live)} "Live football"])
+               :title                         (r/as-element [:a.title-link {:href (k/path-for [:live])} "Live football"])
                :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
                :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}])
 

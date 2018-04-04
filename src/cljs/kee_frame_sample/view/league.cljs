@@ -64,9 +64,9 @@
      [:div {:style {:float :right}}
       [k/switch-route #(-> % :route-params :tab)
        "table" (fn [{{id :id} :route-params}]
-                 [:a.nav-link {:href (k/path-for :league :id id :tab :fixtures)} "Latest results"])
+                 [:a.nav-link {:href (k/path-for [:league :id id :tab :fixtures])} "Latest results"])
        "fixtures" (fn [{{id :id} :route-params}]
-                    [:a.nav-link.active {:href (k/path-for :league :id id :tab :table)} "Table"])]]
+                    [:a.nav-link.active {:href (k/path-for [:league :id id :tab :table])} "Table"])]]
      [k/switch-route #(-> % :route-params :tab)
       "table" [table]
       "fixtures" [fixtures]]]))
