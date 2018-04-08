@@ -6,10 +6,6 @@
                 {:params (constantly true)
                  :start  [:leagues/load]})
 
-(reg-event-fx :leagues/select
-              (fn [_ [league-id]]
-                {:navigate-to [:league :id league-id :tab :table]}))
-
 ;; Only show the most interesting ones, with compatible data
 (def whitelist #{445 446 449 450 452 455 456})
 
