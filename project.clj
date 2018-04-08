@@ -1,7 +1,7 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.238"]
-                 [reagent "0.7.0"]
+                 [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
                  [kee-frame "0.2.0-SNAPSHOT"]
                  [funcool/bide "1.6.0"]
@@ -41,7 +41,7 @@
 
              :dev     {:dependencies [[binaryage/devtools "0.9.4"]
                                       [etaoin "0.2.2"]
-                                      [day8.re-frame/re-frame-10x "0.3.0-1-react16"]]
+                                      [day8.re-frame/re-frame-10x "0.3.1-react16"]]
                        :plugins      [[lein-figwheel "0.5.13"]]}
 
              :uberjar {:prep-tasks  ["compile" ["cljsbuild" "once" "min"]]
