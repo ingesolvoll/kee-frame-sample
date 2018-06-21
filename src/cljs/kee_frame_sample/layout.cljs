@@ -3,13 +3,15 @@
             [kee-frame.core :as k]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [breaking-point.core :as bp]))
 
 (defn drawer []
   [ui/drawer
    {:width             250
-    :docked            false
-    :open              @(subscribe [:drawer-open?])
+    :docked            @(subscribe [::bp/large-monitor?])
+    :open              (or @(subscribe [:drawer-open?])
+                           @(subscribe [::bp/large-monitor?]))
     :on-request-change #(dispatch [:toggle-drawer false])}
    [:div.logo]
    [ui/menu-item
