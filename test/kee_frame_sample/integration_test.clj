@@ -28,7 +28,7 @@
   (doto driver
     (click {:css "div#app-bar > button"})
     (wait pause)
-    (click-href (str "#/league/" league-id "/table"))
+    (click-href (str "/#/league/" league-id "/table"))
     (wait pause)))
 
 (defn verify-visible [driver visible? q]
@@ -41,7 +41,7 @@
       (goto "/")
       (click {:css "div#app-bar > button"})
       (wait pause)
-      (click-href "#/league/445/table")
+      (click-href "/#/league/445/table")
       (wait 1)
       (verify-visible false "//a[@href='/league/445/table']")))
 
@@ -50,8 +50,8 @@
       (goto "/")
       (click {:css "div#app-bar > button"})
       (wait pause)
-      (verify-element-text {:tag :a :href "/league/445/table"} "Premier League 2017/18")
-      (verify-element-text {:tag :a :href "/league/455/table"} "Primera Division 2017")))
+      (verify-element-text {:tag :a :href "/#/league/445/table"} "Premier League 2017/18")
+      (verify-element-text {:tag :a :href "/#/league/455/table"} "Primera Division 2017")))
 
   (testing "Can load live page"
     (doto *driver*
