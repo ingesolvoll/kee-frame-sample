@@ -1,6 +1,5 @@
 (ns kee-frame-sample.core
   (:require [cljsjs.material-ui]
-            [day8.re-frame.http-fx]
             [re-frame.core :refer [subscribe]]
             [kee-frame.core :as k]
             [kee-frame-sample.controller.league]
