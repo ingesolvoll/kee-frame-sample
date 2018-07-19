@@ -40,6 +40,7 @@
 
 (k/start! {:debug?         debug
            :routes         routes
+           :hash-routing?  true
            :initial-db     initial-db
            :root-component [layout/main-panel [dispatch-main]]
            :app-db-spec    ::db-spec})
