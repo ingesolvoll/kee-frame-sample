@@ -38,6 +38,7 @@
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
 (k/start! {:debug?         debug
+           :screen         true
            :routes         routes
            :hash-routing?  true
            :initial-db     initial-db
