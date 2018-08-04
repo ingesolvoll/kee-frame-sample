@@ -3,7 +3,7 @@
                  [org.clojure/clojurescript "1.10.238"]
                  [reagent "0.8.0-alpha2"]
                  [re-frame "0.10.5"]
-                 [kee-frame "0.2.7-SNAPSHOT"]
+                 [kee-frame "0.2.8-SNAPSHOT"]
                  [funcool/bide "1.6.0"]
                  [keechma/router "0.1.1"]
                  [metosin/reitit-core "0.1.0"]
