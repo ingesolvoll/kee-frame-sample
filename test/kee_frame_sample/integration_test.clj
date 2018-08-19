@@ -41,17 +41,17 @@
       (goto "/")
       (click {:css "div#app-bar > button"})
       (wait pause)
-      (click-href "/#/league/445/table")
+      (click-href "/#/league/2021/table")
       (wait 1)
-      (verify-visible false "//a[@href='/league/445/table']")))
+      (verify-visible false "//a[@href='/league/2021/table']")))
 
   (testing "Showing only major leagues"
     (doto *driver*
       (goto "/")
       (click {:css "div#app-bar > button"})
       (wait pause)
-      (verify-element-text {:tag :a :href "/#/league/445/table"} "Premier League 2017/18")
-      (verify-element-text {:tag :a :href "/#/league/455/table"} "Primera Division 2017")))
+      (verify-element-text {:tag :a :href "/#/league/2021/table"} "Premier League")
+      (verify-element-text {:tag :a :href "/#/league/2014/table"} "Primera Division")))
 
   (testing "Can load live page"
     (doto *driver*
@@ -61,7 +61,7 @@
   (testing "Can go to specific league table"
     (doto *driver*
       (goto "/")
-      (navigate-to-league 445)
+      (navigate-to-league 2021)
       (verify-text "Premier League")
       (verify-text "Manchester United")
       (verify-text "Manchester City")
@@ -70,8 +70,8 @@
   #_(testing "Can view most recent fixtures for a league"
     (doto *driver*
       (goto "/")
-      (navigate-to-league 445)
-      (click-href "/league/445/fixtures")
+      (navigate-to-league 2021)
+      (click-href "/league/2021/fixtures")
       (verify-text "Date")
       (verify-text "Home")
       (verify-text "Away")))
@@ -79,9 +79,9 @@
   (testing "Will load data correctly when using back button"
     (doto *driver*
       (goto "/")
-      (navigate-to-league 445)
-      (navigate-to-league 455)
-      (navigate-to-league 456)
+      (navigate-to-league 2021)
+      (navigate-to-league 2014)
+      (navigate-to-league 2019)
       (verify-text "Juventus")
       (et/back)
       (wait pause)
