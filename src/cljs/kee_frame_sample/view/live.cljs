@@ -6,22 +6,21 @@
 (defn live-fixtures [fixtures]
   [:div
    (->> fixtures
-        (map (fn [[league-name league-fixtures]]
-               (when league-name
-                 ^{:key (str "live-league-" league-name)}
+        (map (fn [[competition league-fixtures]]
+               (when competition
+                 ^{:key (str "live-league-" (:id competition))}
                  [:div
-                  [:h1.live-league-header league-name]
+                  [:h1.live-league-header (:name competition)]
                   [:table.live-table
                    [:tbody
-                    (map (fn [{:keys [homeTeamName awayTeamName date result status]}]
-                           [:tr {:key (str homeTeamName "-" awayTeamName)}
-                            [:td.live-date date]
-                            [:td.live-team-name homeTeamName]
-                            [:td.live-team-name awayTeamName]
-                            (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                              [:td goalsHomeTeam " - " goalsAwayTeam
-                               (let [{:keys [goalsHomeTeam goalsAwayTeam]} halfTime]
-                                 (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))])
+                    (map (fn [{:keys [homeTeam awayTeam utcDate score status]}]
+                           [:tr {:key (str (:name homeTeam) "-" (:name awayTeam))}
+                            [:td.live-date utcDate]
+                            [:td (:name homeTeam)]
+                            [:td (:name awayTeam)]
+                            (let [{:keys [fullTime halfTime]} score]
+                              [:td (:homeTeam fullTime) " - " (:awayTeam fullTime)]
+                              [:td " (" (:homeTeam halfTime) " - " (:awayTeam halfTime) ")"])
                             [:td (case status
                                    "FINISHED" [ic/action-done]
                                    "IN_PLAY" [ic/action-cached]

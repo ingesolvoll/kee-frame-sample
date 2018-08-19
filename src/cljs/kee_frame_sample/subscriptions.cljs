@@ -5,7 +5,7 @@
 
 (reg-sub :drawer-open? :drawer-open?)
 (reg-sub :live-match-count (fn [db] (-> db :live-matches count)))
-(reg-sub :league-caption :league-caption)
+(reg-sub :league-name :league-name)
 (reg-sub :table :table)
 (reg-sub :fixtures :fixtures)
 (reg-sub :leagues :leagues)
@@ -14,7 +14,7 @@
   (->> leagues
        (filter #(= id-str (str (:id %))))
        first
-       :caption))
+       :name))
 
 (defn ongoing-filterer [ongoing-only? {:keys [status]}]
   (or (not ongoing-only?)
@@ -33,9 +33,8 @@
          (fn [db _]
            (some->> db
                     :live-matches
-                    (map #(update % :date format/format-time))
-                    (map (partial assoc-league-name (:leagues db)))
+                    (map #(update % :utcDate format/format-time))
                     (filter (partial ongoing-filterer (:ongoing-only? db)))
-                    (group-by :league-name)
+                    (group-by :competition)
                     (filter (comp identity first))
                     (into {}))))

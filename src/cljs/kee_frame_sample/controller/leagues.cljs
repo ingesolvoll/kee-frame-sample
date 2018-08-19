@@ -7,12 +7,14 @@
                  :start  [:leagues/load]})
 
 ;; Only show the most interesting ones, with compatible data
-(def whitelist #{445 446 449 450 452 455 456})
+(def whitelist #{2021 2014 2013 2015 2002})
 
 (reg-chain :leagues/load
 
            (fn [_ _]
-             {:http-xhrio (util/http-get "http://api.football-data.org/v1/competitions/?season=2017")})
+             {:http-xhrio (util/http-get "http://api.football-data.org/v2/competitions")})
 
            (fn [{:keys [db]} [_ leagues]]
-             {:db (assoc db :leagues (filter (comp whitelist :id) leagues))}))
+             {:db (assoc db :leagues (->> leagues
+                                          :competitions
+                                          (filter (comp whitelist :id))))}))

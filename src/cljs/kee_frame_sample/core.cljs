@@ -33,7 +33,7 @@
                  :live-matches  nil
                  :ongoing-only? false})
 
-(s/def ::league (s/keys :req-un [::caption ::id]))
+(s/def ::league (s/keys :req-un [::name ::id]))
 (s/def ::leagues (s/nilable (s/coll-of ::league)))
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 

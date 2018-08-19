@@ -18,15 +18,14 @@
                          [:td "Result"]
                          [:td "Half-time"]]]
                        [:tbody
-                        (map (fn [{:keys [homeTeamName awayTeamName date result]}]
-                               [:tr {:key (str homeTeamName "-" awayTeamName)}
-                                [:td date]
-                                [:td homeTeamName]
-                                [:td awayTeamName]
-                                (let [{:keys [goalsHomeTeam goalsAwayTeam halfTime]} result]
-                                  [:td goalsHomeTeam " - " goalsAwayTeam])
-                                [:td (let [{:keys [goalsHomeTeam goalsAwayTeam]} (:halfTime result)]
-                                       (str " (" goalsHomeTeam " - " goalsAwayTeam ")"))]])
+                        (map (fn [{:keys [homeTeam awayTeam utcDate score]}]
+                               [:tr {:key (str (:name homeTeam) "-" (:name awayTeam))}
+                                [:td utcDate]
+                                [:td (:name homeTeam)]
+                                [:td (:name awayTeam)]
+                                (let [{:keys [fullTime halfTime]} score]
+                                  [:td (:homeTeam fullTime) " - " (:awayTeam fullTime)]
+                                  [:td " (" (:homeTeam halfTime) " - " (:awayTeam halfTime) ")"])])
                              fixtures)]]])))
 
 (defn table []
@@ -45,22 +44,22 @@
           [:td.textright "L"]
           [:td.textright "Points"]]]
         [:tbody
-         (map (fn [{:keys [teamName points position wins draws losses playedGames]}]
-                [:tr.league-table-row {:key teamName}
+         (map (fn [{:keys [team points position won draw lost playedGames]}]
+                [:tr.league-table-row {:key (:name team)}
                  [:td.textright [:strong position]]
-                 [:td teamName]
+                 [:td (:name team)]
                  [:td.textright playedGames]
-                 [:td.textright wins]
-                 [:td.textright draws]
-                 [:td.textright losses]
+                 [:td.textright won]
+                 [:td.textright draw]
+                 [:td.textright lost]
                  [:td.textright points]])
               table)]]])))
 
 
 (defn league-dispatch []
-  (let [league-caption (subscribe [:league-caption])]
+  (let [league-name (subscribe [:league-name])]
     [:div
-     [:strong {:style {:font-size "25px"}} @league-caption]
+     [:strong {:style {:font-size "25px"}} @league-name]
      [:div {:style {:float :right}}
       [k/switch-route #(-> % :route-params :tab)
        "table" (fn [{{id :id} :route-params}]

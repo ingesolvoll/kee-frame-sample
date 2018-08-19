@@ -16,15 +16,17 @@
   (fn [{:keys [db]} [id]]
     {:db         (assoc db :fixtures nil
                            :table nil)
-     :http-xhrio (util/http-get (str "http://api.football-data.org/v1/competitions/" id "/leagueTable"))})
+     :http-xhrio (util/http-get (str "http://api.football-data.org/v2/competitions/" id "/standings"))})
 
   :league/load-fixtures
   (fn [{:keys [db]} [id table]]
-    {:db         (assoc db :table (:standing table)
-                           :league-caption (:leagueCaption table))
-     :http-xhrio (util/http-get (str "http://api.football-data.org/v1/competitions/" id "/fixtures")
-                                {:params {:timeFrame :p7}})})
+    {:db         (assoc db :table (-> table :standings first :table)
+                           :league-name (-> table :competition :name))
+     :http-xhrio (util/http-get (str "http://api.football-data.org/v2/matches")
+                                {:params {:competitions id
+                                          :dateFrom "2018-08-18"
+                                          :dateTo "2018-08-20"}})})
 
   :league/save-fixtures
-  (fn [{:keys [db]} [_ _ {:keys [fixtures]}]]
-    {:db (assoc db :fixtures (map #(update % :date format/format-date) fixtures))}))
+  (fn [{:keys [db]} [_ _ {:keys [matches]}]]
+    {:db (assoc db :fixtures (map #(update % :utcDate format/format-date) matches))}))

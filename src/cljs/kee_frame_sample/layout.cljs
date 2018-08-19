@@ -18,11 +18,11 @@
     {:href (k/path-for [:live])}
     "Today's matches (" @(subscribe [:live-match-count]) ")"]
    [ui/divider]
-   (map (fn [{:keys [id caption]}]
-          ^{:key caption}
+   (map (fn [{:keys [id name]}]
+          ^{:key name}
           [ui/menu-item
            {:href (k/path-for [:league :id id :tab :table])}
-           caption])
+           name])
         @(subscribe [:leagues]))])
 
 (defn mui-theme []
