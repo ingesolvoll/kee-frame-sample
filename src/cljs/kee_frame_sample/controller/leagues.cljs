@@ -7,7 +7,7 @@
                  :start  [:leagues/load]})
 
 ;; Only show the most interesting ones, with compatible data
-(def whitelist #{2021 2014 2013 2015 2002})
+(def whitelist #{2021 2014 2019 2015 2002})
 
 (reg-chain :leagues/load
 
