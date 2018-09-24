@@ -5,6 +5,7 @@
                  [reagent "0.8.1"]
                  [re-frame "0.10.6" :exclusions [reagent]]
                  [funcool/bide "1.6.0"]
+                 [bidi "2.1.3"]
                  [keechma/router "0.1.1"]
                  [metosin/reitit-core "0.1.0"]
                  [day8.re-frame/http-fx "0.1.5"]
