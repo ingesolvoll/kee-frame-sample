@@ -43,7 +43,7 @@
       (wait pause)
       (click-href "/#/league/2021/table")
       (wait 1)
-      (verify-visible false "//a[@href='/league/2021/table']")))
+      (verify-visible false {:tag :a :href "/#/league/2021/table"})))
 
   (testing "Showing only major leagues"
     (doto *driver*
