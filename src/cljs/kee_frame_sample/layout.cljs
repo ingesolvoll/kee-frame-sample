@@ -21,7 +21,7 @@
    (map (fn [{:keys [id name]}]
           ^{:key name}
           [ui/menu-item
-           {:href (k/path-for [:league :id id :tab :table])}
+           {:href (k/path-for [:league {:id id :tab "table"}])}
            name])
         @(subscribe [:leagues]))])
 

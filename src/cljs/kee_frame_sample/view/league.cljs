@@ -61,11 +61,11 @@
     [:div
      [:strong {:style {:font-size "25px"}} @league-name]
      [:div {:style {:float :right}}
-      [k/switch-route #(-> % :route-params :tab)
-       "table" (fn [{{id :id} :route-params}]
-                 [:a.nav-link {:href (k/path-for [:league :id id :tab :fixtures])} "Latest results"])
-       "fixtures" (fn [{{id :id} :route-params}]
-                    [:a.nav-link.active {:href (k/path-for [:league :id id :tab :table])} "Table"])]]
-     [k/switch-route #(-> % :route-params :tab)
+      [k/switch-route #(-> % :path-params :tab)
+       "table" (fn [{{id :id} :path-params}]
+                 [:a.nav-link {:href (k/path-for [:league {:id id :tab "fixtures"}])} "Latest results"])
+       "fixtures" (fn [{{id :id} :path-params}]
+                    [:a.nav-link.active {:href (k/path-for [:league {:id id :tab "table"}])} "Table"])]]
+     [k/switch-route #(-> % :path-params :tab)
       "table" [table]
       "fixtures" [fixtures]]]))

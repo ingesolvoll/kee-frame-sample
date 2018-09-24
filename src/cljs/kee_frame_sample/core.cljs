@@ -18,13 +18,13 @@
 (goog-define debug false)
 
 (defn dispatch-main []
-  [k/switch-route :handler
+  [k/switch-route (comp :name :data)
    :league [league/league-dispatch]
    :live [live/live]
    nil [:div "Loading..."]])
 
-(def routes ["" {"/"                       :live
-                 ["/league/" :id "/" :tab] :league}])
+(def routes [["/" :live]
+             ["/league/:id/:tab" :league]])
 
 (def initial-db {:drawer-open?  false
                  :leagues       nil
@@ -44,12 +44,3 @@
            :initial-db     initial-db
            :root-component [layout/main-panel [dispatch-main]]
            :app-db-spec    ::db-spec})
-
-;;;;;;;; OR WITH A CUSTOM ROUTER
-
-(comment
-  (k/start! {:debug?         debug
-             :router         (routers/->ReititRouter routers/reitit-routes)
-             :initial-db     initial-db
-             :root-component [layout/main-panel [dispatch-main]]
-             :app-db-spec    ::db-spec}))

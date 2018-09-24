@@ -4,9 +4,9 @@
             [kee-frame-sample.format :as format]))
 
 (reg-controller :league
-                {:params (fn [{:keys [handler route-params]}]
-                           (when (= handler :league)
-                             (:id route-params)))
+                {:params (fn [{:keys [data path-params]}]
+                           (when (= (:name data) :league)
+                             (:id path-params)))
                  :start  (fn [_ id]
                            [:league/load id])})
 
