@@ -15,7 +15,7 @@
                 (let [server (server/run-server 3333)]
                   (try
                     (et/with-phantom
-                      {:size [1000 1000]} driver
+                      {:size [800 800]} driver
                       (binding [*driver* driver]
                         (test-fn)))
                     (finally
