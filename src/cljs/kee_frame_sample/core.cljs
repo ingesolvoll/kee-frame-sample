@@ -11,11 +11,28 @@
             [kee-frame-sample.layout :as layout]
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
+            [ajax.core :as ajax]
             [kee-frame-sample.view.league :as league]))
 
 (enable-console-print!)
 
 (goog-define debug false)
+
+(defn route-interceptors [route]
+  (let [connection-balance (atom 0)
+        replace-interceptor (fn [interceptors]
+                              (conj (filter #(not= "route-interceptor" (:name %)) interceptors)
+                                    (ajax/to-interceptor {:name     "route-interceptor"
+                                                          :request  (fn [request]
+                                                                      (swap! connection-balance inc)
+                                                                      (println "CONN BAL REQ " @connection-balance)
+                                                                      request)
+                                                          :response (fn [response]
+                                                                      (swap! connection-balance dec)
+                                                                      (println "CONN BAL RES " @connection-balance)
+                                                                      response)})))]
+    (swap! ajax/default-interceptors replace-interceptor)
+    connection-balance))
 
 (defn dispatch-main []
   [k/switch-route (comp :name :data)
@@ -44,3 +61,5 @@
            :initial-db     initial-db
            :root-component [layout/main-panel [dispatch-main]]
            :app-db-spec    ::db-spec})
+
+(route-interceptors nil)
