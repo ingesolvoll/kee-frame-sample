@@ -14,8 +14,8 @@
               (fn [test-fn]
                 (let [server (server/run-server 3333)]
                   (try
-                    (et/with-phantom
-                      {:size [800 800]} driver
+                    (et/with-chrome
+                      {:size [1200 1200]} driver
                       (binding [*driver* driver]
                         (test-fn)))
                     (finally
@@ -26,28 +26,23 @@
 
 (defn navigate-to-league [driver league-id]
   (doto driver
-    (click {:css "div#app-bar > button"})
-    (wait pause)
     (click-href (str "/#/league/" league-id "/table"))
     (wait pause)))
 
 (defn verify-visible [driver visible? q]
   (is (= visible? (et/visible? driver q))))
 
-(deftest hides-sidebar-on-navigation
-  (doto *driver*
-    (goto "/")
-    (click {:css "div#app-bar > button"})
-    (wait pause)
-    (click-href "/#/league/2021/table")
-    (wait 1)
-    (verify-visible false {:tag :a :href "/#/league/2021/table"})))
+(comment
+  (deftest hides-sidebar-on-navigation
+    (doto *driver*
+      (goto "/")
+      (click-href "/#/league/2021/table")
+      (wait 1)
+      (verify-visible false {:tag :a :href "/#/league/2021/table"}))))
 
 (deftest showing-only-major-leagues
   (doto *driver*
     (goto "/")
-    (click {:css "div#app-bar > button"})
-    (wait pause)
     (verify-element-text {:tag :a :href "/#/league/2021/table"} "Premier League")
     (verify-element-text {:tag :a :href "/#/league/2014/table"} "Primera Division")))
 

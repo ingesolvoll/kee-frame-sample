@@ -1,7 +1,7 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.10.339"]
-                 [kee-frame "0.3.0-SNAPSHOT"]
+                 [kee-frame "0.3.2-SNAPSHOT"]
                  [reagent "0.8.1"]
                  [re-frame "0.10.6" :exclusions [reagent]]
                  [funcool/bide "1.6.0"]
