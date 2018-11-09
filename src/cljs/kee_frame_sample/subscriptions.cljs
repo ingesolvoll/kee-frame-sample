@@ -4,7 +4,7 @@
             [kee-frame-sample.format :as format]))
 
 (reg-sub :drawer-open? :drawer-open?)
-(reg-sub :live-match-count (fn [db] (-> db :live-matches count)))
+(reg-sub :live-match-count (comp count :live-matches))
 (reg-sub :league-name :league-name)
 (reg-sub :table :table)
 (reg-sub :fixtures :fixtures)
