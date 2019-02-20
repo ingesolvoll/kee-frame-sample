@@ -19,17 +19,15 @@
 (goog-define debug false)
 
 (defn route-interceptors [route]
-  (let [connection-balance (atom 0)
+  (let [connection-balance  (atom 0)
         replace-interceptor (fn [interceptors]
                               (conj (filter #(not= "route-interceptor" (:name %)) interceptors)
                                     (ajax/to-interceptor {:name     "route-interceptor"
                                                           :request  (fn [request]
                                                                       (swap! connection-balance inc)
-                                                                      (println "CONN BAL REQ " @connection-balance)
                                                                       request)
                                                           :response (fn [response]
                                                                       (swap! connection-balance dec)
-                                                                      (println "CONN BAL RES " @connection-balance)
                                                                       response)})))]
     (swap! ajax/default-interceptors replace-interceptor)
     connection-balance))
@@ -56,6 +54,7 @@
 
 (k/start! {:debug?         debug
            :screen         true
+           :scroll         false
            :routes         routes
            :hash-routing?  true
            :initial-db     initial-db
