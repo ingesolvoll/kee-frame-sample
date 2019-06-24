@@ -48,8 +48,9 @@
     (or (apply bidi/path-for routes data)
         (url-not-found routes data)))
   (url->data [_ url]
-    (or (bidi/match-route routes url)
-        (route-match-not-found routes url))))
+    (if-let [match (bidi/match-route routes url)]
+      (assoc match :path url)
+      (route-match-not-found routes url))))
 
 (defrecord BidiHashRouter [routes]
   api/Router
