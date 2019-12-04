@@ -14,7 +14,7 @@
               (fn [test-fn]
                 (let [server (server/run-server 3333)]
                   (try
-                    (et/with-chrome
+                    (et/with-chrome-headless
                       {:size [1200 1200]} driver
                       (binding [*driver* driver]
                         (test-fn)))
