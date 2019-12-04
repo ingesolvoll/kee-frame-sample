@@ -1,3 +1,6 @@
 language: clojure
 
 script: lein integration-test
+
+addons:
+  chrome: stable
