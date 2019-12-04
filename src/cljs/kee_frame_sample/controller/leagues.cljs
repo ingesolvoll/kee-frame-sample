@@ -12,7 +12,7 @@
 (reg-chain :leagues/load
 
            (fn [_ _]
-             {:http-xhrio (util/http-get "http://api.football-data.org/v2/competitions")})
+             {:http-xhrio (util/http-get "https://api.football-data.org/v2/competitions")})
 
            (fn [{:keys [db]} [_ leagues]]
              {:db (assoc db :leagues (->> leagues

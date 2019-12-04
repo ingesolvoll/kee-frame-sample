@@ -21,7 +21,7 @@
 (reg-chain-named
 
   :live/load-matches
-  (fn [_ _] {:http-xhrio (util/http-get "http://api.football-data.org/v2/matches"
+  (fn [_ _] {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches"
                                         {:params {:timeFrame :n1}})})
   :live/fixtures->db
   (fn [{:keys [db]} [_ {:keys [matches]}]]
