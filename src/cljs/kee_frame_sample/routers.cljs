@@ -61,9 +61,11 @@
   (url->data [_ url]
     (let [[path+query fragment] (-> url (str/replace #"^/#" "") (str/split #"#" 2))
           [path query] (str/split path+query #"\?" 2)]
-      (some-> (or (bidi/match-route routes path)
-                  (route-match-not-found routes url))
-              (assoc :query-string query :hash fragment)))))
+      (if-let [match (bidi/match-route routes path)]
+        (assoc match :path url
+                     :query-string query
+                     :hash fragment)
+        (route-match-not-found routes url)))))
 
 (def bide-routes
   (bide/router [["/" :live]
