@@ -33,32 +33,32 @@
   (is (= visible? (et/visible? driver q))))
 
 (comment
-  (deftest hides-sidebar-on-navigation
-    (doto *driver*
-      (goto "/")
-      (click-href "/#/league/2021/table")
-      (wait 1)
-      (verify-visible false {:tag :a :href "/#/league/2021/table"}))))
+ (deftest hides-sidebar-on-navigation
+   (doto *driver*
+     (goto "/")
+     (click-href "/#/league/2021/table")
+     (wait 1)
+     (verify-visible false {:tag :a :href "/#/league/2021/table"})))
 
-(deftest showing-only-major-leagues
-  (doto *driver*
-    (goto "/")
-    (verify-element-text {:tag :a :href "/#/league/2021/table"} "Premier League")
-    (verify-element-text {:tag :a :href "/#/league/2014/table"} "Primera Division")))
+ (deftest showing-only-major-leagues
+   (doto *driver*
+     (goto "/")
+     (verify-element-text {:tag :a :href "/#/league/2021/table"} "Premier League")
+     (verify-element-text {:tag :a :href "/#/league/2014/table"} "Primera Division")))
 
-(deftest can-load-live-page
-  (doto *driver*
-    (goto "/")
-    (verify-text "Show only ongoing matches")))
+ (deftest can-load-live-page
+   (doto *driver*
+     (goto "/")
+     (verify-text "Show only ongoing matches")))
 
-(deftest can-go-to-specific-league-table
-  (doto *driver*
-    (goto "/")
-    (navigate-to-league 2021)
-    (verify-text "Premier League")
-    (verify-text "Manchester United")
-    (verify-text "Manchester City")
-    (verify-text "Arsenal")))
+ (deftest can-go-to-specific-league-table
+   (doto *driver*
+     (goto "/")
+     (navigate-to-league 2021)
+     (verify-text "Premier League")
+     (verify-text "Manchester United")
+     (verify-text "Manchester City")
+     (verify-text "Arsenal"))))
 
 (deftest will-load-data-correctly-when-using-back-button
   (doto *driver*
