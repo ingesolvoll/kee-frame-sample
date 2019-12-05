@@ -22,11 +22,11 @@
                       (.stop server))))))
 
 (defn goto [driver url]
-  (et/go driver (str base-url "/#" url)))
+  (et/go driver (str base-url url)))
 
 (defn navigate-to-league [driver league-id]
   (doto driver
-    (click-href (str "/#/league/" league-id "/table"))
+    (click-href (str "/league/" league-id "/table"))
     (wait pause)))
 
 (defn verify-visible [driver visible? q]
@@ -36,15 +36,15 @@
  (deftest hides-sidebar-on-navigation
    (doto *driver*
      (goto "/")
-     (click-href "/#/league/2021/table")
+     (click-href "/league/2021/table")
      (wait 1)
-     (verify-visible false {:tag :a :href "/#/league/2021/table"})))
+     (verify-visible false {:tag :a :href "/league/2021/table"})))
 
  (deftest showing-only-major-leagues
    (doto *driver*
      (goto "/")
-     (verify-element-text {:tag :a :href "/#/league/2021/table"} "Premier League")
-     (verify-element-text {:tag :a :href "/#/league/2014/table"} "Primera Division")))
+     (verify-element-text {:tag :a :href "/league/2021/table"} "Premier League")
+     (verify-element-text {:tag :a :href "/league/2014/table"} "Primera Division")))
 
  (deftest can-load-live-page
    (doto *driver*
