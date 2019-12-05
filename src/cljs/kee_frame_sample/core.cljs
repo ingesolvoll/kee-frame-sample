@@ -7,22 +7,36 @@
             [kee-frame-sample.controller.live]
             [kee-frame-sample.controller.common]
             [kee-frame-sample.subscriptions]
-            [kee-frame-sample.routers :as routers]
             [kee-frame-sample.layout :as layout]
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
-            [ajax.core :as ajax]
-            [kee-frame-sample.view.league :as league]))
+            [kee-frame-sample.view.league :as league]
+            [reagent.core :as r]))
 
 (enable-console-print!)
 
 (goog-define debug false)
 
+(defn error-boundary
+  [body]
+  (let [err-state (r/atom nil)]
+    (r/create-class
+     {:display-name        "ErrBoundary"
+      :component-did-catch (fn [err info]
+                             (reset! err-state [err info]))
+      :reagent-render      (fn [body]
+                             (if (nil? @err-state)
+                               body
+                               (let [[err info] @err-state]
+                                 (js/console.log "******************** err: " err)
+                                 [:pre [:code (pr-str info)]])))})))
+
 (defn dispatch-main []
-  [k/switch-route (comp :name :data)
-   :league [league/league-dispatch]
-   :live [live/live]
-   nil [:div "Loading..."]])
+  [error-boundary
+   [k/switch-route (comp :name :data)
+    :league [league/league-dispatch]
+    :live [live/live]
+    nil [:div "Loading..."]]])
 
 (def routes [["/" :live]
              ["/league/:id/:tab" :league]])
@@ -39,6 +53,11 @@
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
 (k/start! {:debug?         debug
+           :debug-config   {:controllers? false
+                            :overwrites?  false
+                            :events?      true
+                            :routes?      false
+                            :blacklist    #{:live/tick}}
            :screen         true
            :scroll         false
            :routes         routes
