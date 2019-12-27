@@ -1,7 +1,9 @@
 (ns kee-frame-sample.view.live
   (:require [re-frame.core :refer [subscribe dispatch]]
             [cljs-react-material-ui.reagent :as ui]
-            [cljs-react-material-ui.icons :as ic]))
+            [cljs-react-material-ui.icons :as ic]
+            [kee-frame.fsm :as fsm]
+            [kee-frame-sample.controller.live :as live-controller]))
 
 (defn live-fixtures [fixtures]
   [:div
@@ -28,8 +30,14 @@
                          league-fixtures)]]]))))])
 
 (defn live []
-  (let [fixtures @(subscribe [:live-matches])]
+  (let [fixtures       @(subscribe [:live-matches])
+        live-fsm-state (subscribe [::fsm/state live-controller/live-fsm])]
     [:div
+     [:span
+      (case @live-fsm-state
+        ::live-controller/error "[disconnected, retrying...]"
+        ::live-controller/loading "[loading data...]"
+        "[connected]")]
      [:div {:style {:text-align :right}}
       [:input {:type      :checkbox
                :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]

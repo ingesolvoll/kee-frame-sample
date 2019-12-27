@@ -50,17 +50,13 @@
                   :picker-header-color  (color :cyan500)}}))
 
 (defn app-bar []
-  (let [live-fsm-state (subscribe [::fsm/state live-controller/live-fsm])]
-    [ui/app-bar {:id                            :app-bar
-                 :style                         {:font-family "Broader View"
-                                                 :color       :white}
-                 :title                         (r/as-element
-                                                 [:a.title-link {:href (k/path-for [:live])} "Live football"
-                                                  (if (#{::live-controller/error} @live-fsm-state)
-                                                    [ic/notification-sync-problem]
-                                                    [ic/notification-sync])])
-                 :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
-                 :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}]))
+  [ui/app-bar {:id                            :app-bar
+               :style                         {:font-family "Broader View"
+                                               :color       :white}
+               :title                         (r/as-element
+                                               [:a.title-link {:href (k/path-for [:live])} "Live football"])
+               :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
+               :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}])
 
 (defn main-panel [main]
   [ui/mui-theme-provider
