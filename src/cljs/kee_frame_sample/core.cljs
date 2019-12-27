@@ -55,7 +55,7 @@
 (k/start! {:debug?         debug
            :debug-config   {:controllers? false
                             :overwrites?  false
-                            :events?      true
+                            :events?      false
                             :routes?      false
                             :blacklist    #{:live/tick}}
            :screen         true

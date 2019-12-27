@@ -3,7 +3,7 @@
             [kee-frame.core :refer [reg-controller reg-chain-named reg-event-fx reg-event-db]]
             [kee-frame-sample.util :as util]))
 
-(register-interval-handlers :live nil 10000)
+(register-interval-handlers :live nil 30000)
 
 (reg-controller :live-polling
                 {:params (fn [route]
@@ -22,7 +22,8 @@
 
   :live/load-matches
   (fn [_ _] {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches"
-                                        {:params {}})})
+                                        {:on-failure [:halla-mamma]
+                                         :params {}})})
   :live/fixtures->db
   (fn [{:keys [db]} [_ {:keys [matches]}]]
     {:db (assoc db :live-matches matches)}))
@@ -30,3 +31,14 @@
 (reg-event-db :live/toggle-ongoing
               (fn [db [flag]]
                 (assoc db :ongoing-only? flag)))
+
+(defn reg-fsm [id fsm]
+  {:id     id
+   :start  :polling
+   :states {:idle    {:dispatch [:live/stop]}
+            :polling {:on-enter [:live/start]
+                      :error    :error
+                      :stop     :idle}
+
+            :error   {:on-enter [:page-error]
+                      :on-leave [:clear-error]}}})

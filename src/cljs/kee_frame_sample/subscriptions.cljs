@@ -1,33 +1,30 @@
 (ns kee-frame-sample.subscriptions
-  (:require [re-frame.core :refer [reg-sub]]
+  (:require [re-frame.core :refer [reg-sub subscribe]]
             [clojure.string :as str]
             [kee-frame-sample.format :as format]))
 
-(reg-sub :drawer-open? :drawer-open?)
+(reg-sub :drawer-open?
+         (fn [db] (get db :drawer-open? false)))
 (reg-sub :live-match-count (comp count :live-matches))
-(reg-sub :league-name :league-name)
-(reg-sub :table :table)
+(reg-sub :league-name
+         (fn [db [_ id]]
+           (get-in db [id :league-name])))
+(reg-sub :league-id
+         (fn []
+           (subscribe [:kee-frame/route]))
+         (fn [route _]
+           (-> route :path-params :id)))
+
+(reg-sub :table
+         (fn [db [_ id]]
+           (get-in db [id :table])))
+
 (reg-sub :fixtures :fixtures)
 (reg-sub :leagues :leagues)
-
-(defn find-league-name [id-str leagues]
-  (->> leagues
-       (filter #(= id-str (str (:id %))))
-       first
-       :name))
 
 (defn ongoing-filterer [ongoing-only? {:keys [status]}]
   (or (not ongoing-only?)
       (= status "IN_PLAY")))
-
-(defn assoc-league-name [leagues match]
-  (assoc match :league-name (-> match
-                                :_links
-                                :competition
-                                :href
-                                (str/split #"/")
-                                last
-                                (find-league-name leagues))))
 
 (reg-sub :live-matches
          (fn [db _]

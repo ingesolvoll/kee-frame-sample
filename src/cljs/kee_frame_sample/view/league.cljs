@@ -1,10 +1,12 @@
 (ns kee-frame-sample.view.league
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
+            [kee-frame.fsm :as fsm]
+            [kee-frame-sample.fsms :as fsms]
             [cljs-react-material-ui.reagent :as ui]))
 
-(defn fixtures []
-  (let [fixtures @(subscribe [:fixtures])]
+(defn fixtures [id]
+  (let [fixtures @(subscribe [:fixtures id])]
     (cond
       (nil? fixtures) [:div.progress-container [ui/linear-progress]]
       (= [] fixtures) [:div "No matches"]
@@ -28,8 +30,8 @@
                                   [:td " (" (:homeTeam halfTime) " - " (:awayTeam halfTime) ")"])])
                              fixtures)]]])))
 
-(defn table []
-  (let [table @(subscribe [:table])]
+(defn table [id]
+  (let [table @(subscribe [:table id])]
     (if (nil? table)
       [:div.progress-container [ui/linear-progress]]
       [:div
@@ -57,8 +59,11 @@
 
 
 (defn league-dispatch []
-  (let [league-name (subscribe [:league-name])]
+  (let [id          (subscribe [:league-id])
+        state       (subscribe [::fsm/state (fsms/league-fsm @id)])
+        league-name (subscribe [:league-name @id])]
     [:div
+     [:div "State: " @state]
      [:strong {:style {:font-size "25px"}} @league-name]
      [:div {:style {:float :right}}
       [k/switch-route #(-> % :path-params :tab)
@@ -67,5 +72,5 @@
        "fixtures" (fn [{{id :id} :path-params}]
                     [:a.nav-link.active {:href (k/path-for [:league {:id id :tab "table"}])} "Table"])]]
      [k/switch-route #(-> % :path-params :tab)
-      "table" [table]
-      "fixtures" [fixtures]]]))
+      "table" [table @id]
+      "fixtures" [fixtures @id]]]))
