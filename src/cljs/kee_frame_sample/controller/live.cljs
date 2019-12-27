@@ -21,24 +21,11 @@
 (reg-chain-named
 
   :live/load-matches
-  (fn [_ _] {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches"
-                                        {:on-failure [:halla-mamma]
-                                         :params {}})})
+  (fn [_ _] {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches")})
   :live/fixtures->db
-  (fn [{:keys [db]} [_ {:keys [matches]}]]
+  (fn [{db :db} [_ {:keys [matches]}]]
     {:db (assoc db :live-matches matches)}))
 
 (reg-event-db :live/toggle-ongoing
               (fn [db [flag]]
                 (assoc db :ongoing-only? flag)))
-
-(defn reg-fsm [id fsm]
-  {:id     id
-   :start  :polling
-   :states {:idle    {:dispatch [:live/stop]}
-            :polling {:on-enter [:live/start]
-                      :error    :error
-                      :stop     :idle}
-
-            :error   {:on-enter [:page-error]
-                      :on-leave [:clear-error]}}})

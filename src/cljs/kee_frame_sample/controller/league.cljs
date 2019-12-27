@@ -1,15 +1,28 @@
 (ns kee-frame-sample.controller.league
   (:require [kee-frame.core :refer [reg-controller reg-chain-named]]
             [kee-frame-sample.util :as util]
-            [kee-frame-sample.format :as format]
-            [kee-frame-sample.fsms :as fsms]))
+            [kee-frame.fsm :as fsm]
+            [kee-frame-sample.format :as format]))
+
+(defn league-fsm [id]
+  {:id    [:league-fsm id]
+   :start ::loading-table
+   :stop  ::loaded
+   :fsm   {::loading-table           {[::fsm/on-enter]            {:dispatch [[:league/load-table id]]}
+                                      [:league/table-received id] {:to ::loading-fixtures}
+                                      [:default-on-failure]       {:to ::loading-table-failed}}
+           ::loading-fixtures        {[::fsm/on-enter]               {:dispatch [[:league/load-fixtures id]]}
+                                      [:league/fixtures-received id] {:to ::loaded}
+                                      [:default-on-failure]          {:to ::loading-fixtures-failed}}
+           ::loading-table-failed    {[::fsm/after 10000] {:to ::loading-table}}
+           ::loading-fixtures-failed {[::fsm/after 10000] {:to ::loading-fixtures}}}})
 
 (reg-controller :league
                 {:params (fn [{:keys [data path-params]}]
                            (when (= (:name data) :league)
                              (:id path-params)))
                  :start  (fn [_ id]
-                           (fsms/league-fsm id))})
+                           (league-fsm id))})
 
 (reg-chain-named
 
@@ -24,6 +37,7 @@
    {:db (-> db
             (assoc-in [id :table] (-> table :standings first :table))
             (assoc-in [id :league-name] (-> table :competition :name)))}))
+
 (reg-chain-named
  :league/load-fixtures
  (fn [{:keys [db]} [id]]

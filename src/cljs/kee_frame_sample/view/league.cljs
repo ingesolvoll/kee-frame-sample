@@ -2,7 +2,7 @@
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
             [kee-frame.fsm :as fsm]
-            [kee-frame-sample.fsms :as fsms]
+            [kee-frame-sample.controller.league :as c]
             [cljs-react-material-ui.reagent :as ui]))
 
 (defn fixtures [id]
@@ -57,20 +57,23 @@
                  [:td.textright points]])
               table)]]])))
 
+(defn request-error []
+  [:div "The football results service only accepts a limited number of requests per minute. Your info will appear within one minute, please wait."])
 
 (defn league-dispatch []
   (let [id          (subscribe [:league-id])
-        state       (subscribe [::fsm/state (fsms/league-fsm @id)])
+        state       (subscribe [::fsm/state (c/league-fsm @id)])
         league-name (subscribe [:league-name @id])]
-    [:div
-     [:div "State: " @state]
-     [:strong {:style {:font-size "25px"}} @league-name]
-     [:div {:style {:float :right}}
-      [k/switch-route #(-> % :path-params :tab)
-       "table" (fn [{{id :id} :path-params}]
-                 [:a.nav-link {:href (k/path-for [:league {:id id :tab "fixtures"}])} "Latest results"])
-       "fixtures" (fn [{{id :id} :path-params}]
-                    [:a.nav-link.active {:href (k/path-for [:league {:id id :tab "table"}])} "Table"])]]
-     [k/switch-route #(-> % :path-params :tab)
-      "table" [table @id]
-      "fixtures" [fixtures @id]]]))
+    (if (#{::c/loading-fixtures-failed ::c/loading-table-failed} @state)
+      [request-error]
+      [:<>
+       [:strong {:style {:font-size "25px"}} @league-name]
+       [:div {:style {:float :right}}
+        [k/switch-route #(-> % :path-params :tab)
+         "table" (fn [{{id :id} :path-params}]
+                   [:a.nav-link {:href (k/path-for [:league {:id id :tab "fixtures"}])} "Latest results"])
+         "fixtures" (fn [{{id :id} :path-params}]
+                      [:a.nav-link.active {:href (k/path-for [:league {:id id :tab "table"}])} "Table"])]]
+       [k/switch-route #(-> % :path-params :tab)
+        "table" [table @id]
+        "fixtures" [fixtures @id]]])))
