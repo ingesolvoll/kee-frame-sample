@@ -3,6 +3,8 @@
             [kee-frame.fsm :as fsm]
             [kee-frame-sample.util :as util]))
 
+(fsm/reg-no-op :leagues/retry)
+
 (def leagues-fsm
   {:id    :leagues-fsm
    :start ::loading
@@ -10,7 +12,8 @@
    :fsm   {::loading        {[::fsm/on-enter]      {:dispatch [[:leagues/load]]}
                              [:leagues/loaded]     {:to ::loaded}
                              [:default-on-failure] {:to ::loading-failed}}
-           ::loading-failed {[::fsm/after 10000] {:to ::loading}}}})
+           ::loading-failed {[::fsm/after 10000] {:to ::loading}
+                             [:leagues/retry]    {:to ::loading}}}})
 
 (reg-controller :leagues
                 {:params (constantly true)

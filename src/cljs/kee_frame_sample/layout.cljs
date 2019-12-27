@@ -6,7 +6,9 @@
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [reagent.core :as r]
             [kee-frame-sample.controller.leagues :as leagues-controller]
-            [breaking-point.core :as bp]))
+            [kee-frame-sample.controller.live :as live-controller]
+            [breaking-point.core :as bp]
+            [cljs-react-material-ui.icons :as ic]))
 
 (defn drawer []
   (let [leagues-fsm-state (subscribe [::fsm/state leagues-controller/leagues-fsm])]
@@ -23,7 +25,7 @@
      [ui/divider]
      (if (#{::leagues-controller/loading-failed} @leagues-fsm-state)
        [ui/menu-item
-        {:on-click (dispatch [:leagues/retry])}
+        {:on-click #(dispatch [:leagues/retry])}
         "Could not load leagues (retrying soon)"]
        (map (fn [{:keys [id name]}]
               ^{:key name}
@@ -48,12 +50,17 @@
                   :picker-header-color  (color :cyan500)}}))
 
 (defn app-bar []
-  [ui/app-bar {:id                            :app-bar
-               :style                         {:font-family "Broader View"
-                                               :color       :white}
-               :title                         (r/as-element [:a.title-link {:href (k/path-for [:live])} "Live football"])
-               :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
-               :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}])
+  (let [live-fsm-state (subscribe [::fsm/state live-controller/live-fsm])]
+    [ui/app-bar {:id                            :app-bar
+                 :style                         {:font-family "Broader View"
+                                                 :color       :white}
+                 :title                         (r/as-element
+                                                 [:a.title-link {:href (k/path-for [:live])} "Live football"
+                                                  (if (#{::live-controller/error} @live-fsm-state)
+                                                    [ic/notification-sync-problem]
+                                                    [ic/notification-sync])])
+                 :show-menu-icon-button         (not @(subscribe [:drawer-open?]))
+                 :on-left-icon-button-touch-tap #(dispatch [:toggle-drawer true])}]))
 
 (defn main-panel [main]
   [ui/mui-theme-provider
