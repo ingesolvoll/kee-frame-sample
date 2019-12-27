@@ -21,7 +21,7 @@
 
  :live/load-live-matches
  (fn [_ _]
-   {:http-xhrio (util/http-get "https://api.football-data.org/v20/matches")})
+   {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches")})
 
  :live/loaded-live-matches
  (fn [{db :db} [{:keys [matches]}]]

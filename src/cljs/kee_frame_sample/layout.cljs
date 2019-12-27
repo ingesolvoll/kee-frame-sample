@@ -26,7 +26,7 @@
      (if (#{::leagues-controller/loading-failed} @leagues-fsm-state)
        [ui/menu-item
         {:on-click #(dispatch [:leagues/retry])}
-        "Could not load leagues (retrying soon)"]
+        "Retry leagues loading"]
        (map (fn [{:keys [id name]}]
               ^{:key name}
               [ui/menu-item
