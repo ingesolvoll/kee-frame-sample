@@ -1,5 +1,5 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure "1.9.0"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.597"]
                  [kee-frame "0.4.0-SNAPSHOT"]
                  [reagent "0.8.1"]
@@ -13,7 +13,6 @@
                  [compojure "1.5.0"]
                  [ring/ring-jetty-adapter "1.4.0"]
                  [environ "1.0.0"]
-                 [re-interval "0.0.1"]
                  [cljs-react-material-ui "0.2.48"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
                  [org.clojure/test.check "0.10.0-alpha2"]]
