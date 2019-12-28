@@ -11,3 +11,8 @@ pom.xml.asc
 .lein-plugins/
 .lein-failures
 .nrepl-port
+/resources/public/js/compiled/
+/.rebel_readline_history
+/figwheel_server.log
+/kee-frame-sample.iml
+/.idea/
