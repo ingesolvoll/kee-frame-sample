@@ -1,8 +1,9 @@
 (ns kee-frame-sample.controller.league
-  (:require [kee-frame.core :refer [reg-controller reg-chain-named]]
+  (:require [kee-frame.core :as k :refer [reg-controller reg-chain-named]]
             [kee-frame-sample.util :as util]
             [kee-frame.fsm :as fsm]
-            [kee-frame-sample.format :as format]))
+            [kee-frame-sample.format :as format]
+            [re-frame.core :as f]))
 
 (defn league-fsm [id]
   {:id    [:league-fsm id]
@@ -16,6 +17,18 @@
                                       [:default-on-failure]          {:to ::loading-fixtures-failed}}
            ::loading-table-failed    {[::fsm/after 10000] {:to ::loading-table}}
            ::loading-fixtures-failed {[::fsm/after 10000] {:to ::loading-fixtures}}}})
+
+(f/reg-sub ::state
+           (fn [[_ id]]
+             (f/subscribe [::fsm/state (league-fsm id)]))
+           identity)
+
+(f/reg-sub ::failed?
+           (fn [_ [_ id]]
+             (f/subscribe [::state id]))
+           (fn [state]
+             (#{::loading-table-failed
+                ::loading-fixtures-failed} state)))
 
 (reg-controller :league
                 {:params (fn [{:keys [data path-params]}]

@@ -6,10 +6,14 @@
             [cljs-react-material-ui.reagent :as ui]))
 
 (defn fixtures [id]
-  (let [fixtures @(subscribe [:fixtures id])]
+  (let [state    @(subscribe [::c/state id])
+        fixtures @(subscribe [:fixtures id])]
     (cond
-      (nil? fixtures) [:div.progress-container [ui/linear-progress]]
+      (#{::c/loading-fixtures ::c/loading-table} state)
+      [:div.progress-container [ui/linear-progress]]
+
       (= [] fixtures) [:div "No matches"]
+
       (seq fixtures) [:div
                       [:table.league-table
                        [:thead

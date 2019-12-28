@@ -31,18 +31,21 @@
 
 (defn live []
   (let [fixtures       @(subscribe [:live-matches])
-        live-fsm-state (subscribe [::fsm/state live-controller/live-fsm])]
+        live-fsm-state (subscribe [::fsm/state live-controller/live-fsm])
+        init?          (subscribe [::live-controller/init?])]
     [:div
      [:span
       (case @live-fsm-state
         ::live-controller/error "[disconnected, retrying...]"
-        ::live-controller/loading "[loading data...]"
+        ::live-controller/loading "[updating data...]"
+        ::live-controller/init "[initializing...]"
+        ::live-controller/init-error "[error initializing, retrying...]"
         "[connected]")]
      [:div {:style {:text-align :right}}
       [:input {:type      :checkbox
                :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]
       "Show only ongoing matches"]
      (cond
-       (nil? fixtures) [:div.progress-container [ui/linear-progress]]
+       @init? [:div.progress-container [ui/linear-progress]]
        (= {} fixtures) [:h1 "No matches today"]
        (seq fixtures) [live-fixtures fixtures])]))

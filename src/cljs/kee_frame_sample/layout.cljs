@@ -6,9 +6,7 @@
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [reagent.core :as r]
             [kee-frame-sample.controller.leagues :as leagues-controller]
-            [kee-frame-sample.controller.live :as live-controller]
-            [breaking-point.core :as bp]
-            [cljs-react-material-ui.icons :as ic]))
+            [breaking-point.core :as bp]))
 
 (defn drawer []
   (let [leagues-fsm-state (subscribe [::fsm/state leagues-controller/leagues-fsm])]
