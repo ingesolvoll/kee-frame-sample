@@ -10,29 +10,21 @@
             [kee-frame-sample.layout :as layout]
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
-            [kee-frame-sample.view.league :as league]
-            [reagent.core :as r]))
+            [kee-frame.error :as error]
+            [kee-frame-sample.view.league :as league]))
 
 (enable-console-print!)
 
 (goog-define debug false)
 
-(defn error-boundary
-  [body]
-  (let [err-state (r/atom nil)]
-    (r/create-class
-     {:display-name        "ErrBoundary"
-      :component-did-catch (fn [err info]
-                             (reset! err-state [err info]))
-      :reagent-render      (fn [body]
-                             (if (nil? @err-state)
-                               body
-                               (let [[err info] @err-state]
-                                 (js/console.log "******************** err: " err)
-                                 [:pre [:code (pr-str info)]])))})))
+(defn error-body [[err info]]
+  (js/console.log "An error occurred: " info)
+  (js/console.log "Context: " err)
+  [:div "Something went wrong"])
 
 (defn dispatch-main []
-  [error-boundary
+  [error/boundary
+   error-body
    [k/switch-route (comp :name :data)
     :league [league/league-dispatch]
     :live [live/live]
