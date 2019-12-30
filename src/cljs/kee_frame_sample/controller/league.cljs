@@ -1,7 +1,7 @@
 (ns kee-frame-sample.controller.league
   (:require [kee-frame.core :as k :refer [reg-controller reg-chain-named]]
             [kee-frame-sample.util :as util]
-            [kee-frame.fsm :as fsm]
+            [kee-frame.fsm.alpha :as fsm]
             [kee-frame-sample.format :as format]
             [re-frame.core :as f]))
 

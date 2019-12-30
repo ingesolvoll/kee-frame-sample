@@ -1,5 +1,5 @@
 (ns kee-frame-sample.controller.live
-  (:require [kee-frame.fsm :as fsm]
+  (:require [kee-frame.fsm.alpha :as fsm]
             [kee-frame.core :refer [reg-controller reg-chain-named reg-event-fx reg-event-db]]
             [kee-frame-sample.util :as util]
             [re-frame.core :as f]))

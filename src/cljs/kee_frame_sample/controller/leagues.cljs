@@ -1,6 +1,6 @@
 (ns kee-frame-sample.controller.leagues
   (:require [kee-frame.core :refer [reg-controller reg-chain-named reg-event-fx reg-event-db]]
-            [kee-frame.fsm :as fsm]
+            [kee-frame.fsm.alpha :as fsm]
             [kee-frame-sample.util :as util]))
 
 (fsm/reg-no-op :leagues/retry)

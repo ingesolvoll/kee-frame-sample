@@ -1,7 +1,7 @@
 (ns kee-frame-sample.layout
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
-            [kee-frame.fsm :as fsm]
+            [kee-frame.fsm.alpha :as fsm]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [reagent.core :as r]

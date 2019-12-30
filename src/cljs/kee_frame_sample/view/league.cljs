@@ -1,7 +1,7 @@
 (ns kee-frame-sample.view.league
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
-            [kee-frame.fsm :as fsm]
+            [kee-frame.fsm.alpha :as fsm]
             [kee-frame-sample.controller.league :as c]
             [cljs-react-material-ui.reagent :as ui]))
 
