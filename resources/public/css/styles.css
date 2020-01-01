@@ -415,6 +415,10 @@ input::-moz-focus-inner {
     margin-bottom: 3px;
 }
 
+.live-table td {
+  padding: 0 3px 0 3px;
+}
+
 .live-date {
     width: 60px
 }

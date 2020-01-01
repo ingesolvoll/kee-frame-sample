@@ -16,17 +16,17 @@
                   [:table.live-table
                    [:tbody
                     (map (fn [{:keys [homeTeam awayTeam utcDate score status]}]
-                           [:tr {:key (str (:name homeTeam) "-" (:name awayTeam))}
-                            [:td.live-date utcDate]
-                            [:td (:name homeTeam)]
-                            [:td (:name awayTeam)]
-                            (let [{:keys [fullTime halfTime]} score]
+                           (let [{:keys [fullTime halfTime]} score]
+                             [:tr {:key (str (:name homeTeam) "-" (:name awayTeam))}
+                              [:td.live-date utcDate]
+                              [:td (:name homeTeam)]
+                              [:td (:name awayTeam)]
                               [:td (:homeTeam fullTime) " - " (:awayTeam fullTime)]
-                              [:td " (" (:homeTeam halfTime) " - " (:awayTeam halfTime) ")"])
-                            [:td (case status
-                                   "FINISHED" [ic/action-done]
-                                   "IN_PLAY" [ic/action-cached]
-                                   [:div])]])
+                              [:td " (" (:homeTeam halfTime) " - " (:awayTeam halfTime) ")"]
+                              [:td (case status
+                                     "FINISHED" [ic/action-done]
+                                     "IN_PLAY" [ic/action-cached]
+                                     [:div])]]))
                          league-fixtures)]]]))))])
 
 (defn live []
