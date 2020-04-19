@@ -1,6 +1,6 @@
 (ns kee-frame-sample.core
   (:require [cljsjs.material-ui]
-            [re-frame.core :refer [subscribe]]
+            [re-frame.core :as f :refer [subscribe]]
             [kee-frame.core :as k]
             [kee-frame-sample.controller.league]
             [kee-frame-sample.controller.leagues]
@@ -40,20 +40,27 @@
                  :live-matches  nil
                  :ongoing-only? false})
 
+(f/reg-event-fx :route-changed
+  (fn [_ [_ route]]
+    ;; Do your custom stuff here. Like making the next line conditional to skip triggering controllers
+    {:dispatch [:kee-frame.router/route-changed route]}))
+
 (s/def ::league (s/keys :req-un [::name ::id]))
 (s/def ::leagues (s/nilable (s/coll-of ::league)))
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
-(k/start! {:debug?         debug
-           :debug-config   {:controllers? false
-                            :overwrites?  false
-                            :events?      false
-                            :routes?      false
-                            :blacklist    #{:live/tick}}
-           :screen         true
-           :scroll         false
-           :routes         routes
-           :hash-routing?  false
-           :initial-db     initial-db
-           :root-component [layout/main-panel [dispatch-main]]
-           :app-db-spec    ::db-spec})
+(k/start! {:debug?             debug
+           :debug-config       {:controllers? false
+                                :overwrites?  false
+                                :events?      false
+                                :routes?      false
+                                :blacklist    #{:live/tick}}
+           :route-change-event :route-changed
+           :not-found          :not-found
+           :screen             true
+           :scroll             false
+           :routes             routes
+           :hash-routing?      false
+           :initial-db         initial-db
+           :root-component     [layout/main-panel [dispatch-main]]
+           :app-db-spec        ::db-spec})
