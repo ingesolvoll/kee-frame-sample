@@ -56,7 +56,7 @@
                                 :routes?      false
                                 :blacklist    #{:live/tick}}
            :route-change-event :route-changed
-           :not-found          :not-found
+           :not-found          "/"
            :screen             true
            :scroll             false
            :routes             routes
