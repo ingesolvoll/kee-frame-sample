@@ -51,6 +51,11 @@
      (goto "/")
      (verify-text "Show only ongoing matches")))
 
+ (deftest live-page-is-404
+   (doto *driver*
+     (goto "/some-garbage-url")
+     (verify-text "Show only ongoing matches")))
+
  (deftest can-go-to-specific-league-table
    (doto *driver*
      (goto "/")
