@@ -5,7 +5,7 @@
             [re-frame.core :as f]))
 
 (defn waiting-state [next]
-  {[::fsm/after 10000] {:to next}})
+  {[::fsm/timeout 10000] {:to next}})
 
 (defn loading-state [error] {[::fsm/on-enter]            {:dispatch [[:live/load-live-matches]]}
                              [:live/loaded-live-matches] {:to ::waiting}

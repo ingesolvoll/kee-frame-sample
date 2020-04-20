@@ -12,7 +12,7 @@
    :fsm   {::loading        {[::fsm/on-enter]      {:dispatch [[:leagues/load]]}
                              [:leagues/loaded]     {:to ::loaded}
                              [:default-on-failure] {:to ::loading-failed}}
-           ::loading-failed {[::fsm/after 10000] {:to ::loading}
+           ::loading-failed {[::fsm/timeout 10000] {:to ::loading}
                              [:leagues/retry]    {:to ::loading}}}})
 
 (reg-controller :leagues

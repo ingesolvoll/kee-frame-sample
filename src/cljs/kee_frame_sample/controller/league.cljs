@@ -15,8 +15,8 @@
            ::loading-fixtures        {[::fsm/on-enter]               {:dispatch [[:league/load-fixtures id]]}
                                       [:league/fixtures-received id] {:to ::loaded}
                                       [:default-on-failure]          {:to ::loading-fixtures-failed}}
-           ::loading-table-failed    {[::fsm/after 10000] {:to ::loading-table}}
-           ::loading-fixtures-failed {[::fsm/after 10000] {:to ::loading-fixtures}}}})
+           ::loading-table-failed    {[::fsm/timeout 10000] {:to ::loading-table}}
+           ::loading-fixtures-failed {[::fsm/timeout 10000] {:to ::loading-fixtures}}}})
 
 (f/reg-sub ::state
            (fn [[_ id]]
