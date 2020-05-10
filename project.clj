@@ -1,7 +1,7 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.597"]
-                 [kee-frame "0.4.0-SNAPSHOT"]
+                 [kee-frame "0.4.1-SNAPSHOT"]
                  [reagent "0.8.1"]
                  [re-frame "0.10.6" :exclusions [reagent]]
                  [funcool/bide "1.6.0"]
@@ -38,7 +38,7 @@
                        :plugins      [[com.jakemccrary/lein-test-refresh "0.22.0"]]
                        :test-refresh {:refresh-dirs ["src/clj" "test"]}}
 
-             :dev     {:dependencies [[binaryage/devtools "0.9.4"]
+             :dev     {:dependencies [[binaryage/devtools "1.0.0"]
                                       [etaoin "0.2.2"]
                                       [day8.re-frame/re-frame-10x "0.3.3-react16"]]
                        :plugins      [[lein-figwheel "0.5.16"]]}
