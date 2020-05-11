@@ -1,6 +1,6 @@
 language: clojure
 
-script: lein integration-test
+script: lein with-profile server integration-test
 
 addons:
   chrome: stable
