@@ -41,6 +41,6 @@
                        :omit-source true
                        :aot         :all}}
   :aliases {"integration-test" ["with-profile" "server" "test"]
-            "figwheel"         ["trampoline" "run" "-m" "figwheel.main" "-b" "dev"]
+            "figwheel"         ["trampoline" "run" "-m" "figwheel.main" "-b" "dev" "-r"]
             "cljs:prod"        ["run" "-m" "cljs.main" "-co" "prod.cljs.edn" "-c"]
             "uberjar"          ["with-profile" "uberjar,server" "uberjar"]})
