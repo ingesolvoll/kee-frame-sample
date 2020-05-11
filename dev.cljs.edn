@@ -2,8 +2,6 @@
  :output-to            "resources/public/js/compiled/app.js"
  :output-dir           "resources/public/js/compiled/out"
  :asset-path           "/js/compiled/out"
- :source-map-timestamp true
- :parallel-build       true
  :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true
                         kee-frame-sample.core/debug           true
                         goog.log/ENABLED                      true}}
