@@ -13,8 +13,6 @@
             [kee-frame.error :as error]
             [kee-frame-sample.view.league :as league]))
 
-(enable-console-print!)
-
 (goog-define debug false)
 
 (defn error-body [[err info]]
