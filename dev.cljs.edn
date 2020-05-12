@@ -1,3 +1,6 @@
+^{:watch-dirs ["src/cljs" "checkouts/kee-frame/src"]
+  :css-dirs   ["resources/public/css"]
+  :open-url   false}
 {:main                 kee-frame-sample.core
  :output-to            "resources/public/js/compiled/app.js"
  :output-dir           "resources/public/js/compiled/out"
