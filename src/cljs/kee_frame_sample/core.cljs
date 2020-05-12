@@ -48,6 +48,8 @@
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
 (k/start! {:debug?             debug
+           :log                {:level        :debug
+                                :ns-blacklist ["kee-frame.debug"]}
            :debug-config       {:controllers? false
                                 :overwrites?  false
                                 :events?      false
