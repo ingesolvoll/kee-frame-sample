@@ -49,7 +49,7 @@
 
 (k/start! {:debug?             debug
            :log                {:level        :debug
-                                :ns-blacklist ["kee-frame.debug"]}
+                                :ns-blacklist [ "kee-frame.fsm.*" "kee-frame.event-logger"]}
            :debug-config       {:controllers? false
                                 :overwrites?  false
                                 :events?      false
