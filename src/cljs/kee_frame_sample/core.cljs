@@ -47,7 +47,7 @@
 (s/def ::leagues (s/nilable (s/coll-of ::league)))
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
-(k/start! {:log                {:level        :debug
+(k/start! {:log                {:level        :info
                                 :ns-blacklist ["kee-frame.event-logger"]}
            :route-change-event :route-changed
            :not-found          "/"
