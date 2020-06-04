@@ -27,6 +27,7 @@
                                       [ring/ring-defaults "0.2.1"]
                                       [compojure "1.6.0"]
                                       [environ "1.0.0"]
+                                      [kee-frame "0.4.1-SNAPSHOT"]
                                       [ring/ring-jetty-adapter "1.7.1"]]}
              :test    {:source-paths ["test"]
                        :dependencies [[etaoin "0.3.6"]]
