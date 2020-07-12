@@ -70,7 +70,7 @@
         league-name (subscribe [:league-name @id])]
     (if (#{::c/loading-fixtures-failed ::c/loading-table-failed} @state)
       [request-error]
-      [:<>
+      [:div
        [:strong {:style {:font-size "25px"}} @league-name]
        [:div {:style {:float :right}}
         [k/switch-route #(-> % :path-params :tab)
