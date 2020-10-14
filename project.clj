@@ -33,7 +33,7 @@
                        :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]]
                        :test-refresh {:refresh-dirs ["src/clj" "test"]}}
 
-             :dev     {:dependencies [[com.bhauman/figwheel-main "0.2.8"]
+             :dev     {:dependencies [[com.bhauman/figwheel-main "0.2.11"]
                                       [day8.re-frame/re-frame-10x "0.6.7"]]}
 
              :uberjar {:prep-tasks  ["compile" "cljs:prod"]
