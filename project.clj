@@ -1,7 +1,7 @@
 (defproject kee-frame-sample "1.0.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.597"]
-                 [kee-frame "1.0.0-SNAPSHOT"]
+                 [kee-frame "1.0.0-re-frame-1.0.0"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [cljsjs/material-ui "0.19.0-0"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
