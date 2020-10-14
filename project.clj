@@ -1,7 +1,7 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.597"]
-                 [kee-frame "0.4.1-SNAPSHOT"]
+                 [kee-frame "1.1.1-SNAPSHOT"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [cljsjs/material-ui "0.19.0-0"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
@@ -26,7 +26,7 @@
                                       [ring/ring-defaults "0.2.1"]
                                       [compojure "1.6.0"]
                                       [environ "1.0.0"]
-                                      [kee-frame "0.4.1-SNAPSHOT"]
+                                      [kee-frame "1.1.1-SNAPSHOT"]
                                       [ring/ring-jetty-adapter "1.7.1"]]}
              :test    {:source-paths ["test"]
                        :dependencies [[etaoin "0.3.6"]]
