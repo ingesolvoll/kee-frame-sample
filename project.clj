@@ -1,4 +1,4 @@
-(defproject kee-frame-sample "1.0.0-SNAPSHOT"
+(defproject kee-frame-sample "1.0.1-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.597"]
                  [kee-frame "1.0.0-re-frame-1.0.0"]
