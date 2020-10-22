@@ -1,5 +1,6 @@
 (ns kee-frame-sample.controller.league
-  (:require [kee-frame.core :as k :refer [reg-controller reg-chain-named]]
+  (:require [kee-frame.core :as k]
+            [re-chain.core :as chain]
             [kee-frame-sample.util :as util]
             [kee-frame.fsm.alpha :as fsm]
             [kee-frame-sample.format :as format]
@@ -30,30 +31,30 @@
              (#{::loading-table-failed
                 ::loading-fixtures-failed} state)))
 
-(reg-controller :league
+(k/reg-controller :league
                 {:params (fn [{:keys [data path-params]}]
                            (when (= (:name data) :league)
                              (:id path-params)))
                  :start  (fn [_ id]
                            (league-fsm id))})
 
-(reg-chain-named
+(chain/reg-chain-named
 
  :league/load-table
- (fn [{:keys [db]} [id]]
+ (fn [{:keys [db]} [_ id]]
    {:db         (assoc db :fixtures nil
                           :table nil)
     :http-xhrio (util/http-get (str "https://api.football-data.org/v2/competitions/" id "/standings"))})
 
  :league/table-received
- (fn [{:keys [db]} [id table]]
+ (fn [{:keys [db]} [_ id table]]
    {:db (-> db
             (assoc-in [id :table] (-> table :standings first :table))
             (assoc-in [id :league-name] (-> table :competition :name)))}))
 
-(reg-chain-named
+(chain/reg-chain-named
  :league/load-fixtures
- (fn [{:keys [db]} [id]]
+ (fn [{:keys [db]} [_ id]]
    {:http-xhrio (util/http-get (str "https://api.football-data.org/v2/matches")
                                {:params {:competitions id}})})
 

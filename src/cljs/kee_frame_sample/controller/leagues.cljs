@@ -1,7 +1,8 @@
 (ns kee-frame-sample.controller.leagues
-  (:require [kee-frame.core :refer [reg-controller reg-chain-named reg-event-fx reg-event-db]]
+  (:require [kee-frame.core :as k]
             [kee-frame.fsm.alpha :as fsm]
-            [kee-frame-sample.util :as util]))
+            [kee-frame-sample.util :as util]
+            [re-chain.core :as chain]))
 
 (fsm/reg-no-op :leagues/retry)
 
@@ -15,7 +16,7 @@
            ::loading-failed {[::fsm/timeout 10000] {:to ::loading}
                              [:leagues/retry]    {:to ::loading}}}})
 
-(reg-controller :leagues
+(k/reg-controller :leagues
                 {:params (constantly true)
                  :start  (fn []
                            leagues-fsm)})
@@ -23,13 +24,13 @@
 ;; Only show the most interesting ones, with compatible data
 (def whitelist #{2021 2014 2019 2015 2002})
 
-(reg-chain-named
+(chain/reg-chain-named
  :leagues/load
  (fn [_ _]
    {:http-xhrio (util/http-get "https://api.football-data.org/v2/competitions")})
 
  :leagues/loaded
- (fn [{:keys [db]} [leagues]]
+ (fn [{:keys [db]} [_ leagues]]
    {:db (assoc db :leagues (->> leagues
                                 :competitions
                                 (filter (comp whitelist :id))))}))

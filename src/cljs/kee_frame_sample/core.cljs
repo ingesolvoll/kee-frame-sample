@@ -11,7 +11,8 @@
             [cljs.spec.alpha :as s]
             [kee-frame-sample.view.live :as live]
             [kee-frame.error :as error]
-            [kee-frame-sample.view.league :as league]))
+            [kee-frame-sample.view.league :as league]
+            [kee-frame.event-logger :as event-logger]))
 
 (goog-define debug false)
 
@@ -47,14 +48,15 @@
 (s/def ::leagues (s/nilable (s/coll-of ::league)))
 (s/def ::db-spec (s/keys :req-un [::drawer-open? ::leagues ::fixtures ::table ::live-matches ::ongoing-only?]))
 
-(k/start! {:log                {:level        :info
-                                :ns-blacklist ["kee-frame.event-logger"]}
-           :route-change-event :route-changed
-           :not-found          "/"
-           :screen             true
-           :scroll             false
-           :routes             routes
-           :hash-routing?      false
-           :initial-db         initial-db
-           :root-component     [layout/main-panel [dispatch-main]]
-           :app-db-spec        ::db-spec})
+(k/start! {:log                 {:level        :info
+                                 :ns-blacklist ["kee-frame.event-logger"]}
+           :route-change-event  :route-changed
+           :global-interceptors [event-logger/interceptor]
+           :not-found           "/"
+           :screen              true
+           :scroll              false
+           :routes              routes
+           :hash-routing?       false
+           :initial-db          initial-db
+           :root-component      [layout/main-panel [dispatch-main]]
+           :app-db-spec         ::db-spec})
