@@ -6,6 +6,20 @@
             [kee-frame-sample.format :as format]
             [re-frame.core :as f]))
 
+(defn league-fsm-new [id]
+  {:id      :league-fsm
+   :initial ::loading-table
+   :states  {::loading-table           {:entry :league/load-table
+                                        :on    {:league/table-received ::loading-fixtures
+                                                :default-on-failure    ::loading-table-failed}}
+             ::loading-fixtures        {:entry :league/load-fixtures
+                                        :on    {:league/fixtures-received ::loaded
+                                                :default-on-failure       ::loading-fixtures-failed}}
+             ::loading-table-failed    {:after {:delay  1000
+                                                :target ::loading-table}}
+             ::loading-fixtures-failed {:after {:delay  1000
+                                                :target ::loading-fixtures}}}})
+
 (defn league-fsm [id]
   {:id    [:league-fsm id]
    :start ::loading-table
@@ -32,11 +46,11 @@
                 ::loading-fixtures-failed} state)))
 
 (k/reg-controller :league
-                {:params (fn [{:keys [data path-params]}]
-                           (when (= (:name data) :league)
-                             (:id path-params)))
-                 :start  (fn [_ id]
-                           (league-fsm id))})
+                  {:params (fn [{:keys [data path-params]}]
+                             (when (= (:name data) :league)
+                               (:id path-params)))
+                   :start  (fn [_ id]
+                             (league-fsm-new id))})
 
 (chain/reg-chain-named
 

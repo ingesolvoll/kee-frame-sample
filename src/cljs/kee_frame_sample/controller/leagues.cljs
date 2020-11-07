@@ -16,7 +16,7 @@
            ::loading-failed {[::fsm/timeout 10000] {:to ::loading}
                              [:leagues/retry]    {:to ::loading}}}})
 
-(k/reg-controller :leagues
+#_(k/reg-controller :leagues
                 {:params (constantly true)
                  :start  (fn []
                            leagues-fsm)})
