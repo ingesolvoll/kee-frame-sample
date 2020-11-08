@@ -1,12 +1,10 @@
 ^{:watch-dirs ["src/cljs"] #_["src/cljs" "checkouts/kee-frame/src"]
   :css-dirs   ["resources/public/css"]
   :open-url   false}
-{:main            kee-frame-sample.core
- :output-to       "resources/public/js/compiled/app.js"
- :output-dir      "resources/public/js/compiled/out"
- :asset-path      "/js/compiled/out"
- :preloads        [day8.re-frame-10x.preload
-                   flow-storm]
- :closure-defines {"re_frame.trace.trace_enabled_QMARK_" true
-                   kee-frame-sample.core/debug           true
-                   goog.log/ENABLED                      true}}
+{:main                 kee-frame-sample.core
+ :output-to            "resources/public/js/compiled/app.js"
+ :output-dir           "resources/public/js/compiled/out"
+ :asset-path           "/js/compiled/out"
+ :closure-defines      {"re_frame.trace.trace_enabled_QMARK_" true
+                        kee-frame-sample.core/debug           true
+                        goog.log/ENABLED                      true}}
