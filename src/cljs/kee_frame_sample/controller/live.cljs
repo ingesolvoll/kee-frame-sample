@@ -34,8 +34,8 @@
   (fn [_ _]
     (f/subscribe [::fsm/state :live]))
   (fn [state]
-    (#{::init
-       ::init-error} state)))
+    (and (seq? state)
+         (= ::initializing (first state)))))
 
 
 (chain/reg-chain-named
@@ -43,12 +43,12 @@
  :live/load-live-matches
  (fn [_ _]
    {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches"
-                               {:on-failure [:live/fsm-event ::error]})})
+                               {:on-failure [:live/transition ::error]})})
 
  :live/loaded-live-matches
  (fn [{db :db} [_ {:keys [matches]}]]
    {:db       (assoc db :live-matches matches)
-    :dispatch [:live/fsm-event :live/loaded-live-matches]}))
+    :dispatch [:live/transition :live/loaded-live-matches]}))
 
 (f/reg-event-db :live/toggle-ongoing
               (fn [db [_ flag]]
