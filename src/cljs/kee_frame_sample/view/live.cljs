@@ -3,7 +3,7 @@
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.icons :as ic]
             [kee-frame.fsm.alpha :as fsm]
-            [kee-frame-sample.controller.live :as live-controller]))
+            [kee-frame-sample.controller.live :as live]))
 
 (defn live-fixtures [fixtures]
   [:div
@@ -31,15 +31,15 @@
 
 (defn live []
   (let [fixtures       @(subscribe [:live-matches])
-        live-fsm-state (subscribe [::fsm/state live-controller/live-fsm])
-        init?          (subscribe [::live-controller/init?])]
+        live-fsm-state (subscribe [::fsm/state :live])
+        init?          (subscribe [::live/init?])]
     [:div
      [:span
       (case @live-fsm-state
-        ::live-controller/error "[disconnected, retrying...]"
-        ::live-controller/loading "[updating data...]"
-        ::live-controller/init "[initializing...]"
-        ::live-controller/init-error "[error initializing, retrying...]"
+        [::live/running ::live/error] "[disconnected, retrying...]"
+        [::live/running ::live/loading] "[updating data...]"
+        ::live/initializing "[initializing...]"
+        [::live/initializing ::live/error] "[error initializing, retrying...]"
         "[connected]")]
      [:div {:style {:text-align :right}}
       [:input {:type      :checkbox
