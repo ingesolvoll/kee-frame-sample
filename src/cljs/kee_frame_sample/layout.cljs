@@ -9,7 +9,7 @@
             [breaking-point.core :as bp]))
 
 (defn drawer []
-  (let [leagues-fsm-state (subscribe [::fsm/state leagues-controller/leagues-fsm])]
+  (let [leagues-fsm-state (subscribe [::fsm/state :leagues])]
     [ui/drawer
      {:width             250
       :docked            @(subscribe [::bp/large-monitor?])
@@ -23,7 +23,7 @@
      [ui/divider]
      (if (#{::leagues-controller/loading-failed} @leagues-fsm-state)
        [ui/menu-item
-        {:on-click #(dispatch [:leagues/retry])}
+        {:on-click #(dispatch [:leagues/transition :leagues/retry])}
         "Retry leagues loading"]
        (map (fn [{:keys [id name]}]
               ^{:key name}
