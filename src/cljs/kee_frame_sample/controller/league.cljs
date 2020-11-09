@@ -6,37 +6,27 @@
             [kee-frame-sample.format :as format]
             [re-frame.core :as f]))
 
-(defn league-fsm-new [id]
-  {:id      :league-fsm
-   :initial ::loading-table
-   :states  {::loading-table           {:entry :league/load-table
-                                        :on    {:league/table-received ::loading-fixtures
-                                                :default-on-failure    ::loading-table-failed}}
-             ::loading-fixtures        {:entry :league/load-fixtures
-                                        :on    {:league/fixtures-received ::loaded
-                                                :default-on-failure       ::loading-fixtures-failed}}
-             ::loading-table-failed    {:after {:delay  1000
-                                                :target ::loading-table}}
-             ::loading-fixtures-failed {:after {:delay  1000
-                                                :target ::loading-fixtures}}}})
-
 (defn league-fsm [id]
-  {:id    [:league-fsm id]
-   :start ::loading-table
-   :stop  ::loaded
-   :fsm   {::loading-table           {[::fsm/on-enter]            {:dispatch [[:league/load-table id]]}
-                                      [:league/table-received id] {:to ::loading-fixtures}
-                                      [:default-on-failure]       {:to ::loading-table-failed}}
-           ::loading-fixtures        {[::fsm/on-enter]               {:dispatch [[:league/load-fixtures id]]}
-                                      [:league/fixtures-received id] {:to ::loaded}
-                                      [:default-on-failure]          {:to ::loading-fixtures-failed}}
-           ::loading-table-failed    {[::fsm/timeout 10000] {:to ::loading-table}}
-           ::loading-fixtures-failed {[::fsm/timeout 10000] {:to ::loading-fixtures}}}})
+  {:id      :league
+   :initial ::table
+   :states  {::table    {:initial ::loading
+                         :states  {::loading {:entry #(f/dispatch [:league/load-table id])}
+                                   ::error   {:after [{:delay  3000
+                                                       :target [:> ::table]}]}}
+                         :on      {:league/table-received ::fixtures
+                                   ::error                [:. ::error]}}
+             ::fixtures {:initial ::loading
+                         :states  {::loading {:entry #(f/dispatch [:league/load-fixtures id])}
+                                   ::error   {:after [{:delay  3000
+                                                       :target [:> ::fixtures]}]}}
+                         :on      {:league/fixtures-received ::loaded
+                                   ::error                   [:. ::error]}}
+             ::loaded   {}}})
 
 (f/reg-sub ::state
-           (fn [[_ id]]
-             (f/subscribe [::fsm/state (league-fsm id)]))
-           identity)
+  (fn [[_ id]]
+    (f/subscribe [::fsm/state :league]))
+  identity)
 
 (f/reg-sub ::failed?
            (fn [_ [_ id]]
@@ -50,7 +40,7 @@
                              (when (= (:name data) :league)
                                (:id path-params)))
                    :start  (fn [_ id]
-                             (league-fsm-new id))})
+                             (league-fsm id))})
 
 (chain/reg-chain-named
 
@@ -58,20 +48,24 @@
  (fn [{:keys [db]} [_ id]]
    {:db         (assoc db :fixtures nil
                           :table nil)
-    :http-xhrio (util/http-get (str "https://api.football-data.org/v2/competitions/" id "/standings"))})
+    :http-xhrio (util/http-get (str "https://api.football-data.org/v2/competitions/" id "/standings")
+                               {:on-failure [:league/transition ::error]})})
 
  :league/table-received
  (fn [{:keys [db]} [_ id table]]
-   {:db (-> db
-            (assoc-in [id :table] (-> table :standings first :table))
-            (assoc-in [id :league-name] (-> table :competition :name)))}))
+   {:db       (-> db
+                  (assoc-in [id :table] (-> table :standings first :table))
+                  (assoc-in [id :league-name] (-> table :competition :name)))
+    :dispatch [:league/transition :league/table-received]}))
 
 (chain/reg-chain-named
  :league/load-fixtures
  (fn [{:keys [db]} [_ id]]
    {:http-xhrio (util/http-get (str "https://api.football-data.org/v2/matches")
-                               {:params {:competitions id}})})
+                               {:params     {:competitions id}
+                                :on-failure [:league/transition ::error]})})
 
  :league/fixtures-received
  (fn [{:keys [db]} [_ _ {:keys [matches]}]]
-   {:db (assoc db :fixtures (map #(update % :utcDate format/format-date) matches))}))
+   {:db       (assoc db :fixtures (map #(update % :utcDate format/format-date) matches))
+    :dispatch [:league/transition :league/fixtures-received]}))

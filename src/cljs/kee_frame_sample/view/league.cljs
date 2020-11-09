@@ -66,9 +66,11 @@
 
 (defn league-dispatch []
   (let [id          (subscribe [:league-id])
-        state       (subscribe [::fsm/state (c/league-fsm @id)])
+        state       (subscribe [::fsm/state :league])
         league-name (subscribe [:league-name @id])]
-    (if (#{::c/loading-fixtures-failed ::c/loading-table-failed} @state)
+    (if (and (seq? @state)
+             (= ::c/error (second @state)))
+      ;; TODO This isn't working, and I can't see why
       [request-error]
       [:div
        [:strong {:style {:font-size "25px"}} @league-name]
