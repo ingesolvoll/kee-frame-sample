@@ -4,23 +4,22 @@
             [kee-frame-sample.util :as util]
             [re-chain.core :as chain]
             [re-frame.core :as f]
-            [statecharts.core :as sc]
             [taoensso.timbre :as log]))
+
+(def retry-in-10-secs {:after [{:delay  10000
+                                :target ::loading}]})
 
 (def live-fsm
   {:id      :live
    :initial ::initializing
    :states  {::initializing {:initial ::loading
-                             :states  {::error   {:after [{:delay  10000
-                                                           :target ::loading}]}
+                             :states  {::error   retry-in-10-secs
                                        ::loading {:entry #(f/dispatch [:live/load-live-matches])
                                                   :on    {:live/loaded-live-matches [:> ::running]
                                                           ::error                   ::error}}}}
              ::running      {:initial ::waiting
-                             :states  {::error   {:after [{:delay  10000
-                                                           :target ::loading}]}
-                                       ::waiting {:after [{:delay  10000
-                                                           :target ::loading}]}
+                             :states  {::error   retry-in-10-secs
+                                       ::waiting retry-in-10-secs
                                        ::loading {:entry #(f/dispatch [:live/load-live-matches])
                                                   :on    {:live/loaded-live-matches ::waiting
                                                           ::error                   ::error}}}}}})
