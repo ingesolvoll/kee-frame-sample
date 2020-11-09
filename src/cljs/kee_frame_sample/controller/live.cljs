@@ -13,17 +13,17 @@
    :states  {::initializing {:initial ::loading
                              :states  {::error   {:after [{:delay  10000
                                                            :target ::loading}]}
-                                       ::loading {:entry #(f/dispatch [:live/load-live-matches])}}
-                             :on      {::error                   [:. ::error]
-                                       :live/loaded-live-matches [::running ::waiting]}}
-             ::running      {:states {::error   {:after [{:delay  10000
-                                                          :target ::loading}]}
-                                      ::waiting {:entry (sc/assign #(assoc % :last-update (js/Date.)))
-                                                 :after [{:delay  10000
-                                                          :target ::loading}]}
-                                      ::loading {:entry #(f/dispatch [:live/load-live-matches])}}
-                             :on     {::error                   [:. ::error]
-                                      :live/loaded-live-matches [:. ::waiting]}}}})
+                                       ::loading {:entry #(f/dispatch [:live/load-live-matches])
+                                                  :on    {:live/loaded-live-matches [:> ::running]
+                                                          ::error                   ::error}}}}
+             ::running      {:initial ::waiting
+                             :states  {::error   {:after [{:delay  10000
+                                                           :target ::loading}]}
+                                       ::waiting {:after [{:delay  10000
+                                                           :target ::loading}]}
+                                       ::loading {:entry #(f/dispatch [:live/load-live-matches])
+                                                  :on    {:live/loaded-live-matches ::waiting
+                                                          ::error                   ::error}}}}}})
 
 (k/reg-controller :live-polling
                   {:params (fn [route]
