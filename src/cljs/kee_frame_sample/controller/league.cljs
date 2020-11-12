@@ -25,7 +25,7 @@
                              (when (= (:name data) :league)
                                (:id path-params)))
                    :start  (fn [_ id]
-                             (table-request-fsm id))})
+                             [:http (table-request-fsm id)])})
 
 (f/reg-event-db ::fixtures-received
   (fn [db [_ {:keys [matches]}]]
