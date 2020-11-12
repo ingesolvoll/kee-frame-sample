@@ -1,7 +1,6 @@
 (ns kee-frame-sample.controller.league
   (:require [kee-frame.core :as k]
             [kee-frame-sample.util :as util]
-            [kee-frame.fsm.alpha :as fsm]
             [kee-frame.fsm.http :as http]
             [kee-frame-sample.format :as format]
             [re-frame.core :as f]))
@@ -20,13 +19,6 @@
                                                              {:params {:competitions id}})
                                  :max-retries 5
                                  :on-success  [::fixtures-received]})
-
-(f/reg-sub ::failed?
-  (fn [_ [_ id]]
-    (f/subscribe [::fsm/state id]))
-  (fn [state]
-    (#{::loading-table-failed
-       ::loading-fixtures-failed} state)))
 
 (k/reg-controller ::league
                   {:params (fn [{:keys [data path-params]}]
