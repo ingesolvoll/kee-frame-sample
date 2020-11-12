@@ -26,7 +26,11 @@
             [:div.progress-container [ui/linear-progress]]]
 
            ::http/halted
-           [:div "Gave up, nothing works"])]
+           [:div
+            "Could not load data"
+            [:div
+             [:button {:on-click #(dispatch [::http/restart fsm-id])}
+              "Click to try again"]]])]
 
         ::http/loaded
         content))))
