@@ -4,9 +4,9 @@
             [re-frame.core :as f]))
 
 (def leagues-request-fsm {:id          :leagues
-                          :http-xhrio  (util/http-get "https://api.football-data.org/v/competitions")
+                          :http-xhrio  (util/http-get "https://api.football-data.org/v2/competitions")
                           :max-retries 5
-                          :on-success  ::loaded})
+                          :on-success  [::loaded]})
 
 (k/reg-controller :leagues
                   {:params (constantly true)
