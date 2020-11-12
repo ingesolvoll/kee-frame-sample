@@ -2,7 +2,7 @@
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
             [kee-frame.fsm.alpha :as fsm]
-            [kee-frame.fsm.http :as http]
+            [glimt.core :as http]
             [kee-frame-sample.controller.league :as c]
             [cljs-react-material-ui.reagent :as ui]
             [reagent.core :as r]))
