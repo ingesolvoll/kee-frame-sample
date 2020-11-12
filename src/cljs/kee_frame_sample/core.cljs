@@ -16,6 +16,8 @@
 
 (goog-define debug false)
 
+(enable-console-print!)
+
 (defn error-body [[err info]]
   (js/console.log "An error occurred: " info)
   (js/console.log "Context: " err)
