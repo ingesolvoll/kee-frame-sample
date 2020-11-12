@@ -44,7 +44,7 @@
 (k/reg-controller :live-polling
                   {:params (fn [route]
                              (when (-> route :data :name (= :live)) true))
-                   :start  (fn [] live-fsm)})
+                   :start  (fn [] [:fsm live-fsm])})
 
 (f/reg-sub ::init?
   (fn [_ _]
