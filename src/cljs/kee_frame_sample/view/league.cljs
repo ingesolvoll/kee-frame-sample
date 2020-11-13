@@ -7,9 +7,8 @@
             [reagent.core :as r]))
 
 (defn http-loader-view [fsm-id content]
-  (r/with-let [full-state (subscribe [::http/state fsm-id])]
-    (let [state (:_state @full-state)
-          [primary-state secondary-state] (if (keyword? state) [state] state)]
+  (r/with-let [state (subscribe [::http/state fsm-id])]
+    (let [[primary-state secondary-state] @state]
       (case primary-state
         nil
         [:div]
