@@ -12,6 +12,10 @@
 (defn table-request-fsm [id] {:id          (table-fsm-id id)
                               :http-xhrio  (util/http-get (str "https://api.football-data.org/v2/competitions/" id "/standings"))
                               :max-retries 5
+                              :retry-delay (fn [retries]
+                                             (-> (js/Math.pow 2 retries)
+                                                 (* 1000)
+                                                 (min 15000)))
                               :on-success  [::table-received id]})
 
 (defn fixtures-request-fsm [id] {:id          (fixtures-fsm-id id)
