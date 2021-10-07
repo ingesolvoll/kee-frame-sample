@@ -1,4 +1,4 @@
-^{:watch-dirs ["src/cljs"] #_["src/cljs" "checkouts/kee-frame/src"]
+^{:watch-dirs ["src/cljs"]
   :css-dirs   ["resources/public/css"]
   :open-url   false}
 {:main                 kee-frame-sample.core

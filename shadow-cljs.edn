@@ -1,0 +1,9 @@
+{:deps   true
+ :builds {:app {:target     :browser
+                :output-to  "resources/public/js/compiled/app.js"
+                :output-dir "resources/public/js/compiled/out"
+                :asset-path "/js/compiled/out"
+                :devtools   {:after-load kee-frame-sample.core/render!
+                             :watch-dir  "resources/public/css"}
+                ;:compiler-options {:infer-externs true}
+                :modules    {:main {:init-fn kee-frame-sample.core/render!}}}}}
