@@ -1,6 +1,6 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.10.0"]
-                 [org.clojure/clojurescript "1.10.773"]
+                 [org.clojure/clojurescript "1.10.597"]
                  [kee-frame "1.1.2-SNAPSHOT"]
                  [glimt "0.0.1-SNAPSHOT"]
                  [day8.re-frame/http-fx "0.1.5"]
@@ -27,6 +27,7 @@
                                       [ring/ring-defaults "0.2.1"]
                                       [compojure "1.6.0"]
                                       [environ "1.0.0"]
+                                      [kee-frame "1.1.1-SNAPSHOT"]
                                       [ring/ring-jetty-adapter "1.7.1"]]}
              :test    {:source-paths ["test"]
                        :dependencies [[etaoin "0.3.6"]]
@@ -34,10 +35,8 @@
                        :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"]]
                        :test-refresh {:refresh-dirs ["src/clj" "test"]}}
 
-             :dev     {:source-paths ["dev"]
-                       :dependencies [[com.bhauman/figwheel-main "0.2.12"]
-                                      [day8.re-frame/re-frame-10x "0.7.0"]
-                                      [jpmonettas/flow-storm "0.3.2"]]}
+             :dev     {:dependencies [[com.bhauman/figwheel-main "0.2.8"]
+                                      [day8.re-frame/re-frame-10x "0.6.7"]]}
 
              :uberjar {:prep-tasks  ["compile" "cljs:prod"]
                        :omit-source true

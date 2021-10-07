@@ -1,14 +1,14 @@
 (ns kee-frame-sample.server
-  (:require [compojure.core :refer [defroutes GET]]
+  (:require [compojure.core :as c]
             [compojure.route :as route]
             [ring.util.response :as response]
             [ring.adapter.jetty :as jetty]
             [environ.core :refer [env]]))
 
-(defroutes app
-           (route/resources "/" {:root "public"})
-           (GET "*" [] (-> (response/resource-response "index.html" {:root "public"})
-                           (response/content-type "text/html"))))
+(c/defroutes app
+             (route/resources "/" {:root "public"})
+             (c/GET "*" [] (-> (response/resource-response "index.html" {:root "public"})
+                               (response/content-type "text/html"))))
 
 (defn run-server [port]
   (let [port (Integer. (or port (env :port) 5000))]
