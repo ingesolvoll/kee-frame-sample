@@ -11,7 +11,7 @@
 (k/reg-controller :leagues
                   {:params (constantly true)
                    :start  (fn []
-                             [:http leagues-request-fsm])})
+                             leagues-request-fsm)})
 
 ;; Only show the most interesting ones, with compatible data
 (def whitelist #{2021 2014 2019 2015 2002})
