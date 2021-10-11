@@ -1,7 +1,7 @@
 (ns kee-frame-sample.layout
   (:require [re-frame.core :refer [subscribe dispatch]]
             [kee-frame.core :as k]
-            [kee-frame.fsm.alpha :as fsm]
+            [kee-frame.fsm.beta :as fsm]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.core :refer [get-mui-theme color]]
             [reagent.core :as r]
@@ -9,7 +9,7 @@
             [breaking-point.core :as bp]))
 
 (defn drawer []
-  (let [leagues-fsm-state (subscribe [::fsm/state leagues-controller/leagues-fsm])]
+  (let [leagues-fsm-state (subscribe [::fsm/state :leagues])]
     [ui/drawer
      {:width             250
       :docked            @(subscribe [::bp/large-monitor?])
@@ -23,7 +23,7 @@
      [ui/divider]
      (if (#{::leagues-controller/loading-failed} @leagues-fsm-state)
        [ui/menu-item
-        {:on-click #(dispatch [:leagues/retry])}
+        {:on-click #(dispatch [:leagues/transition :leagues/retry])}
         "Retry leagues loading"]
        (map (fn [{:keys [id name]}]
               ^{:key name}

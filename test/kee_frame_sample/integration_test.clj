@@ -14,7 +14,7 @@
               (fn [test-fn]
                 (let [server (server/run-server 3333)]
                   (try
-                    (et/with-chrome-headless
+                    (et/with-chrome
                       {:size [1200 1200]} driver
                       (binding [*driver* driver]
                         (test-fn)))
@@ -70,10 +70,6 @@
     (goto "/")
     (navigate-to-league 2021)
     (navigate-to-league 2014)
-    (navigate-to-league 2019)
-    (verify-text "Juventus")
-    (et/back)
-    (wait pause)
     (verify-text "Barcelona")
     (et/back)
     (wait pause)

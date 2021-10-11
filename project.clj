@@ -2,6 +2,7 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.597"]
                  [kee-frame "1.1.2-SNAPSHOT"]
+                 [glimt "0.0.1-SNAPSHOT"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [cljsjs/material-ui "0.19.0-0"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
