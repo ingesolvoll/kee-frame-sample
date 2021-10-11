@@ -2,7 +2,7 @@
   (:require [re-frame.core :refer [subscribe dispatch]]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.icons :as ic]
-            [kee-frame.fsm.alpha :as fsm]
+            [kee-frame.fsm.beta :as fsm]
             [kee-frame-sample.controller.live :as live]))
 
 (defn live-fixtures [fixtures]

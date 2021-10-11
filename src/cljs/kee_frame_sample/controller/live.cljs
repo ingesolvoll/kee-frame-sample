@@ -1,6 +1,7 @@
 (ns kee-frame-sample.controller.live
-  (:require [kee-frame.fsm.alpha :as fsm]
+  (:require [kee-frame.fsm.beta :as fsm]
             [kee-frame.core :as k]
+            [kee-frame.fsm.beta :as fsm]
             [kee-frame-sample.util :as util]
             [re-chain.core :as chain]
             [re-frame.core :as f]
@@ -44,7 +45,7 @@
 (k/reg-controller :live-polling
                   {:params (fn [route]
                              (when (-> route :data :name (= :live)) true))
-                   :start  (fn [] live-fsm)})
+                   :start  (fn [] [::fsm/start live-fsm])})
 
 (f/reg-sub ::init?
   (fn [_ _]
