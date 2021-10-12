@@ -6,9 +6,6 @@
                                    etaoin/etaoin       {:mvn/version "0.3.6"}}
                      :extra-paths ["test"]
                      :main-opts   ["-m" "kaocha.runner"]}
-           :build   {:deps       {io.github.seancorfield/build-clj
-                                  {:git/tag "v0.5.0" :git/sha "2ceb95a"}}
-                     :ns-default build}
            :lib-dev {:extra-deps {kee-frame/kee-frame {:local/root "../kee-frame"}
                                   glimt/glimt         {:local/root "../glimt"}}}
            :server  {:main-opts    ["-m" "kee-frame-sample.server"]
@@ -18,8 +15,8 @@
                                     compojure/compojure     {:mvn/version "1.6.0"}
                                     environ/environ         {:mvn/version "1.0.0"}
                                     ring/ring-jetty-adapter {:mvn/version "1.7.1"}}}}
- :deps    {kee-frame/kee-frame         {:mvn/version "1.1.2"}
-           glimt/glimt                 {:mvn/version "0.0.1-SNAPSHOT"}
+ :deps    {kee-frame/kee-frame         {:mvn/version "1.2.0"}
+           glimt/glimt                 {:mvn/version "0.1.0"}
            day8.re-frame/http-fx       {:mvn/version "0.1.5"}
            com.andrewmcveigh/cljs-time {:mvn/version "0.5.2"}
            sablono/sablono             {:mvn/version "0.8.0"}}}
