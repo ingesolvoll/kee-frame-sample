@@ -1,12 +1,10 @@
 (ns kee-frame-sample.controller.live
-  (:require [kee-frame.fsm.beta :as fsm]
+  (:require [glimt.core :as http]
+            [kee-frame-sample.util :as util]
             [kee-frame.core :as k]
             [kee-frame.fsm.beta :as fsm]
-            [kee-frame-sample.util :as util]
-            [re-chain.core :as chain]
             [re-frame.core :as f]
-            [statecharts.core :as sc]
-            [taoensso.timbre :as log]))
+            [statecharts.core :as sc]))
 
 (defn calculate-backoff
   "Exponential backoff, with a upper limit of 15 seconds."
@@ -25,22 +23,25 @@
                  :after [{:delay  calculate-backoff
                           :target ::loading}]})
 
+(def live-matches-loader
+  {:id               :live-matches-loader
+   :transition-event ::transition
+   :http-xhrio       (util/http-get "https://api.football-data.org/v2/matches")
+   :on-success       [:live/loaded-live-matches]
+   :retry-delay      calculate-backoff
+   :success-state    [:> ::running ::waiting]
+   :error-state      [:> ::running ::error]})
+
 (def live-fsm
-  {:id      :live
-   :initial ::initializing
-   :states  {::initializing {:initial ::loading
-                             :states  {::error   error-loop
-                                       ::loading {:entry #(f/dispatch [:live/load-live-matches])
-                                                  :on    {:live/loaded-live-matches [:> ::running]
-                                                          ::error                   ::error}}}}
-             ::running      {:initial ::waiting
-                             :states  {::error   error-loop
-                                       ::waiting {:entry (sc/assign reset-retries)
-                                                  :after [{:delay  10000
-                                                           :target ::loading}]}
-                                       ::loading {:entry #(f/dispatch [:live/load-live-matches])
-                                                  :on    {:live/loaded-live-matches ::waiting
-                                                          ::error                   ::error}}}}}})
+  {:id               :live
+   :transition-event ::transition
+   :initial          ::running
+   :states           {::running {:initial ::loading
+                                 :states  {::error   error-loop
+                                           ::waiting {:entry (sc/assign reset-retries)
+                                                      :after [{:delay  10000
+                                                               :target ::loading}]}
+                                           ::loading (http/http-fsm-embedded live-matches-loader)}}}})
 
 (k/reg-controller :live-polling
                   {:params (fn [route]
@@ -54,18 +55,10 @@
     (and (seq? state)
          (= ::initializing (first state)))))
 
+(f/reg-event-db :live/loaded-live-matches
+                (fn [db [_ {:keys [matches]}]]
+                  (assoc db :live-matches matches)))
 
-(chain/reg-chain-named
-
- :live/load-live-matches
- (fn [_ _]
-   {:http-xhrio (util/http-get "https://api.football-data.org/v2/matches"
-                               {:on-failure [:live/transition ::error]})})
-
- :live/loaded-live-matches
- (fn [{db :db} [_ {:keys [matches]}]]
-   {:db       (assoc db :live-matches matches)
-    :dispatch [:live/transition :live/loaded-live-matches]}))
 
 (f/reg-event-db :live/toggle-ongoing
               (fn [db [_ flag]]
