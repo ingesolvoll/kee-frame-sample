@@ -8,8 +8,8 @@
 
 (defn calculate-backoff
   "Exponential backoff, with a upper limit of 15 seconds."
-  [state & _]
-  (-> (js/Math.pow 2 (:retries state))
+  [retries & _]
+  (-> (js/Math.pow 2 retries)
       (* 1000)
       (min 15000)))
 

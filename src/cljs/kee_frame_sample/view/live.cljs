@@ -36,11 +36,10 @@
         init?          (subscribe [::live/init?])]
     [:div
      [:span
-      (case @live-fsm-state
-        [::live/running ::live/loading ::http/error ::http/halted] "[could not connect, try refreshing the page]"
-        [::live/running ::live/loading ::http/error ::http/retrying] "[Disconnected, trying to reconnect]"
-        [::live/running ::live/loading] "[updating data...]"
-        (str "Unknown state " @live-fsm-state))]
+      (case-fsm @live-fsm-state
+                [::live/running ::live/loading ::http/error ::http/halted] "[could not connect, try refreshing the page]"
+                [::live/running ::live/loading ::http/error ::http/retrying] "[Disconnected, reconnecting]"
+                [::live/running] "[connected]")]
      [:div {:style {:text-align :right}}
       [:input {:type      :checkbox
                :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]
