@@ -13,33 +13,22 @@
       (* 1000)
       (min 15000)))
 
-(defn update-retries [state & _]
-  (update state :retries inc))
-
-(defn reset-retries [state & _]
-  (assoc state :retries 0))
-
-(def error-loop {:entry (sc/assign update-retries)
-                 :after [{:delay  calculate-backoff
-                          :target ::loading}]})
-
 (def live-matches-loader
   {:id               :live-matches-loader
    :transition-event ::transition
    :http-xhrio       (util/http-get "https://api.football-data.org/v2/matches")
    :on-success       [:live/loaded-live-matches]
    :retry-delay      calculate-backoff
-   :success-state    [:> ::running ::waiting]
-   :error-state      [:> ::running ::error]})
+   :max-retries      10
+   :state-path       [:> ::running ::loading]
+   :success-state    [:> ::running ::waiting]})
 
 (def live-fsm
   {:id               :live
    :transition-event ::transition
    :initial          ::running
    :states           {::running {:initial ::loading
-                                 :states  {::error   error-loop
-                                           ::waiting {:entry (sc/assign reset-retries)
-                                                      :after [{:delay  10000
+                                 :states  {::waiting {:after [{:delay  10000
                                                                :target ::loading}]}
                                            ::loading (http/http-fsm-embedded live-matches-loader)}}}})
 

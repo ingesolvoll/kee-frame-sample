@@ -2,6 +2,7 @@
   (:require [re-frame.core :refer [subscribe dispatch]]
             [cljs-react-material-ui.reagent :as ui]
             [cljs-react-material-ui.icons :as ic]
+            [glimt.core :as http]
             [kee-frame.fsm.beta :as fsm]
             [kee-frame-sample.controller.live :as live]))
 
@@ -36,11 +37,10 @@
     [:div
      [:span
       (case @live-fsm-state
-        [::live/running ::live/error] "[disconnected, retrying...]"
+        [::live/running ::live/loading ::http/error ::http/halted] "[could not connect, try refreshing the page]"
+        [::live/running ::live/loading ::http/error ::http/retrying] "[Disconnected, trying to reconnect]"
         [::live/running ::live/loading] "[updating data...]"
-        ::live/initializing "[initializing...]"
-        [::live/initializing ::live/error] "[error initializing, retrying...]"
-        "[connected]")]
+        (str "Unknown state " @live-fsm-state))]
      [:div {:style {:text-align :right}}
       [:input {:type      :checkbox
                :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]
