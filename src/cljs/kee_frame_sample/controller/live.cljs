@@ -14,8 +14,7 @@
       (min 15000)))
 
 (def live-matches-loader
-  {:id               :live-matches-loader
-   :transition-event ::transition
+  {:transition-event ::transition
    :http-xhrio       (util/http-get "https://api.football-data.org/v2/matches")
    :on-success       [:live/loaded-live-matches]
    :retry-delay      calculate-backoff
@@ -30,7 +29,7 @@
    :states           {::running {:initial ::loading
                                  :states  {::waiting {:after [{:delay  10000
                                                                :target ::loading}]}
-                                           ::loading (http/http-fsm-embedded live-matches-loader)}}}})
+                                           ::loading (http/embedded-fsm live-matches-loader)}}}})
 
 (k/reg-controller :live-polling
                   {:params (fn [route]
