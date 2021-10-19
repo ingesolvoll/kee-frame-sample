@@ -14,7 +14,8 @@
       (min 15000)))
 
 (def live-matches-loader
-  {:http-xhrio    (util/http-get "https://api.football-data.org/v2/matches")
+  {:id            :live
+   :http-xhrio    (util/http-get "https://api.football-data.org/v2/matches")
    :on-success    [:live/loaded-live-matches]
    :retry-delay   calculate-backoff
    :max-retries   10
@@ -23,7 +24,6 @@
 
 (def live-fsm
   {:id               :live
-   :transition-event ::transition
    :initial          ::running
    :states           {::running {:initial ::loading
                                  :states  {::waiting {:after [{:delay  10000

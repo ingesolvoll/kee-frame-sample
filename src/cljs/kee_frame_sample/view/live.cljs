@@ -1,10 +1,11 @@
 (ns kee-frame-sample.view.live
-  (:require [re-frame.core :refer [subscribe dispatch]]
-            [cljs-react-material-ui.reagent :as ui]
-            [cljs-react-material-ui.icons :as ic]
-            [glimt.core :as http]
-            [kee-frame.fsm.beta :as fsm]
-            [kee-frame-sample.controller.live :as live]))
+  (:require
+   [cljs-react-material-ui.icons :as ic]
+   [cljs-react-material-ui.reagent :as ui]
+   [glimt.core :as http]
+   [kee-frame-sample.controller.live :as live]
+   [kee-frame.fsm.beta :as fsm]
+   [re-frame.core :refer [subscribe dispatch]]))
 
 (defn live-fixtures [fixtures]
   [:div
