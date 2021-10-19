@@ -26,10 +26,10 @@
 (defn dispatch-main []
   [error/boundary
    error-body
-   [k/switch-route (comp :name :data)
+   [k/case-route (comp :name :data)
     :league [league/league-dispatch]
     :live [live/live]
-    nil [:div "Loading..."]]])
+    [:div "Loading..."]]])
 
 (def routes [["/" :live]
              ["/league/:id/:tab" :league]])
