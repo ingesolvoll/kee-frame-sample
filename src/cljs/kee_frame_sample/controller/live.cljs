@@ -1,10 +1,9 @@
 (ns kee-frame-sample.controller.live
-  (:require [glimt.core :as http]
-            [kee-frame-sample.util :as util]
-            [kee-frame.core :as k]
-            [kee-frame.fsm.beta :as fsm]
-            [re-frame.core :as f]
-            [statecharts.core :as sc]))
+  (:require
+   [kee-frame-sample.util :as util]
+   [kee-frame.core :as k]
+   [kee-frame.fsm.beta :as fsm]
+   [re-frame.core :as f]))
 
 (defn calculate-backoff
   "Exponential backoff, with a upper limit of 15 seconds."

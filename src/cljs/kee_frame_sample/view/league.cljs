@@ -1,10 +1,11 @@
 (ns kee-frame-sample.view.league
-  (:require [re-frame.core :refer [subscribe dispatch]]
-            [kee-frame.core :as k]
-            [glimt.core :as http]
-            [kee-frame-sample.controller.league :as c]
-            [cljs-react-material-ui.reagent :as ui]
-            [reagent.core :as r]))
+  (:require
+   [cljs-react-material-ui.reagent :as ui]
+   [glimt.core :as http]
+   [kee-frame-sample.controller.league :as c]
+   [kee-frame.core :as k]
+   [re-frame.core :refer [subscribe dispatch]]
+   [reagent.core :as r]))
 
 (defn http-loader-view [fsm-id content]
   (r/with-let [state (subscribe [::http/state fsm-id])]

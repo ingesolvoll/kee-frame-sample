@@ -1,8 +1,9 @@
 (ns kee-frame-sample.controller.leagues
-  (:require [glimt.core :as http]
-            [kee-frame.core :as k]
-            [kee-frame-sample.util :as util]
-            [re-frame.core :as f]))
+  (:require
+   [kee-frame-sample.util :as util]
+   [kee-frame.core :as k]
+   [kee-frame.fsm.beta :as fsm]
+   [re-frame.core :as f]))
 
 (def leagues-request-fsm {:id          :leagues
                           :http-xhrio  (util/http-get "https://api.football-data.org/v2/competitions")
@@ -12,7 +13,7 @@
 (k/reg-controller :leagues
                   {:params (constantly true)
                    :start  (fn []
-                             [::http/start leagues-request-fsm])})
+                             [::fsm/http leagues-request-fsm])})
 
 ;; Only show the most interesting ones, with compatible data
 (def whitelist #{2021 2014 2019 2015 2002})
