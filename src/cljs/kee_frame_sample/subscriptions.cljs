@@ -35,4 +35,6 @@
                     (filter (partial ongoing-filterer (:ongoing-only? db)))
                     (group-by :competition)
                     (filter (comp identity first))
+                    (map (fn [[k matches]]
+                           [k (sort-by (juxt :utcDate (comp :name :homeTeam)) matches)]))
                     (into {}))))
