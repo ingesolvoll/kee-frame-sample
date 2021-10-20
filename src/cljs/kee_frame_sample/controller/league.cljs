@@ -27,21 +27,28 @@
    :max-retries 5
    :on-success  [::fixtures-received]})
 
-(k/reg-controller ::league
-                  {:params (fn [{:keys [data path-params]}]
-                             (when (= (:name data) :league)
-                               (:id path-params)))
-                   :start  (fn [_ id]
-                             [::fsm/http (table-request-fsm id)])})
-
-(f/reg-event-db ::fixtures-received
-                (fn [db [_ {:keys [matches]}]]
-                  (assoc db :fixtures (map #(update % :utcDate format/format-date) matches))))
-
 (f/reg-event-fx
+ ::load
+ (fn [_ [_ id]]
+   {:fx [[:dispatch [::fsm/http (table-request-fsm id)]]
+         [:dispatch [::fsm/http (fixtures-request-fsm id)]]]}))
+
+(k/reg-controller
+ ::league
+ {:params (fn [{:keys [data path-params]}]
+            (when (= (:name data) :league)
+              (:id path-params)))
+  :start  (fn [_ id]
+            [::load id])})
+
+(f/reg-event-db
+ ::fixtures-received
+ (fn [db [_ {:keys [matches]}]]
+   (assoc db :fixtures (map #(update % :utcDate format/format-date) matches))))
+
+(f/reg-event-db
  ::table-received
- (fn [{db :db} [_ id table]]
-   {:db        (-> db
-                   (assoc-in [id :table] (-> table :standings first :table))
-                   (assoc-in [id :league-name] (-> table :competition :name)))
-    ::fsm/http (fixtures-request-fsm id)}))
+ (fn [db [_ id table]]
+   (-> db
+       (assoc-in [id :table] (-> table :standings first :table))
+       (assoc-in [id :league-name] (-> table :competition :name)))))
