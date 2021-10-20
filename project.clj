@@ -1,7 +1,7 @@
 (defproject kee-frame-sample "0.1.0-SNAPSHOT"
   :dependencies [[thheller/shadow-cljs "2.15.12"]
-                 [kee-frame "1.2.0"]
-                 [glimt "0.1.0"]
+                 [kee-frame "1.3.1"]
+                 [glimt "0.2.1"]
                  [day8.re-frame/http-fx "0.1.5"]
                  [cljsjs/material-ui "0.19.0-0"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
