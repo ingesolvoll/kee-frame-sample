@@ -21,6 +21,10 @@
       {:href (k/path-for [:live])}
       "Today's matches (" @(subscribe [:live-match-count]) ")"]
      [ui/divider]
+     [ui/menu-item
+      {:href (k/path-for [:form])}
+      "Form demo"]
+     [ui/divider]
      (if (#{::leagues-controller/loading-failed} @leagues-fsm-state)
        [ui/menu-item
         {:on-click #(dispatch [:leagues/transition :leagues/retry])}

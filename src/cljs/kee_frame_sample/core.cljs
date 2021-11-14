@@ -1,18 +1,19 @@
 (ns kee-frame-sample.core
-  (:require [cljsjs.material-ui]
-            [re-frame.core :as f :refer [subscribe]]
-            [kee-frame.core :as k]
+  (:require [cljs.spec.alpha :as s]
+            [cljsjs.material-ui]
+            [kee-frame-sample.controller.common]
             [kee-frame-sample.controller.league]
             [kee-frame-sample.controller.leagues]
             [kee-frame-sample.controller.live]
-            [kee-frame-sample.controller.common]
-            [kee-frame-sample.subscriptions]
             [kee-frame-sample.layout :as layout]
-            [cljs.spec.alpha :as s]
-            [kee-frame-sample.view.live :as live]
-            [kee-frame.error :as error]
+            [kee-frame-sample.subscriptions]
+            [kee-frame-sample.view.form :as form]
             [kee-frame-sample.view.league :as league]
-            [kee-frame.event-logger :as event-logger]))
+            [kee-frame-sample.view.live :as live]
+            [kee-frame.core :as k]
+            [kee-frame.error :as error]
+            [kee-frame.event-logger :as event-logger]
+            [re-frame.core :as f :refer [subscribe]]))
 
 (goog-define debug false)
 
@@ -29,9 +30,11 @@
    [k/case-route (comp :name :data)
     :league [league/league-dispatch]
     :live [live/live]
+    :form [form/form]
     [:div "Loading..."]]])
 
 (def routes [["/" :live]
+             ["/form" :form]
              ["/league/:id/:tab" :league]])
 
 (def initial-db {:drawer-open?  false
