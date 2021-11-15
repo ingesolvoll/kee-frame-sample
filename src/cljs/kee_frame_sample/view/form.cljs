@@ -20,6 +20,6 @@
                 :style     {:border-color (when (and (= @state ::dirty)
                                                      (not (seq @text)))
                                             "red")}
-                :on-change #(do (f/dispatch [[::fsm/transition :validation] ::edit-started])
+                :on-change #(do (f/dispatch [:transition-fsm :validation ::edit-started])
                                 (update-text %))
-                :on-blur   #(f/dispatch [[::fsm/transition :validation] ::edit-ended])}]])))
+                :on-blur   #(f/dispatch [:transition-fsm :validation ::edit-ended])}]])))
