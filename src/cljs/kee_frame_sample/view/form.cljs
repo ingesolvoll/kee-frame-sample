@@ -11,9 +11,8 @@
              ::dirty   {:on {::edit-started ::editing}}}})
 
 (defn form []
-  (fsm/with-fsm validation-fsm
-    (r/with-let [state       (f/subscribe [::fsm/state :validation])
-                 text        (r/atom "")
+  (fsm/with-fsm [state validation-fsm]
+    (r/with-let [text        (r/atom "")
                  update-text #(reset! text (-> % .-target .-value))]
       [:div
        [:input {:type      :text
