@@ -4,6 +4,7 @@
             [reagent.core :as r]))
 
 (def validation-fsm
+  ^{:transition-opts {:ignore-unknown-event? true}}
   {:id      :validation
    :initial ::clean
    :states  {::clean   {:on {::edit-started ::editing}}
