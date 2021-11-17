@@ -26,6 +26,6 @@
                                    [:span {:style {:color :red}} "invalid"])]
                         nil [:div])
        [:input {:type      :text
-                :on-change #(do (f/dispatch [::fsm/transition :validation ::edit-started])
-                                (update-text %))
+                :on-change #(update-text %)
+                :on-focus  #(f/dispatch [::fsm/transition :validation ::edit-started])
                 :on-blur   #(f/dispatch [::fsm/transition :validation ::edit-ended])}]])))
