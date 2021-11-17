@@ -2,7 +2,7 @@
   (:require
    [kee-frame-sample.util :as util]
    [kee-frame.core :as k]
-   [kee-frame.fsm.beta :as fsm]
+   [glimt.core :as http]
    [re-frame.core :as f]))
 
 (def leagues-request-fsm {:id          :leagues
@@ -13,7 +13,7 @@
 (k/reg-controller :leagues
                   {:params (constantly true)
                    :start  (fn []
-                             [::fsm/http leagues-request-fsm])})
+                             [::http/start leagues-request-fsm])})
 
 ;; Only show the most interesting ones, with compatible data
 (def whitelist #{2021 2014 2019 2015 2002})

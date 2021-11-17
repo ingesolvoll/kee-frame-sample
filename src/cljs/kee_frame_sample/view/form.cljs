@@ -1,14 +1,14 @@
 (ns kee-frame-sample.view.form
-  (:require [kee-frame.fsm.beta :as fsm]
+  (:require [re-statecharts.core :as fsm]
             [re-frame.core :as f]
             [reagent.core :as r]))
 
 (def validation-fsm
-  ^{:transition-opts {:ignore-unknown-event? true}}
   {:id      :validation
    :initial ::clean
    :states  {::clean   {:on {::edit-started ::editing}}
-             ::editing {:on {::edit-ended ::dirty}}
+             ::editing {:on {::edit-started ::editing
+                             ::edit-ended   ::dirty}}
              ::dirty   {:on {::edit-started ::editing}}}})
 
 (defn form []
@@ -16,10 +16,16 @@
     (r/with-let [text        (r/atom "")
                  update-text #(reset! text (-> % .-target .-value))]
       [:div
+       (fsm/match-state @state
+                        ::editing [:div "User is editing..."]
+                        ::clean [:div "No changes made yet"]
+                        ::dirty [:div
+                                 "Form has been modified and is "
+                                 (if (seq @text)
+                                   "valid"
+                                   [:span {:style {:color :red}} "invalid"])]
+                        nil [:div])
        [:input {:type      :text
-                :style     {:border-color (when (and (= @state ::dirty)
-                                                     (not (seq @text)))
-                                            "red")}
-                :on-change #(do (f/dispatch [:transition-fsm :validation ::edit-started])
+                :on-change #(do (f/dispatch [::fsm/transition :validation ::edit-started])
                                 (update-text %))
-                :on-blur   #(f/dispatch [:transition-fsm :validation ::edit-ended])}]])))
+                :on-blur   #(f/dispatch [::fsm/transition :validation ::edit-ended])}]])))

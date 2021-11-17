@@ -1,9 +1,10 @@
 (ns kee-frame-sample.controller.live
   (:require
+   [glimt.core :as http]
    [kee-frame-sample.util :as util]
    [kee-frame.core :as k]
-   [kee-frame.fsm.beta :as fsm]
-   [re-frame.core :as f]))
+   [re-frame.core :as f]
+   [re-statecharts.core :as rs]))
 
 (defn calculate-backoff
   "Exponential backoff, with a upper limit of 15 seconds."
@@ -22,21 +23,21 @@
    :success-state [:> ::running ::waiting]})
 
 (def live-fsm
-  {:id               :live
-   :initial          ::running
-   :states           {::running {:initial ::loading
-                                 :states  {::waiting {:after [{:delay  10000
-                                                               :target ::loading}]}
-                                           ::loading (fsm/http live-matches-loader)}}}})
+  {:id      :live
+   :initial ::running
+   :states  {::running {:initial ::loading
+                        :states  {::waiting {:after [{:delay  10000
+                                                      :target ::loading}]}
+                                  ::loading (http/embedded-fsm live-matches-loader)}}}})
 
 (k/reg-controller :live-polling
                   {:params (fn [route]
                              (when (-> route :data :name (= :live)) true))
-                   :start  (fn [] [::fsm/start live-fsm])})
+                   :start  (fn [] [::rs/start live-fsm])})
 
 (f/reg-sub ::init?
   (fn [_ _]
-    (f/subscribe [::fsm/state :live]))
+    (f/subscribe [::rs/state :live]))
   (fn [state]
     (and (seq? state)
          (= ::initializing (first state)))))

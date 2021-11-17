@@ -4,8 +4,8 @@
    [cljs-react-material-ui.reagent :as ui]
    [glimt.core :as http]
    [kee-frame-sample.controller.live :as live]
-   [kee-frame.fsm.beta :as fsm]
-   [re-frame.core :refer [subscribe dispatch]]))
+   [re-frame.core :refer [subscribe dispatch]]
+   [re-statecharts.core :as rs]))
 
 (defn live-fixtures [fixtures]
   [:div
@@ -33,15 +33,15 @@
 
 (defn live []
   (let [fixtures       @(subscribe [:live-matches])
-        live-fsm-state (subscribe [::fsm/state :live])
+        live-fsm-state (subscribe [::rs/state :live])
         init?          (subscribe [::live/init?])]
     [:div
      [:span
-      (fsm/match-state @live-fsm-state
-                       [::live/running ::live/loading ::http/error ::http/halted] "[could not connect, try refreshing the page]"
-                       [::live/running ::live/loading ::http/error ::http/retrying] "[Disconnected, reconnecting]"
-                       [::live/running] "[connected]"
-                       "[unknown]")]
+      (rs/match-state @live-fsm-state
+                      [::live/running ::live/loading ::http/error ::http/halted] "[could not connect, try refreshing the page]"
+                      [::live/running ::live/loading ::http/error ::http/retrying] "[Disconnected, reconnecting]"
+                      [::live/running] "[connected]"
+                      "[unknown]")]
      [:div {:style {:text-align :right}}
       [:input {:type      :checkbox
                :on-change #(dispatch [:live/toggle-ongoing (.. % -target -checked)])}]

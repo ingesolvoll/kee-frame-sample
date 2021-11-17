@@ -7,8 +7,9 @@
                                    etaoin/etaoin       {:mvn/version "0.3.6"}}
                      :extra-paths ["test"]
                      :main-opts   ["-m" "kaocha.runner"]}
-           :lib-dev {:extra-deps {kee-frame/kee-frame {:local/root "../kee-frame"}
-                                  glimt/glimt         {:local/root "../glimt"}}}
+           :lib-dev {:extra-deps {kee-frame/kee-frame           {:local/root "../kee-frame"}
+                                  glimt/glimt                   {:local/root "../glimt"}
+                                  re-statecharts/re-statecharts {:local/root "../re-statecharts"}}}
            :server  {:main-opts    ["-m" "kee-frame-sample.server"]
                      :extra-paths  ["resources"]
                      :replace-deps {ring/ring               {:mvn/version "1.7.1"}
@@ -16,8 +17,9 @@
                                     compojure/compojure     {:mvn/version "1.6.0"}
                                     environ/environ         {:mvn/version "1.0.0"}
                                     ring/ring-jetty-adapter {:mvn/version "1.7.1"}}}}
- :deps    {kee-frame/kee-frame         {:mvn/version "1.3.2-SNAPSHOT"}
-           glimt/glimt                 {:mvn/version "0.2.1"}
-           day8.re-frame/http-fx       {:mvn/version "0.1.5"}
-           com.andrewmcveigh/cljs-time {:mvn/version "0.5.2"}
-           sablono/sablono             {:mvn/version "0.8.0"}}}
+ :deps    {kee-frame/kee-frame                   {:mvn/version "1.3.2-SNAPSHOT"}
+           glimt/glimt                           {:mvn/version "0.2.1"}
+           com.github.ingesolvoll/re-statecharts {:mvn/version "0.0.3"}
+           day8.re-frame/http-fx                 {:mvn/version "0.1.5"}
+           com.andrewmcveigh/cljs-time           {:mvn/version "0.5.2"}
+           sablono/sablono                       {:mvn/version "0.8.0"}}}

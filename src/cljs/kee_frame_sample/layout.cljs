@@ -1,15 +1,16 @@
 (ns kee-frame-sample.layout
-  (:require [re-frame.core :refer [subscribe dispatch]]
-            [kee-frame.core :as k]
-            [kee-frame.fsm.beta :as fsm]
-            [cljs-react-material-ui.reagent :as ui]
-            [cljs-react-material-ui.core :refer [get-mui-theme color]]
-            [reagent.core :as r]
-            [kee-frame-sample.controller.leagues :as leagues-controller]
-            [breaking-point.core :as bp]))
+  (:require
+   [breaking-point.core :as bp]
+   [cljs-react-material-ui.core :refer [get-mui-theme color]]
+   [cljs-react-material-ui.reagent :as ui]
+   [kee-frame-sample.controller.leagues :as leagues-controller]
+   [kee-frame.core :as k]
+   [re-frame.core :refer [subscribe dispatch]]
+   [re-statecharts.core :as rs]
+   [reagent.core :as r]))
 
 (defn drawer []
-  (let [leagues-fsm-state (subscribe [::fsm/state :leagues])]
+  (let [leagues-fsm-state (subscribe [::rs/state :leagues])]
     [ui/drawer
      {:width             250
       :docked            @(subscribe [::bp/large-monitor?])

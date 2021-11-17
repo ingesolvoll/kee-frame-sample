@@ -1,9 +1,9 @@
 (ns kee-frame-sample.controller.league
   (:require
+   [glimt.core :as http]
    [kee-frame-sample.format :as format]
    [kee-frame-sample.util :as util]
    [kee-frame.core :as k]
-   [kee-frame.fsm.beta :as fsm]
    [re-frame.core :as f]))
 
 (def table-fsm-id #(keyword (str "table-" %)))
@@ -30,8 +30,8 @@
 (f/reg-event-fx
  ::load
  (fn [_ [_ id]]
-   {:fx [[:dispatch [::fsm/http (table-request-fsm id)]]
-         [:dispatch [::fsm/http (fixtures-request-fsm id)]]]}))
+   {:fx [[:dispatch [::http/start (table-request-fsm id)]]
+         [:dispatch [::http/start (fixtures-request-fsm id)]]]}))
 
 (k/reg-controller
  ::league
