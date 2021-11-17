@@ -7,8 +7,7 @@
   {:id      :validation
    :initial ::clean
    :states  {::clean   {:on {::edit-started ::editing}}
-             ::editing {:on {::edit-started ::editing
-                             ::edit-ended   ::dirty}}
+             ::editing {:on {::edit-ended ::dirty}}
              ::dirty   {:on {::edit-started ::editing}}}})
 
 (defn form []
