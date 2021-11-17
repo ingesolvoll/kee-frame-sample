@@ -7,9 +7,9 @@
                                    etaoin/etaoin       {:mvn/version "0.3.6"}}
                      :extra-paths ["test"]
                      :main-opts   ["-m" "kaocha.runner"]}
-           :lib-dev {:extra-deps {kee-frame/kee-frame           {:local/root "../kee-frame"}
-                                  glimt/glimt                   {:local/root "../glimt"}
-                                  re-statecharts/re-statecharts {:local/root "../re-statecharts"}}}
+           :lib-dev {:extra-deps {kee-frame/kee-frame                   {:local/root "../kee-frame"}
+                                  glimt/glimt                           {:local/root "../glimt"}
+                                  com.github.ingesolvoll/re-statecharts {:local/root "../re-statecharts"}}}
            :server  {:main-opts    ["-m" "kee-frame-sample.server"]
                      :extra-paths  ["resources"]
                      :replace-deps {ring/ring               {:mvn/version "1.7.1"}
