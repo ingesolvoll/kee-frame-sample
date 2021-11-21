@@ -12,7 +12,7 @@
 
 (def global-validation-fsm
   (-> validation-fsm
-      (with-meta {:open? true})
+      (with-meta {::fsm/open? true})
       (assoc :id :validation-open)))
 
 (f/reg-event-fx ::edit-started (constantly nil))

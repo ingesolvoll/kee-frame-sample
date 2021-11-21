@@ -5,7 +5,6 @@
                  [day8.re-frame/http-fx "0.1.5"]
                  [cljsjs/material-ui "0.19.0-0"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
-                 [com.github.ingesolvoll/re-statecharts "0.0.3"]
                  [sablono "0.8.0"]]
 
   :plugins [[lein-cljsbuild "1.1.7"]]
